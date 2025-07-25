@@ -1637,13 +1637,12 @@
     // Export the Firebase config
     export const getFirebaseConfig = () => {
         return {
-            apiKey: "AIzaSyC7eddeYoCqEn4au25Gs7eQbpWpuBbXVtg",
-            authDomain: "dixie-solution.firebaseapp.com",
-            projectId: "dixie-solution",
-            storageBucket: "dixie-solution.firebasestorage.app",
-            messagingSenderId: "831709659427",
-            appId: "1:831709659427:web:848f5c80eb677327b20c96",
-            measurementId: "G-8Z3NE5T9PV"
+      apiKey: "AIzaSyA0HdeDYIv38UHICf7tsFaXWtFNG_5WUSE",
+  authDomain: "afood-a8ea4.firebaseapp.com",
+  projectId: "afood-a8ea4",
+  storageBucket: "afood-a8ea4.firebasestorage.app",
+  messagingSenderId: "555100471697",
+  appId: "1:555100471697:web:c259b06146389fa9901a30"
         };
     };
     // get order by id
