@@ -1,0 +1,35 @@
+import { View, Text, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import React from 'react';
+import { Cuisine } from '../../types';
+
+type CuisineCardProps = {
+    cuisine: Cuisine;
+    onPress?: () => void;
+};
+
+const CuisineCard: React.FC<CuisineCardProps> = ({ cuisine, onPress }) => {
+    return (
+        <TouchableOpacity
+            className="items-center mb-4"
+            onPress={onPress}
+            activeOpacity={0.7}
+        >
+            <View className="w-16 h-16 rounded-full bg-neutral-800 justify-center items-center overflow-hidden shadow-md">
+                <Image
+                    source={typeof cuisine.image === 'string' ? { uri: cuisine.image } : cuisine.image as ImageSourcePropType}
+                    className="w-16 h-16"
+                    resizeMode="cover"
+                    accessibilityLabel={`${cuisine.name} cuisine`}
+                />
+            </View>
+
+            <View className="bg-black rounded-full px-3 py-1 mt-2">
+                <Text className="text-white text-xs text-center" numberOfLines={1}>
+                    {cuisine.name}
+                </Text>
+            </View>
+        </TouchableOpacity>
+    );
+};
+
+export default CuisineCard;

@@ -1,0 +1,88 @@
+{
+  "expo": {
+    "name": "Afoud",
+    "slug": "Afoud",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo.jpg",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/logo.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "scheme": "Afoud-users",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "6",
+      "bundleIdentifier": "com.afoudusers.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocationWhenInUseUsageDescription": "We need your location to show you nearby delivery locations",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "We need your location to show you nearby delivery locations",
+        "NSCameraUsageDescription": "This app needs access to camera to take photos of food items and upload images"
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyDKkqzO1Ktr6EbmapmCv0HtqCe8_4M2AbY"
+      }
+    },
+    "android": {
+      "versionCode": 5,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.jpg",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.afoudusers.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCXkLzEQDRf-DafFdkIHLNW_bOOOQhwXfo"
+        }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "com.google.android.gms.permission.AD_ID"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Food Delivery to use your location."
+        }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "enableGooglePay": false
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ],
+      "expo-tracking-transparency"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7eb06956-3ef2-4205-9aba-3e64a318800f"
+      }
+    }
+  }
+}
