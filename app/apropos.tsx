@@ -1,5 +1,5 @@
 // screens/AboutScreen.tsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -8,29 +8,24 @@ import {
     TouchableOpacity,
     Linking,
     StatusBar,
-    Platform,
-    ActivityIndicator
+    Platform
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Stack } from 'expo-router';
-import { getRestaurantById } from '../utils/firebase';
-
-// ID du restaurant Afoud (à ajuster selon votre configuration)
-const RESTAURANT_ID = "FhnRefHSJQohtFlvilC9";
 
 export default function AboutScreen() {
-    const [isLoading, setIsLoading] = useState(true);
-    const [restaurantData, setRestaurantData] = useState(null);
-    const [error, setError] = useState(null);
-
     // Informations statiques sur le restaurant
     const RESTAURANT_INFO = {
         name: 'Afoud',
         tagline: 'Saveurs authentiques du monde à Casablanca',
         description: 'Afoud est votre destination culinaire pour découvrir les saveurs authentiques du monde. Nos recettes traditionnelles et notre engagement envers la qualité nous distinguent depuis notre ouverture.',
         foundedYear: 2020,
+        address: 'G8X8+5Q Casablanca 20000, Maroc',
+        phone: '+212 660 600 602',
+        email: 'slimaneafoud1987@gmail.com',
+        website: 'www.afoud.ma',
         socialMedia: [
             { name: 'Facebook', icon: 'facebook', url: 'https://facebook.com/afoudrestaurant' },
             { name: 'Instagram', icon: 'instagram', url: 'https://instagram.com/afoudrestaurant' },
@@ -42,32 +37,18 @@ export default function AboutScreen() {
             { name: 'Service de Qualité', icon: 'star' },
             { name: 'Commandes en Ligne', icon: 'shopping-cart' }
         ],
+        cuisineTypes: ['Marocaine', 'Italienne', 'Asiatique', 'Française', 'Américaine', 'Indienne'],
+        openingHours: [
+            { day: 'Lundi', hours: '11h00 - 01h00' },
+            { day: 'Mardi', hours: '11h30 - 01h00' },
+            { day: 'Mercredi', hours: '11h30 - 01h00' },
+            { day: 'Jeudi', hours: '11h30 - 01h00' },
+            { day: 'Vendredi', hours: '11h30 - 01h00' },
+            { day: 'Samedi', hours: '11h30 - 01h00' },
+            { day: 'Dimanche', hours: '11h30 - 01h00' }
+        ],
         appVersion: '1.0.0'
     };
-
-    useEffect(() => {
-        // Charger les données du restaurant depuis Firestore
-        const loadRestaurantData = async () => {
-            try {
-                setIsLoading(true);
-                const result = await getRestaurantById(RESTAURANT_ID);
-
-                if (result.success) {
-                    setRestaurantData(result.restaurant);
-                } else {
-                    setError("Impossible de charger les informations du restaurant");
-                    console.error("Erreur lors du chargement des données:", result.error);
-                }
-            } catch (err) {
-                setError("Une erreur est survenue pendant le chargement des données");
-                console.error("Exception lors du chargement des données:", err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        loadRestaurantData();
-    }, []);
 
     // Fonction pour ouvrir les liens externes
     const openLink = (url) => {
@@ -100,59 +81,7 @@ export default function AboutScreen() {
         );
     };
 
-    // Fonction pour formater les heures d'ouverture par jour
-    const formatOpeningHours = (openingHours) => {
-        if (!openingHours || !Array.isArray(openingHours)) {
-            return [];
-        }
-
-        // Trier les jours dans l'ordre de la semaine
-        const daysOrder = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-
-        return openingHours
-            .sort((a, b) => daysOrder.indexOf(a.day) - daysOrder.indexOf(b.day))
-            .map(schedule => ({
-                day: schedule.day,
-                hours: schedule.open ? `${schedule.openTime} - ${schedule.closeTime}` : 'Fermé'
-            }));
-    };
-
-    // Si les données sont en cours de chargement, afficher un indicateur de chargement
-    if (isLoading) {
-        return (
-            <SafeAreaView className="flex-1 bg-gray-50 justify-center items-center">
-                <StatusBar backgroundColor="#111827" barStyle="light-content" />
-                <ActivityIndicator size="large" color="#F97316" />
-                <Text className="mt-3 text-base text-gray-600">Chargement des informations...</Text>
-            </SafeAreaView>
-        );
-    }
-
-    // Si une erreur s'est produite, afficher un message d'erreur
-    if (error) {
-        return (
-            <SafeAreaView className="flex-1 bg-gray-50 justify-center items-center px-5">
-                <StatusBar backgroundColor="#111827" barStyle="light-content" />
-                <MaterialIcons name="error-outline" size={50} color="#F97316" />
-                <Text className="mt-3 mb-5 text-base text-red-500 text-center">{error}</Text>
-                <TouchableOpacity
-                    className="bg-orange-500 px-5 py-2.5 rounded-lg"
-                    onPress={() => window.location.reload()} // Rafraîchir la page
-                >
-                    <Text className="text-white font-bold">Réessayer</Text>
-                </TouchableOpacity>
-            </SafeAreaView>
-        );
-    }
-
-    // Fusionner les données statiques avec les données de la base de données
-    const restaurantName = restaurantData?.name || RESTAURANT_INFO.name;
-    const restaurantAddress = restaurantData?.address || 'G8X8+5Q Casablanca 20000, Maroc';
-    const restaurantPhone = restaurantData?.phone || '+212 660 600 602';
-    const restaurantEmail = restaurantData?.email || 'slimaneafoud1987@gmail.com';
-    const restaurantWebsite = restaurantData?.website ? restaurantData.website.replace('hhtps://', 'https://') : 'www.afoud.ma';
     const restaurantLogo = require('@/assets/logo.jpg');
-    const formattedHours = formatOpeningHours(restaurantData?.openingHours);
 
     return (
         <SafeAreaView className="flex-1 bg-white">
@@ -175,20 +104,12 @@ export default function AboutScreen() {
             <ScrollView className="flex-1 mt-14" showsVerticalScrollIndicator={false}>
                 {/* Logo et informations principales */}
                 <View className="items-center justify-center py-14 bg-orange-50 rounded-b-3xl mb-5">
-                    {typeof restaurantLogo === 'string' ? (
-                        <Image
-                            source={{ uri: restaurantLogo }}
-                            className="w-24 h-24 mb-3"
-                            resizeMode="contain"
-                        />
-                    ) : (
-                        <Image
-                            source={restaurantLogo}
-                            className="w-24 h-24 mb-3"
-                            resizeMode="contain"
-                        />
-                    )}
-                    <Text className="text-2xl font-bold text-gray-800 mb-1">{restaurantName}</Text>
+                    <Image
+                        source={restaurantLogo}
+                        className="w-24 h-24 mb-3"
+                        resizeMode="contain"
+                    />
+                    <Text className="text-2xl font-bold text-gray-800 mb-1">{RESTAURANT_INFO.name}</Text>
                     <Text className="text-base text-gray-600 italic">{RESTAURANT_INFO.tagline}</Text>
                 </View>
 
@@ -234,18 +155,16 @@ export default function AboutScreen() {
                 </View>
 
                 {/* Types de cuisine */}
-                {restaurantData?.cuisineTypes && restaurantData.cuisineTypes.length > 0 && (
-                    <View className="px-5 py-4 border-b border-gray-200">
-                        <Text className="text-lg font-bold text-gray-800 mb-3">Nos Cuisines</Text>
-                        <View className="flex-row flex-wrap">
-                            {restaurantData.cuisineTypes.map((cuisine, index) => (
-                                <View key={index} className="bg-gray-100 rounded-full px-3 py-1.5 mr-2 mb-2">
-                                    <Text className="text-xs text-gray-600">{cuisine}</Text>
-                                </View>
-                            ))}
-                        </View>
+                <View className="px-5 py-4 border-b border-gray-200">
+                    <Text className="text-lg font-bold text-gray-800 mb-3">Nos Cuisines</Text>
+                    <View className="flex-row flex-wrap">
+                        {RESTAURANT_INFO.cuisineTypes.map((cuisine, index) => (
+                            <View key={index} className="bg-gray-100 rounded-full px-3 py-1.5 mr-2 mb-2">
+                                <Text className="text-xs text-gray-600">{cuisine}</Text>
+                            </View>
+                        ))}
                     </View>
-                )}
+                </View>
 
                 {/* Spécialités */}
                 <View className="px-5 py-4 border-b border-gray-200">
@@ -294,7 +213,7 @@ export default function AboutScreen() {
                         Nous livrons dans tout Casablanca et ses environs. Notre service de livraison rapide garantit des plats chauds et frais, livrés dans les meilleurs délais pour préserver la qualité de nos préparations.
                     </Text>
                     <Text className="text-sm leading-6 text-gray-600 mb-3">
-                        Pour passer commande, contactez-nous au +212 660 600 602 ou utilisez notre application mobile pour une expérience simplifiée.
+                        Pour passer commande, contactez-nous au {RESTAURANT_INFO.phone} ou utilisez notre application mobile pour une expérience simplifiée.
                     </Text>
 
                     <View className="mt-4 bg-amber-50 rounded-lg p-4 border-l-4 border-orange-500">
@@ -307,23 +226,12 @@ export default function AboutScreen() {
                 {/* Horaires */}
                 <View className="px-5 py-4 border-b border-gray-200">
                     <Text className="text-lg font-bold text-gray-800 mb-3">Horaires d'Ouverture</Text>
-                    {formattedHours.length > 0 ? (
-                        formattedHours.map((schedule, index) => (
-                            <View key={index} className="flex-row justify-between py-1.5">
-                                <Text className="text-sm text-gray-600">{schedule.day}</Text>
-                                <Text className="text-sm font-medium text-gray-800">{schedule.hours}</Text>
-                            </View>
-                        ))
-                    ) : (
-                        <View className="bg-gray-50 rounded-lg p-3">
-                            <Text className="text-sm text-gray-700 mb-1">
-                                • Lundi : 11h00 - 01h00
-                            </Text>
-                            <Text className="text-sm text-gray-700 mb-1">
-                                • Mardi à Dimanche : 11h30 - 01h00
-                            </Text>
+                    {RESTAURANT_INFO.openingHours.map((schedule, index) => (
+                        <View key={index} className="flex-row justify-between py-1.5">
+                            <Text className="text-sm text-gray-600">{schedule.day}</Text>
+                            <Text className="text-sm font-medium text-gray-800">{schedule.hours}</Text>
                         </View>
-                    )}
+                    ))}
                 </View>
 
                 {/* Coordonnées */}
@@ -332,42 +240,42 @@ export default function AboutScreen() {
 
                     <TouchableOpacity
                         className="flex-row items-center py-2.5"
-                        onPress={() => openLocation(restaurantAddress)}
+                        onPress={() => openLocation(RESTAURANT_INFO.address)}
                         accessibilityLabel="Adresse du restaurant"
                         accessibilityRole="button"
                     >
                         <Feather name="map-pin" size={20} color="#F97316" />
-                        <Text className="ml-3 text-sm text-gray-600">{restaurantAddress}</Text>
+                        <Text className="ml-3 text-sm text-gray-600">{RESTAURANT_INFO.address}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         className="flex-row items-center py-2.5"
-                        onPress={() => callPhone(restaurantPhone)}
+                        onPress={() => callPhone(RESTAURANT_INFO.phone)}
                         accessibilityLabel="Numéro de téléphone"
                         accessibilityRole="button"
                     >
                         <Feather name="phone" size={20} color="#F97316" />
-                        <Text className="ml-3 text-sm text-gray-600">{restaurantPhone}</Text>
+                        <Text className="ml-3 text-sm text-gray-600">{RESTAURANT_INFO.phone}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         className="flex-row items-center py-2.5"
-                        onPress={() => sendEmail(restaurantEmail)}
+                        onPress={() => sendEmail(RESTAURANT_INFO.email)}
                         accessibilityLabel="Adresse email"
                         accessibilityRole="button"
                     >
                         <Feather name="mail" size={20} color="#F97316" />
-                        <Text className="ml-3 text-sm text-gray-600">{restaurantEmail}</Text>
+                        <Text className="ml-3 text-sm text-gray-600">{RESTAURANT_INFO.email}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         className="flex-row items-center py-2.5"
-                        onPress={() => openLink(`https://${restaurantWebsite.replace(/^https?:\/\//i, '')}`)}
+                        onPress={() => openLink(`https://${RESTAURANT_INFO.website}`)}
                         accessibilityLabel="Site web"
                         accessibilityRole="button"
                     >
                         <Feather name="globe" size={20} color="#F97316" />
-                        <Text className="ml-3 text-sm text-gray-600">{restaurantWebsite.replace(/^https?:\/\//i, '')}</Text>
+                        <Text className="ml-3 text-sm text-gray-600">{RESTAURANT_INFO.website}</Text>
                     </TouchableOpacity>
                 </View>
 

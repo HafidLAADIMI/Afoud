@@ -7,9 +7,9 @@ import { router } from 'expo-router';
 export default function HelpSupportScreen() {
     // Contact information
     const contactInfo = {
-        address: "Maison: 00, Rue: 00, Ville-0000, Pays",
-        phone: "01700000000",
-        email: "admin@gmail.com"
+        address: "G8X8+5Q Casablanca 20000 Casablanca Maroc",
+        phone: "+212660600602",
+        email: "slimaneafoud1987@gmail.com"
     };
 
     const handleCall = () => {

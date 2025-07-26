@@ -133,7 +133,7 @@ export default function SidebarScreen() {
                             {user ? user.email : 'Connectez-vous pour accéder à toutes les fonctionnalités'}
                         </Text>
                     </View>
-
+                            {/* 
                     {user && (
                         <TouchableOpacity
                             className="w-10 h-10 rounded-full bg-white/20 items-center justify-center"
@@ -142,9 +142,10 @@ export default function SidebarScreen() {
                             <Feather name="edit" size={18} color="white" />
                         </TouchableOpacity>
                     )}
+                        */}
                 </View>
 
-                {/* loyalty progress */}
+                {/* loyalty progress 
                 {user && (
                     <View className="mt-4">
                         <View className="flex-row justify-between items-center mb-1">
@@ -164,6 +165,7 @@ export default function SidebarScreen() {
                         </Text>
                     </View>
                 )}
+                    */}
             </LinearGradient>
 
             {/* ───── Scrollable menu ───── */}
@@ -174,15 +176,16 @@ export default function SidebarScreen() {
                     <MenuItem icon={<Feather name="user" size={20} color="#F97316" />}
                               label="Profil"
                               onPress={() => router.push('/profileScreen')} />
-
+                     {/*  ---------------------------------------------------
                     <MenuItem icon={<MaterialIcons name="location-on" size={20} color="#F97316" />}
                               label="Mes Adresses"
                            />
 
                     <MenuItem icon={<Ionicons name="language-outline" size={20} color="#F97316" />}
                               label="Langue"
-                           /*   onPress={() => router.push('/languageScreen')} *//>
-
+                           /*   onPress={() => router.push('/languageScreen')} 
+                         */}
+                         {/* 
                     <View className="px-4 py-4 flex-row items-center justify-between border-b border-gray-700">
                         <View className="flex-row items-center">
                             <View className="w-9 items-center">
@@ -192,15 +195,17 @@ export default function SidebarScreen() {
                         </View>
                         <CustomToggleSwitch value={isDarkMode} onValueChange={()=>{}} />
                     </View>
-
+                            */}
+                            {/* 
                     <MenuItem icon={<Feather name="bell" size={20} color="#F97316" />}
                               label="Notifications"
 
                               isLast
                               badge="3" />
+                              */}
                 </Section>
 
-                {/* Promotions & Rewards ------------------------------------- */}
+                {/* Promotions & Rewards ------------------------------------- 
                 <Section title="Promotions & Récompenses">
                     <MenuItem icon={<FontAwesome name="ticket" size={20} color="#F97316" />}
                               label="Mes Coupons"
@@ -216,8 +221,9 @@ export default function SidebarScreen() {
 
                               isLast />
                 </Section>
+                */}
 
-                {/* Earn with Us --------------------------------------------- */}
+                {/* Earn with Us --------------------------------------------- 
                 <Section title="Gagnez avec Nous">
                     <MenuItem icon={<Feather name="users" size={20} color="#F97316" />}
                               label="Parrainage & Gains"
@@ -231,10 +237,15 @@ export default function SidebarScreen() {
                               isLast />
                 </Section>
 
+                */}
+
                 {/* Help & Support ------------------------------------------- */}
                 <Section title="Aide & Support">
                     <MenuItem onPress={()=>router.push("/apropos")} icon={<Feather name="info" size={20} color="#F97316" />}
                               label="À Propos"
+                              />
+                      <MenuItem onPress={()=>router.push("/helpAndSupportScreen")} icon={<Feather name="help-circle" size={20} color="#F97316" />}
+                              label="Aide & Support"
                               />
                     <MenuItem onPress={()=>router.push("/termsConditionsScreen")} icon={<Feather name="file-text" size={20} color="#F97316" />}
                               label="Conditions Générales"

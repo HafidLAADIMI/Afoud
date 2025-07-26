@@ -46,8 +46,8 @@ const OrderConfirmationScreen = () => {
     }, [orderId]);
 
     const handleGoToOrders = () => router.replace('/(protected)/(tabs)/orders'); // Adjusted path
-    const handleTrackOrder = () => { if (orderId) router.push(`/order-tracking/${orderId}`); }; // Ensure this route exists
-    const handleContinueShopping = () => router.replace('/(protected)/(tabs)/home'); // Adjusted path
+    const handleTrackOrder = () => { if (orderId) router.push(`/(protected)/(tabs)/orders`); }; // Ensure this route exists
+    const handleContinueShopping = () => router.replace('/'); // Adjusted path
 
     if (loading) { /* ... Loading UI ... */
         return (

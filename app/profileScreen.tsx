@@ -178,7 +178,7 @@ const ProfileScreen = () => {
                                 <Text className="text-gray-800 ml-3 flex-1">Mes Commandes</Text>
                                 <Feather name="chevron-right" size={20} color="#9CA3AF" />
                             </TouchableOpacity>
-
+                            {/* 
                             <TouchableOpacity
                                 className="flex-row items-center px-4 py-3 border-b border-gray-200"
                             >
@@ -186,7 +186,8 @@ const ProfileScreen = () => {
                                 <Text className="text-gray-800 ml-3 flex-1">Adresses Enregistrées</Text>
                                 <Feather name="chevron-right" size={20} color="#9CA3AF" />
                             </TouchableOpacity>
-
+                                */}
+                                {/* 
                             <TouchableOpacity
                                 className="flex-row items-center px-4 py-3 border-b border-gray-200"
                             >
@@ -194,7 +195,8 @@ const ProfileScreen = () => {
                                 <Text className="text-gray-800 ml-3 flex-1">Méthodes de Paiement</Text>
                                 <Feather name="chevron-right" size={20} color="#9CA3AF" />
                             </TouchableOpacity>
-
+                                    
+                            */}
                             <TouchableOpacity
                                 className="flex-row items-center px-4 py-3 border-b border-gray-200"
                                 onPress={() => router.push('/favorites')}
@@ -206,6 +208,7 @@ const ProfileScreen = () => {
 
                             <TouchableOpacity
                                 className="flex-row items-center px-4 py-3"
+                                onPress={() => router.push('/helpAndSupportScreen')}
                             >
                                 <Feather name="help-circle" size={20} color="#F97316" />
                                 <Text className="text-gray-800 ml-3 flex-1">Aide & Support</Text>

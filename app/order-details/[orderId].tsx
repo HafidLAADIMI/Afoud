@@ -42,12 +42,12 @@ const OrderConfirmationScreen = () => {
 
     const handleTrackOrder = () => {
         if (orderId) {
-            router.push(`/order-tracking/${orderId}`);
+            router.push(`/orders`);
         }
     };
 
     const handleContinueShopping = () => {
-        router.push('/');
+        router.push("/")
     };
 
     if (loading) {
@@ -55,7 +55,7 @@ const OrderConfirmationScreen = () => {
             <SafeAreaView className="flex-1 bg-gray-900">
                 <View className="flex-1 justify-center items-center">
                     <ActivityIndicator size="large" color="#F97316" />
-                    <Text className="text-white mt-4">Loading order details...</Text>
+                    <Text className="text-white mt-4">Chargement des détails de la commande...</Text>
                 </View>
             </SafeAreaView>
         );
@@ -69,9 +69,9 @@ const OrderConfirmationScreen = () => {
                     <View className="w-24 h-24 bg-green-500 rounded-full items-center justify-center mb-4">
                         <Feather name="check" size={50} color="white" />
                     </View>
-                    <Text className="text-white text-2xl font-bold">Order Placed Successfully!</Text>
+                    <Text className="text-white text-2xl font-bold">Commande passée avec succès !</Text>
                     {orderId && (
-                        <Text className="text-gray-400 mt-2">Order #{orderId}</Text>
+                        <Text className="text-gray-400 mt-2">Commande #{orderId}</Text>
                     )}
                 </View>
 
@@ -82,7 +82,7 @@ const OrderConfirmationScreen = () => {
                             colors={['#1F2937', '#111827']}
                             className="px-4 py-3 border-b border-gray-700"
                         >
-                            <Text className="text-white font-bold text-lg">Order Summary</Text>
+                            <Text className="text-white font-bold text-lg">Résumé de la commande</Text>
                         </LinearGradient>
 
                         <View className="p-4">
@@ -93,7 +93,7 @@ const OrderConfirmationScreen = () => {
                                 </View>
                                 <View className="ml-3">
                                     <Text className="text-white font-medium">{order.restaurant}</Text>
-                                    <Text className="text-gray-400 text-xs mt-1">Estimated delivery: 30-45 min</Text>
+                                    <Text className="text-gray-400 text-xs mt-1">Livraison estimée : 30-45 min</Text>
                                 </View>
                             </View>
 
@@ -104,7 +104,7 @@ const OrderConfirmationScreen = () => {
                                         <Feather name="map-pin" size={18} color="#F97316" />
                                     </View>
                                     <View className="ml-3 flex-1">
-                                        <Text className="text-white font-medium">Delivery Address</Text>
+                                        <Text className="text-white font-medium">Adresse de livraison</Text>
                                         <Text className="text-gray-400 text-sm mt-1">{order.address?.address}</Text>
                                     </View>
                                 </View>
@@ -120,9 +120,9 @@ const OrderConfirmationScreen = () => {
                                     />
                                 </View>
                                 <View className="ml-3">
-                                    <Text className="text-white font-medium">Payment Method</Text>
+                                    <Text className="text-white font-medium">Méthode de paiement</Text>
                                     <Text className="text-gray-400 text-sm mt-1">
-                                        {order.paymentMethod === 'card' ? 'Credit/Debit Card' : 'Cash on Delivery'}
+                                        {order.paymentMethod === 'card' ? 'Carte de crédit/débit' : 'Paiement à la livraison'}
                                     </Text>
                                 </View>
                             </View>
@@ -133,9 +133,9 @@ const OrderConfirmationScreen = () => {
                                     <Feather name="dollar-sign" size={18} color="#F97316" />
                                 </View>
                                 <View className="ml-3 flex-1">
-                                    <Text className="text-white font-medium">Total Amount</Text>
+                                    <Text className="text-white font-medium">Montant total</Text>
                                     <Text className="text-orange-500 font-bold text-lg mt-1">
-                                        ${order.totalAmount?.toFixed(2)}
+                                        {order.totalAmount?.toFixed(2)} DH
                                     </Text>
                                 </View>
                             </View>
@@ -148,9 +148,9 @@ const OrderConfirmationScreen = () => {
                     <View className="flex-row items-start">
                         <Feather name="info" size={20} color="#60A5FA" className="mt-1" />
                         <View className="ml-3 flex-1">
-                            <Text className="text-white font-medium">Order Confirmation</Text>
+                            <Text className="text-white font-medium">Confirmation de commande</Text>
                             <Text className="text-gray-400 mt-2">
-                                We've sent a confirmation email with your order details. You can track your order status in the "My Orders" section.
+                                Nous avons envoyé un email de confirmation avec les détails de votre commande. Vous pouvez suivre le statut de votre commande dans la section "Mes commandes".
                             </Text>
                         </View>
                     </View>
@@ -162,21 +162,21 @@ const OrderConfirmationScreen = () => {
                         className="bg-orange-500 py-4 rounded-xl items-center mb-3 shadow-lg shadow-orange-900/30"
                         onPress={handleTrackOrder}
                     >
-                        <Text className="text-white font-bold text-lg">Track Order</Text>
+                        <Text className="text-white font-bold text-lg">Suivre la commande</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         className="bg-gray-800 py-4 rounded-xl items-center mb-3"
                         onPress={handleGoToOrders}
                     >
-                        <Text className="text-white font-bold text-lg">View All Orders</Text>
+                        <Text className="text-white font-bold text-lg">Voir toutes les commandes</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         className="bg-transparent py-4 rounded-xl items-center border border-orange-500"
                         onPress={handleContinueShopping}
                     >
-                        <Text className="text-orange-500 font-bold text-lg">Continue Shopping</Text>
+                        <Text className="text-orange-500 font-bold text-lg">Continuer les achats</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

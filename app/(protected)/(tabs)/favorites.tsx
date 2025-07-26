@@ -42,11 +42,13 @@ export default function FavoritesScreen() {
         try {
             setIsLoading(true);
             setError(null);
-
+            
             const favItems = await getFavoriteItems();
-            setFavorites(favItems);
+            
+            // Ensure favItems is an array
+            const validFavorites = Array.isArray(favItems) ? favItems : [];
+            setFavorites(validFavorites);
 
-            console.log(`Loaded ${favItems.length} favorites`);
         } catch (err) {
             console.error('Error loading favorites:', err);
             setError('Impossible de charger vos favoris. Veuillez réessayer.');
@@ -80,7 +82,7 @@ export default function FavoritesScreen() {
                 // Removing from favorites
                 await removeFromFavorites(product.id);
 
-                // Update local state
+                // Update local state immediately for better UX
                 setFavorites(prev => prev.filter(item => item.id !== product.id));
 
                 // Show success message
@@ -90,7 +92,6 @@ export default function FavoritesScreen() {
                     [{ text: "OK" }]
                 );
             }
-            // We don't need to handle adding to favorites here since all items are already favorites
         } catch (error) {
             console.error('Error handling favorite:', error);
             Alert.alert(
@@ -138,6 +139,9 @@ export default function FavoritesScreen() {
                 <Text className="text-gray-400 mt-4 text-center px-6">
                     Vous n'avez aucun produit en favoris.
                 </Text>
+                <Text className="text-gray-500 mt-2 text-center px-6 text-sm">
+                    Ajoutez des produits à vos favoris pour les retrouver ici facilement.
+                </Text>
                 <TouchableOpacity
                     className="mt-4 bg-orange-500 px-6 py-3 rounded-full"
                     onPress={() => router.push('/SearchScreen')}
@@ -164,12 +168,15 @@ export default function FavoritesScreen() {
                     onPress: async () => {
                         try {
                             setIsLoading(true);
+                            
                             // Remove each favorite individually
                             for (const item of favorites) {
                                 await removeFromFavorites(item.id);
                             }
+                            
                             // Clear local state
                             setFavorites([]);
+                            
                             Alert.alert("Succès", "Tous vos favoris ont été supprimés.");
                         } catch (error) {
                             console.error('Error clearing favorites:', error);

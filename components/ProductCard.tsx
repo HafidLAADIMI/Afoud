@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, Image, Text, View, ActivityIndicator } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { getFavoriteItems } from '@/utils/firebase';
+import { addToFavorites, removeFromFavorites } from '@/utils/firebase';
 
 const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavorite }) => {
     // State for tracking favorite status
@@ -36,16 +36,30 @@ const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavo
     const hasDiscount = product.originalPrice && product.originalPrice > product.price;
     const originalPriceText = hasDiscount ? `${product.originalPrice.toFixed(2)} MAD` : '';
 
-    // Handle favorite action with visual feedback
+    // Handle favorite action
     const handleFavoritePress = async () => {
         try {
             setIsProcessing(true);
-            // Call the parent's onFavoritePress function with the product and current status
-            await onFavoritePress(product, !isFavorite);
-            // Toggle favorite state
-            setIsFavorite(!isFavorite);
+            
+            if (!isFavorite) {
+                // Adding to favorites
+                await addToFavorites(product);
+                setIsFavorite(true);
+            } else {
+                // Removing from favorites
+                await removeFromFavorites(product.id);
+                setIsFavorite(false);
+            }
+
+            // Call parent's onFavoritePress if provided
+            if (onFavoritePress) {
+                await onFavoritePress(product, !isFavorite);
+            }
+
         } catch (error) {
             console.error('Error handling favorite action:', error);
+            // Reset state on error
+            setIsFavorite(!isFavorite);
         } finally {
             setIsProcessing(false);
         }

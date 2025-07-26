@@ -995,69 +995,266 @@
     
     // ============= Favorites functions =============
     
-    /**
-     * Get favorite items
-     * @returns {Promise<any[]>} Array of favorite items
-     */
-    export const getFavoriteItems = async (): Promise<any[]> => {
-        return handleFirestoreOperation(async () => {
-            const userId = getCurrentUserId();
-            const favoritesRef = collection(db, 'users', userId, 'favorites');
-            const snapshot = await getDocs(favoritesRef);
-    
-            return snapshot.docs.map(doc => ({
+   // ============= Fixed Favorites functions =============
+
+/**
+ * Get favorite items with better error handling and debugging
+ * @returns {Promise<any[]>} Array of favorite items
+ */
+export const getFavoriteItems = async (): Promise<any[]> => {
+    return handleFirestoreOperation(async () => {
+        const userId = getCurrentUserId();
+        
+        console.log('🔍 getFavoriteItems - Current user ID:', userId);
+        
+        if (userId === 'guest') {
+            console.log('⚠️  Guest user detected, returning empty favorites');
+            return [];
+        }
+
+        // Check if user is authenticated
+        if (!auth.currentUser) {
+            console.log('❌ No authenticated user found');
+            return [];
+        }
+
+        console.log('👤 Authenticated user:', auth.currentUser.uid);
+        
+        const favoritesRef = collection(db, 'users', userId, 'favorites');
+        console.log('📂 Favorites collection path:', `users/${userId}/favorites`);
+        
+        const snapshot = await getDocs(favoritesRef);
+        
+        console.log('📊 Firestore snapshot details:');
+        console.log('  - Empty:', snapshot.empty);
+        console.log('  - Size:', snapshot.size);
+        console.log('  - From cache:', snapshot.metadata.fromCache);
+
+        if (snapshot.empty) {
+            console.log('📭 No favorites found in database');
+            return [];
+        }
+
+        const favorites = [];
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            console.log(`📄 Document ID: ${doc.id}, Data:`, data);
+            
+            favorites.push({
                 id: doc.id,
-                ...doc.data()
-            }));
-        }, []);
-    };
-    
-    /**
-     * Add item to favorites
-     * @param {any} item - Item to add to favorites
-     * @returns {Promise<void>}
-     */
-    export const addToFavorites = async (item: any): Promise<void> => {
-        try {
-            const userId = getCurrentUserId();
-            const favoritesRef = collection(db, 'users', userId, 'favorites');
-    
-            // Check if already in favorites
-            const q = query(favoritesRef, where('id', '==', item.id));
-            const snapshot = await getDocs(q);
-    
-            if (snapshot.empty) {
-                await addDoc(favoritesRef, item);
-            }
-        } catch (error) {
-            console.error('Error adding to favorites:', error);
-            throw error;
+                ...data,
+                // Ensure we have the proper structure
+                firestoreDocId: doc.id // Keep track of Firestore document ID
+            });
+        });
+
+        console.log(`✅ Successfully processed ${favorites.length} favorites`);
+        console.log('🎯 First favorite:', favorites[0]);
+        
+        return favorites;
+    }, []);
+};
+
+/**
+ * Add item to favorites with proper data structure
+ * @param {any} item - Item to add to favorites
+ * @returns {Promise<void>}
+ */
+export const addToFavorites = async (item: any): Promise<void> => {
+    try {
+        const userId = getCurrentUserId();
+        
+        console.log('💝 addToFavorites - User ID:', userId);
+        console.log('💝 addToFavorites - Item:', item);
+        
+        if (userId === 'guest') {
+            throw new Error('User must be logged in to add favorites');
         }
-    };
-    
-    /**
-     * Remove item from favorites
-     * @param {string} itemId - ID of item to remove
-     * @returns {Promise<void>}
-     */
-    export const removeFromFavorites = async (itemId: string): Promise<void> => {
-        try {
-            const userId = getCurrentUserId();
-            const favoritesRef = collection(db, 'users', userId, 'favorites');
-    
-            // Find the item
-            const q = query(favoritesRef, where('id', '==', itemId));
-            const snapshot = await getDocs(q);
-    
-            if (!snapshot.empty) {
-                const docRef = doc(db, 'users', userId, 'favorites', snapshot.docs[0].id);
-                await deleteDoc(docRef);
-            }
-        } catch (error) {
-            console.error('Error removing from favorites:', error);
-            throw error;
+
+        if (!auth.currentUser) {
+            throw new Error('User not authenticated');
         }
-    };
+
+        const favoritesRef = collection(db, 'users', userId, 'favorites');
+        
+        // Check if already in favorites using the product ID
+        const q = query(favoritesRef, where('id', '==', item.id));
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+            console.log('⚠️  Item already in favorites:', item.name);
+            return; // Item already exists
+        }
+
+        // Prepare the favorite item data with all necessary fields
+        const favoriteData = {
+            id: item.id, // Product ID
+            name: item.name || 'Unnamed Product',
+            price: Number(item.price || item.discountedPrice || 0),
+            originalPrice: Number(item.originalPrice || item.price || 0),
+            image: typeof item.image === 'string' ? item.image : 
+                   (item.image?.uri || ''),
+            description: item.description || '',
+            rating: Number(item.rating || 0),
+            reviewCount: Number(item.reviewCount || 0),
+            restaurant: item.restaurant || '',
+            cuisineId: item.cuisineId || '',
+            categoryId: item.categoryId || '',
+            isAvailable: item.isAvailable !== undefined ? item.isAvailable : true,
+            addedAt: serverTimestamp(),
+            // Keep any additional fields
+            ...item
+        };
+
+        console.log('💾 Saving favorite data:', favoriteData);
+
+        // Add to favorites using the product ID as document ID
+        const favoriteDocRef = doc(favoritesRef, item.id);
+        await setDoc(favoriteDocRef, favoriteData);
+
+        console.log('✅ Successfully added to favorites:', item.name);
+    } catch (error) {
+        console.error('❌ Error adding to favorites:', error);
+        throw error;
+    }
+};
+
+/**
+ * Remove item from favorites with better error handling
+ * @param {string} itemId - ID of item to remove
+ * @returns {Promise<void>}
+ */
+export const removeFromFavorites = async (itemId: string): Promise<void> => {
+    try {
+        const userId = getCurrentUserId();
+        
+        console.log('🗑️  removeFromFavorites - User ID:', userId);
+        console.log('🗑️  removeFromFavorites - Item ID:', itemId);
+        
+        if (userId === 'guest') {
+            throw new Error('User must be logged in to remove favorites');
+        }
+
+        if (!auth.currentUser) {
+            throw new Error('User not authenticated');
+        }
+
+        const favoritesRef = collection(db, 'users', userId, 'favorites');
+
+        // Try direct document deletion first (if itemId is the document ID)
+        try {
+            const directDocRef = doc(favoritesRef, itemId);
+            const directDoc = await getDoc(directDocRef);
+            
+            if (directDoc.exists()) {
+                await deleteDoc(directDocRef);
+                console.log('✅ Removed favorite using direct document ID');
+                return;
+            }
+        } catch (directError) {
+            console.log('⚠️  Direct document deletion failed, trying query method');
+        }
+
+        // If direct deletion fails, query by 'id' field
+        const q = query(favoritesRef, where('id', '==', itemId));
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+            const docToDelete = snapshot.docs[0];
+            await deleteDoc(docToDelete.ref);
+            console.log('✅ Removed favorite using query method');
+        } else {
+            console.log('⚠️  Item not found in favorites');
+        }
+
+    } catch (error) {
+        console.error('❌ Error removing from favorites:', error);
+        throw error;
+    }
+};
+
+/**
+ * Check if an item is in favorites
+ * @param {string} itemId - ID of item to check
+ * @returns {Promise<boolean>} True if item is in favorites
+ */
+export const isInFavorites = async (itemId: string): Promise<boolean> => {
+    try {
+        const userId = getCurrentUserId();
+        
+        if (userId === 'guest' || !auth.currentUser) {
+            return false;
+        }
+
+        const favoritesRef = collection(db, 'users', userId, 'favorites');
+        
+        // Try direct document check first
+        const directDocRef = doc(favoritesRef, itemId);
+        const directDoc = await getDoc(directDocRef);
+        
+        if (directDoc.exists()) {
+            return true;
+        }
+
+        // If direct check fails, query by 'id' field
+        const q = query(favoritesRef, where('id', '==', itemId));
+        const snapshot = await getDocs(q);
+
+        return !snapshot.empty;
+    } catch (error) {
+        console.error('Error checking if item is in favorites:', error);
+        return false;
+    }
+};
+
+/**
+ * Get favorites count
+ * @returns {Promise<number>} Number of favorite items
+ */
+export const getFavoritesCount = async (): Promise<number> => {
+    try {
+        const favorites = await getFavoriteItems();
+        return favorites.length;
+    } catch (error) {
+        console.error('Error getting favorites count:', error);
+        return 0;
+    }
+};
+
+/**
+ * Clear all favorites
+ * @returns {Promise<void>}
+ */
+export const clearAllFavorites = async (): Promise<void> => {
+    try {
+        const userId = getCurrentUserId();
+        
+        if (userId === 'guest' || !auth.currentUser) {
+            throw new Error('User must be logged in to clear favorites');
+        }
+
+        const favoritesRef = collection(db, 'users', userId, 'favorites');
+        const snapshot = await getDocs(favoritesRef);
+
+        if (snapshot.empty) {
+            console.log('No favorites to clear');
+            return;
+        }
+
+        // Use batch to delete all favorites
+        const batch = writeBatch(db);
+        
+        snapshot.forEach((doc) => {
+            batch.delete(doc.ref);
+        });
+
+        await batch.commit();
+        console.log(`Cleared ${snapshot.size} favorites`);
+    } catch (error) {
+        console.error('Error clearing favorites:', error);
+        throw error;
+    }
+};
     
     // ============= Address functions =============
     

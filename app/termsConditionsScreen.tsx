@@ -37,7 +37,7 @@ export default function TermsConditionsScreen() {
         },
         {
             title: "Qualité des produits",
-            content: "Chez Dixie, nous nous engageons à vous offrir des produits de la plus haute qualité. Tous nos plats sont préparés avec des ingrédients frais suivant des normes d'hygiène strictes. En cas d'insatisfaction concernant la qualité de votre commande, veuillez nous contacter dans un délai de 24 heures pour obtenir un remboursement ou un remplacement."
+            content: "Chez Afoud, nous nous engageons à vous offrir des produits de la plus haute qualité. Tous nos plats sont préparés avec des ingrédients frais suivant des normes d'hygiène strictes. En cas d'insatisfaction concernant la qualité de votre commande, veuillez nous contacter dans un délai de 24 heures pour obtenir un remboursement ou un remplacement."
         },
         {
             title: "Annulations et remboursements",
@@ -45,7 +45,7 @@ export default function TermsConditionsScreen() {
         },
         {
             title: "Responsabilité et litiges",
-            content: "Dixie s'engage à résoudre tout litige à l'amiable. En cas de problème avec votre commande, notre service client est disponible pour vous aider. Nous nous réservons le droit de refuser le service à notre seule discrétion. Tout litige qui ne peut être résolu à l'amiable sera soumis à la juridiction exclusive des tribunaux de Casablanca, Maroc."
+            content: "Afoud s'engage à résoudre tout litige à l'amiable. En cas de problème avec votre commande, notre service client est disponible pour vous aider. Nous nous réservons le droit de refuser le service à notre seule discrétion. Tout litige qui ne peut être résolu à l'amiable sera soumis à la juridiction exclusive des tribunaux de Casablanca, Maroc."
         },
         {
             title: "Modifications des conditions",
@@ -85,7 +85,7 @@ export default function TermsConditionsScreen() {
                 {/* Introduction */}
                 <View className="px-5 py-4 border-b border-gray-200">
                     <Text className="text-sm leading-6 text-gray-600 mb-4">
-                        Ces conditions générales définissent les termes et conditions d'utilisation des services proposés par Dixie Restaurant, accessible via notre application mobile et notre site web. En utilisant nos services, vous acceptez d'être lié par ces conditions. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.
+                        Ces conditions générales définissent les termes et conditions d'utilisation des services proposés par Afoud Restaurant, accessible via notre application mobile et notre site web. En utilisant nos services, vous acceptez d'être lié par ces conditions. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.
                     </Text>
                     <View className="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-500">
                         <Text className="text-sm font-medium text-amber-800 mb-1">
@@ -238,7 +238,7 @@ export default function TermsConditionsScreen() {
                                 className="text-orange-500 font-medium"
                                 onPress={contactSupport}
                             >
-                                support@dixiefood.ma
+                                support@afoud.ma
                             </Text>
                         </Text>
 
@@ -256,7 +256,7 @@ export default function TermsConditionsScreen() {
                     </View>
 
                     <Text className="text-xs text-gray-500 text-center mt-6">
-                        © {new Date().getFullYear()} Dixie Restaurant. Tous droits réservés.
+                        © {new Date().getFullYear()} Afoud Restaurant. Tous droits réservés.
                     </Text>
                 </View>
             </ScrollView>

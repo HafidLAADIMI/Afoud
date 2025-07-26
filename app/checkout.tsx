@@ -232,7 +232,7 @@ export default function CheckoutScreen() {
     // Effect 3: Calculate Grand Total
     useEffect(() => {
         const tipNum = parseFloat(String(tipAmount)) || 0;
-        const fee = deliveryOption === 'homeDelivery' ? 2.00 : 0;
+        const fee = deliveryOption === 'homeDelivery' ? 0 : 0;
         setGrandTotal(subTotalAmount + tipNum + fee);
     }, [subTotalAmount, tipAmount, deliveryOption]);
 
@@ -309,7 +309,7 @@ export default function CheckoutScreen() {
 
         // Calculate the correct grand total from all components
         const tipAmountValue = parseFloat(String(tipAmount)) || 0;
-        const deliveryFeeValue = deliveryOption === 'homeDelivery' ? 2.00 : 0;
+        const deliveryFeeValue = deliveryOption === 'homeDelivery' ? 0 : 0;
         const calculatedGrandTotal = subTotalAmount + tipAmountValue + deliveryFeeValue;
 
         const orderDetailsForFirebase = {
@@ -492,7 +492,7 @@ export default function CheckoutScreen() {
                                 onPress={() => setDeliveryOption('homeDelivery')} activeOpacity={0.7} >
                                 <RadioButton selected={deliveryOption === 'homeDelivery'} />
                                 <FontAwesome5 name="motorcycle" size={20} color={deliveryOption === 'homeDelivery' ? "#F97316" : "#9CA3AF"} className="mx-3" />
-                                <Text className={`flex-1 font-medium text-base ${deliveryOption === 'homeDelivery' ? 'text-orange-400' : 'text-gray-200'}`}>Livraison à domicile (+2.00 MAD)</Text>
+                                <Text className={`flex-1 font-medium text-base ${deliveryOption === 'homeDelivery' ? 'text-orange-400' : 'text-gray-200'}`}>Livraison à domicile </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 className={`flex-row items-center p-3.5 rounded-lg border-2 ${deliveryOption === 'takeAway' ? 'border-orange-500 bg-orange-900/30' : 'border-gray-600 bg-gray-700'}`}
@@ -533,7 +533,7 @@ export default function CheckoutScreen() {
                         </View>
                     )}
 
-                    {/* Tip Section */}
+                    {/* Tip Section 
                     <View className="bg-gray-800/60 p-4 rounded-xl border border-gray-700/60 shadow-lg">
                         <Text className="text-lg font-semibold text-white mb-3">Pourboire Livreur (Optionnel)</Text>
                         <View className="flex-row justify-between space-x-2 mb-3">
@@ -545,6 +545,7 @@ export default function CheckoutScreen() {
                             keyboardType="numeric" value={customTip} onChangeText={handleCustomTipChange}
                         />
                     </View>
+                    */}
 
                     {/* Additional Notes Section */}
                     <View className="bg-gray-800/60 p-4 rounded-xl border border-gray-700/60 shadow-lg">
@@ -593,7 +594,7 @@ export default function CheckoutScreen() {
                         {deliveryOption === 'homeDelivery' && (
                             <View className="flex-row justify-between items-center">
                                 <Text className="text-gray-300 text-base">Frais de livraison:</Text>
-                                <Text className="text-gray-100 text-base font-medium">2.00 MAD</Text>
+                                <Text className="text-gray-100 text-base font-medium">0.00 MAD</Text>
                             </View>
                         )}
                         <View className="border-t border-gray-600 my-2" />
