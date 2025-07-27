@@ -21,7 +21,7 @@ export default function TermsConditionsScreen() {
 
     // Fonction pour envoyer un email
     const contactSupport = () => {
-        Linking.openURL('mailto:support@dixiefood.ma')
+        Linking.openURL('mailto:slimaneafoud1987@gmail.com')
             .catch(err => console.error('Erreur lors de l\'ouverture du client email:', err));
     };
 

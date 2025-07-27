@@ -123,7 +123,7 @@ const ProfileScreen = () => {
                             </TouchableOpacity>
                         </View>
                         <Text className="text-xl font-bold text-gray-800">
-                            {user?.displayName || 'Utilisateur'}
+                            {user ? user.displayName : 'Utilisateur'}
                         </Text>
                         <Text className="text-gray-500">{user?.email}</Text>
 
@@ -131,6 +131,7 @@ const ProfileScreen = () => {
                             <Text className="text-gray-500">{userProfile.phoneNumber}</Text>
                         )}
 
+                        {/* 
                         <View className="flex-row mt-4">
                             <View className="px-4 py-2 bg-gray-100 rounded-full mx-1">
                                 <Text className="text-gray-700">
@@ -143,6 +144,8 @@ const ProfileScreen = () => {
                                 </Text>
                             </View>
                         </View>
+                        */}
+
                     </View>
 
                     {/* Profile sections */}

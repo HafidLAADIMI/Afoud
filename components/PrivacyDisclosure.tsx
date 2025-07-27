@@ -8,12 +8,10 @@ import {
     Modal,
     SafeAreaView,
     Linking,
-    Dimensions,
     Platform,
+    StatusBar,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-
-const { height: screenHeight } = Dimensions.get('window');
 
 interface PrivacyDisclosureProps {
     visible: boolean;
@@ -28,8 +26,10 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                                                                     }) => {
     const [showFullPolicy, setShowFullPolicy] = useState(false);
 
-    const openFullPolicy = () => {
-        Linking.openURL('https://afoud.ma');
+    const openExternalPolicy = () => {
+        Linking.openURL('https://afoud.ma').catch(err => 
+            console.error('Error opening URL:', err)
+        );
     };
 
     if (showFullPolicy) {
@@ -38,56 +38,79 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                 visible={visible} 
                 animationType="slide" 
                 presentationStyle="fullScreen"
-                statusBarTranslucent={true}
             >
-                <SafeAreaView className="flex-1 pt-8 bg-gray-900" edges={['top']}>
-                    {/* Fixed Header */}
-                    <View className="bg-gray-900 border-b border-gray-800 z-10">
-                        <View className="flex-row items-center justify-between p-4">
+                <View style={{ flex: 1, backgroundColor: '#111827' }}>
+                    <StatusBar barStyle="light-content" backgroundColor="#111827" />
+                    
+                    {/* Simple Header */}
+                    <SafeAreaView style={{ backgroundColor: '#111827' }}>
+                        <View style={{ 
+                            flexDirection: 'row', 
+                            alignItems: 'center', 
+                            justifyContent: 'space-between',
+                            paddingHorizontal: 16,
+                            paddingVertical: 12,
+                            borderBottomWidth: 1,
+                            borderBottomColor: '#374151'
+                        }}>
                             <TouchableOpacity
                                 onPress={() => setShowFullPolicy(false)}
-                                className="p-2 -ml-2 bg-gray-800 rounded-full"
-                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                                style={{
+                                    backgroundColor: '#374151',
+                                    borderRadius: 20,
+                                    padding: 8,
+                                    minWidth: 40,
+                                    minHeight: 40,
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
                             >
                                 <Feather name="arrow-left" size={20} color="white" />
                             </TouchableOpacity>
-                            <Text className="text-white text-lg font-bold flex-1 text-center mx-4">
-                                Politique de Confidentialité
+                            
+                            <Text style={{ 
+                                color: 'white', 
+                                fontSize: 18, 
+                                fontWeight: 'bold',
+                                flex: 1,
+                                textAlign: 'center',
+                                marginHorizontal: 16
+                            }}>
+                                Politique Complète
                             </Text>
-                            <View className="w-10" />
+                            
+                            <View style={{ width: 40 }} />
                         </View>
-                    </View>
+                    </SafeAreaView>
 
-                    {/* Scrollable Content */}
+                    {/* Content */}
                     <ScrollView 
-                        className="flex-1" 
+                        style={{ flex: 1 }}
                         contentContainerStyle={{ 
-                            paddingHorizontal: 16, 
-                            paddingVertical: 20,
+                            padding: 20,
                             paddingBottom: Platform.OS === 'android' ? 100 : 80
                         }}
-                        showsVerticalScrollIndicator={false}
-                        bounces={true}
+                        showsVerticalScrollIndicator={true}
                     >
-                        <Text className="text-white text-base leading-6 mb-4">
-                            <Text className="font-bold">Dernière mise à jour :</Text> 25 juillet 2025
+                        <Text style={{ color: 'white', fontSize: 16, marginBottom: 16 }}>
+                            <Text style={{ fontWeight: 'bold' }}>Dernière mise à jour :</Text> 25 juillet 2025
                         </Text>
 
-                        <Text className="text-gray-300 text-sm leading-6 mb-6">
+                        <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 20, marginBottom: 20 }}>
                             Cette Politique de Confidentialité décrit nos politiques et procédures concernant la collecte,
                             l'utilisation et la divulgation de vos informations lorsque vous utilisez le Service et vous
                             informe de vos droits à la confidentialité et de la façon dont la loi vous protège.
                         </Text>
 
-                        <Text className="text-orange-500 text-lg font-bold mb-4">
+                        <Text style={{ color: '#F97316', fontSize: 18, fontWeight: 'bold', marginBottom: 16 }}>
                             Données Collectées
                         </Text>
 
-                        <View className="mb-6">
-                            <Text className="text-white text-base font-semibold mb-2">
+                        <View style={{ marginBottom: 20 }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
                                 📧 Informations Personnelles
                             </Text>
-                            <Text className="text-gray-300 text-sm leading-5 mb-4">
+                            <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 18, marginBottom: 16 }}>
                                 • Adresse e-mail{'\n'}
                                 • Numéro de téléphone{'\n'}
                                 • Adresse, État, Province, Code postal, Ville{'\n'}
@@ -95,21 +118,21 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                             </Text>
                         </View>
 
-                        <View className="mb-6">
-                            <Text className="text-white text-base font-semibold mb-2">
+                        <View style={{ marginBottom: 20 }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
                                 📍 Informations de Localisation
                             </Text>
-                            <Text className="text-gray-300 text-sm leading-5 mb-4">
+                            <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 18, marginBottom: 16 }}>
                                 Avec votre permission préalable, nous pouvons collecter des informations
                                 concernant votre localisation pour fournir les fonctionnalités de notre application.
                             </Text>
                         </View>
 
-                        <View className="mb-6">
-                            <Text className="text-white text-base font-semibold mb-2">
+                        <View style={{ marginBottom: 20 }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
                                 📊 Données d'Utilisation
                             </Text>
-                            <Text className="text-gray-300 text-sm leading-5 mb-4">
+                            <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 18, marginBottom: 16 }}>
                                 Collectées automatiquement, incluant :{'\n'}
                                 • Adresse IP de votre appareil{'\n'}
                                 • Type et version du navigateur{'\n'}
@@ -119,11 +142,11 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                             </Text>
                         </View>
 
-                        <Text className="text-orange-500 text-lg font-bold mb-4">
+                        <Text style={{ color: '#F97316', fontSize: 18, fontWeight: 'bold', marginBottom: 16 }}>
                             Utilisation de Vos Données
                         </Text>
 
-                        <Text className="text-gray-300 text-sm leading-6 mb-6">
+                        <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 20, marginBottom: 20 }}>
                             Nous utilisons vos données personnelles pour :{'\n'}
                             • Fournir et maintenir notre Service{'\n'}
                             • Gérer votre compte utilisateur{'\n'}
@@ -134,11 +157,11 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                             • Analyser l'utilisation et améliorer le Service
                         </Text>
 
-                        <Text className="text-orange-500 text-lg font-bold mb-4">
+                        <Text style={{ color: '#F97316', fontSize: 18, fontWeight: 'bold', marginBottom: 16 }}>
                             Partage de Vos Données
                         </Text>
 
-                        <Text className="text-gray-300 text-sm leading-6 mb-6">
+                        <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 20, marginBottom: 20 }}>
                             Nous pouvons partager vos informations :{'\n'}
                             • Avec des prestataires de services{'\n'}
                             • Lors de transferts d'entreprise{'\n'}
@@ -147,11 +170,11 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                             • Pour des exigences légales
                         </Text>
 
-                        <Text className="text-orange-500 text-lg font-bold mb-4">
+                        <Text style={{ color: '#F97316', fontSize: 18, fontWeight: 'bold', marginBottom: 16 }}>
                             Vos Droits
                         </Text>
 
-                        <Text className="text-gray-300 text-sm leading-6 mb-6">
+                        <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 20, marginBottom: 20 }}>
                             Vous avez le droit de :{'\n'}
                             • Accéder à vos données personnelles{'\n'}
                             • Corriger ou mettre à jour vos informations{'\n'}
@@ -160,11 +183,16 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                             • Désactiver l'accès à la localisation
                         </Text>
 
-                        <View className="bg-gray-800 p-4 rounded-lg mb-6">
-                            <Text className="text-white font-semibold mb-2">
+                        <View style={{ 
+                            backgroundColor: '#374151', 
+                            padding: 16, 
+                            borderRadius: 8, 
+                            marginBottom: 20 
+                        }}>
+                            <Text style={{ color: 'white', fontWeight: '600', marginBottom: 8 }}>
                                 📞 Contact
                             </Text>
-                            <Text className="text-gray-300 text-sm">
+                            <Text style={{ color: '#D1D5DB', fontSize: 14 }}>
                                 Email: slimaneafoud1987@gmail.com{'\n'}
                                 Téléphone: +212 660 600 602{'\n'}
                                 Site web: https://afoud.ma
@@ -172,31 +200,50 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                         </View>
                     </ScrollView>
 
-                    {/* Fixed Footer */}
-                    <SafeAreaView className="bg-gray-900 border-t border-gray-800" edges={['bottom']}>
-                        <View className="flex-row space-x-3 p-4">
+                    {/* Fixed Bottom Buttons */}
+                    <SafeAreaView style={{ backgroundColor: '#111827' }}>
+                        <View style={{ 
+                            flexDirection: 'row', 
+                            paddingHorizontal: 16, 
+                            paddingVertical: 12,
+                            gap: 12,
+                            borderTopWidth: 1,
+                            borderTopColor: '#374151'
+                        }}>
                             <TouchableOpacity
                                 onPress={onDecline}
-                                className="flex-1 bg-gray-700 py-4 rounded-lg"
-                                hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+                                style={{
+                                    flex: 1,
+                                    backgroundColor: '#4B5563',
+                                    paddingVertical: 16,
+                                    borderRadius: 8,
+                                    alignItems: 'center',
+                                    minHeight: 50
+                                }}
                             >
-                                <Text className="text-white text-center font-semibold">
+                                <Text style={{ color: 'white', fontWeight: '600', fontSize: 16 }}>
                                     Refuser
                                 </Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
                                 onPress={onAccept}
-                                className="flex-1 bg-orange-500 py-4 rounded-lg"
-                                hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+                                style={{
+                                    flex: 1,
+                                    backgroundColor: '#F97316',
+                                    paddingVertical: 16,
+                                    borderRadius: 8,
+                                    alignItems: 'center',
+                                    minHeight: 50
+                                }}
                             >
-                                <Text className="text-white text-center font-semibold">
+                                <Text style={{ color: 'white', fontWeight: '600', fontSize: 16 }}>
                                     Accepter et Continuer
                                 </Text>
                             </TouchableOpacity>
                         </View>
                     </SafeAreaView>
-                </SafeAreaView>
+                </View>
             </Modal>
         );
     }
@@ -206,149 +253,198 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
             visible={visible} 
             animationType="slide" 
             presentationStyle={Platform.OS === 'ios' ? 'pageSheet' : 'fullScreen'}
-            statusBarTranslucent={true}
         >
-            <SafeAreaView className="flex-1 pt-8 bg-gray-900" edges={['top']}>
-                {/* Header */}
-                <View className="p-6 pb-4">
-                    <View className="flex-row items-center mb-6">
-                        <Feather name="shield" size={24} color="#F97316" />
-                        <Text className="text-white text-xl font-bold ml-3">
-                            Confidentialité et Données
-                        </Text>
-                    </View>
-                </View>
+            <View style={{ flex: 1, backgroundColor: '#111827' }}>
+                <StatusBar barStyle="light-content" backgroundColor="#111827" />
+                
+                <SafeAreaView style={{ flex: 1, backgroundColor: '#111827' }}>
+                    {/* Header */}
+                    <View style={{ padding: 20, paddingBottom: 16 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+                            <Feather name="shield" size={24} color="#F97316" />
+                            <Text style={{ 
+                                color: 'white', 
+                                fontSize: 20, 
+                                fontWeight: 'bold', 
+                                marginLeft: 12 
+                            }}>
+                                Confidentialité et Données
+                            </Text>
+                        </View>
 
-                {/* Scrollable Content */}
-                <ScrollView 
-                    className="flex-1" 
-                    contentContainerStyle={{ 
-                        paddingHorizontal: 24,
-                        paddingBottom: Platform.OS === 'android' ? 120 : 100
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    bounces={true}
-                >
-                    <Text className="text-white text-lg font-semibold mb-4">
-                        Bienvenue chez Afoud
-                    </Text>
-
-                    <Text className="text-gray-300 text-base leading-6 mb-6">
-                        Nous respectons votre vie privée et sommes transparents sur la façon dont nous utilisons vos données pour vous offrir la meilleure expérience culinaire avec nos saveurs authentiques du monde.
-                    </Text>
-
-                    <View className="mb-6">
-                        <Text className="text-orange-500 text-base font-semibold mb-2">
-                            📍 Localisation
-                        </Text>
-                        <Text className="text-gray-300 text-sm leading-5 mb-4">
-                            • Trouvez les restaurants les plus proches de vous{'\n'}
-                            • Calculez les frais de livraison précis{'\n'}
-                            • Optimisez les temps de livraison à Casablanca{'\n'}
-                            • Suivez vos commandes en temps réel
-                        </Text>
-                    </View>
-
-                    <View className="mb-6">
-                        <Text className="text-orange-500 text-base font-semibold mb-2">
-                            👤 Informations Personnelles
-                        </Text>
-                        <Text className="text-gray-300 text-sm leading-5 mb-4">
-                            • Email et nom pour votre compte{'\n'}
-                            • Adresse de livraison{'\n'}
-                            • Numéro de téléphone pour vous contacter{'\n'}
-                            • Historique des commandes pour personnaliser vos recommandations culinaires
-                        </Text>
-                    </View>
-
-                    <View className="mb-6">
-                        <Text className="text-orange-500 text-base font-semibold mb-2">
-                            📊 Données d'Utilisation
-                        </Text>
-                        <Text className="text-gray-300 text-sm leading-5 mb-4">
-                            • Améliorer les performances de l'application{'\n'}
-                            • Personnaliser vos recommandations culinaires{'\n'}
-                            • Résoudre les problèmes techniques{'\n'}
-                            • Analyser les tendances pour de meilleures offres gastronomiques
-                        </Text>
-                    </View>
-
-                    <View className="bg-gray-800 p-4 rounded-lg mb-6">
-                        <Text className="text-white font-semibold mb-2">
-                            🔒 Vos Droits et Contrôles
-                        </Text>
-                        <Text className="text-gray-300 text-sm leading-5 mb-3">
-                            • Vous pouvez modifier vos préférences à tout moment{'\n'}
-                            • Désactiver la localisation dans les paramètres{'\n'}
-                            • Supprimer votre compte et vos données{'\n'}
-                            • Contacter notre équipe pour toute question
-                        </Text>
-
+                        {/* Read Full Policy Button - Moved to Top */}
                         <TouchableOpacity
                             onPress={() => setShowFullPolicy(true)}
-                            className="flex-row items-center"
-                            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                            style={{
+                                backgroundColor: '#374151',
+                                paddingVertical: 12,
+                                paddingHorizontal: 16,
+                                borderRadius: 8,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginBottom: 20
+                            }}
                         >
-                            <Text className="text-orange-500 text-sm font-medium">
+                            <Text style={{ color: '#F97316', fontWeight: '600', marginRight: 8 }}>
                                 Lire la politique complète
                             </Text>
-                            <Feather name="external-link" size={16} color="#F97316" style={{ marginLeft: 8 }} />
+                            <Feather name="external-link" size={16} color="#F97316" />
                         </TouchableOpacity>
                     </View>
 
-                    <View className="bg-blue-900/30 p-4 rounded-lg mb-6">
-                        <View className="flex-row items-center mb-2">
-                            <Feather name="info" size={16} color="#3B82F6" />
-                            <Text className="text-blue-400 font-semibold ml-2">
-                                Conformité Apple
+                    {/* Scrollable Content */}
+                    <ScrollView 
+                        style={{ flex: 1 }}
+                        contentContainerStyle={{ 
+                            paddingHorizontal: 20,
+                            paddingBottom: Platform.OS === 'android' ? 100 : 80
+                        }}
+                        showsVerticalScrollIndicator={true}
+                    >
+                        <Text style={{ color: 'white', fontSize: 18, fontWeight: '600', marginBottom: 16 }}>
+                            Bienvenue chez Afoud
+                        </Text>
+
+                        <Text style={{ color: '#D1D5DB', fontSize: 16, lineHeight: 22, marginBottom: 20 }}>
+                            Nous respectons votre vie privée et sommes transparents sur la façon dont nous utilisons vos données pour vous offrir la meilleure expérience culinaire avec nos saveurs authentiques du monde.
+                        </Text>
+
+                        <View style={{ marginBottom: 20 }}>
+                            <Text style={{ color: '#F97316', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                                📍 Localisation
+                            </Text>
+                            <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 18, marginBottom: 16 }}>
+                                • Trouvez les restaurants les plus proches de vous{'\n'}
+                                • Calculez les frais de livraison précis{'\n'}
+                                • Optimisez les temps de livraison à Casablanca{'\n'}
+                                • Suivez vos commandes en temps réel
                             </Text>
                         </View>
-                        <Text className="text-gray-300 text-sm leading-5">
-                            Cette demande respecte les exigences d'Apple pour la transparence du suivi des applications (ATT).
-                            Votre choix sera respecté et peut être modifié dans les paramètres iOS.
-                        </Text>
-                    </View>
 
-                    <View className="bg-gray-800 p-4 rounded-lg mb-6">
-                        <Text className="text-white font-semibold mb-2">
-                            📞 Nous Contacter
-                        </Text>
-                        <Text className="text-gray-300 text-sm">
-                            Email: slimaneafoud1987@gmail.com{'\n'}
-                            Téléphone: +212 660 600 602{'\n'}
-                            Site: https://afoud.ma{'\n'}
-                            Adresse: G8X8+5Q Casablanca 20000, Maroc{'\n'}
-                            {'\n'}
-                            Pour toute question sur vos données ou cette politique de confidentialité.
-                        </Text>
-                    </View>
-                </ScrollView>
+                        <View style={{ marginBottom: 20 }}>
+                            <Text style={{ color: '#F97316', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                                👤 Informations Personnelles
+                            </Text>
+                            <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 18, marginBottom: 16 }}>
+                                • Email et nom pour votre compte{'\n'}
+                                • Adresse de livraison{'\n'}
+                                • Numéro de téléphone pour vous contacter{'\n'}
+                                • Historique des commandes pour personnaliser vos recommandations culinaires
+                            </Text>
+                        </View>
 
-                {/* Fixed Footer */}
-                <SafeAreaView className="bg-gray-900 border-t border-gray-800" edges={['bottom']}>
-                    <View className="flex-row space-x-3 p-4">
+                        <View style={{ marginBottom: 20 }}>
+                            <Text style={{ color: '#F97316', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                                📊 Données d'Utilisation
+                            </Text>
+                            <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 18, marginBottom: 16 }}>
+                                • Améliorer les performances de l'application{'\n'}
+                                • Personnaliser vos recommandations culinaires{'\n'}
+                                • Résoudre les problèmes techniques{'\n'}
+                                • Analyser les tendances pour de meilleures offres gastronomiques
+                            </Text>
+                        </View>
+
+                        <View style={{ 
+                            backgroundColor: '#374151', 
+                            padding: 16, 
+                            borderRadius: 8, 
+                            marginBottom: 20 
+                        }}>
+                            <Text style={{ color: 'white', fontWeight: '600', marginBottom: 8 }}>
+                                🔒 Vos Droits et Contrôles
+                            </Text>
+                            <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 18 }}>
+                                • Vous pouvez modifier vos préférences à tout moment{'\n'}
+                                • Désactiver la localisation dans les paramètres{'\n'}
+                                • Supprimer votre compte et vos données{'\n'}
+                                • Contacter notre équipe pour toute question
+                            </Text>
+                        </View>
+
+                        <View style={{ 
+                            backgroundColor: 'rgba(29, 78, 216, 0.3)', 
+                            padding: 16, 
+                            borderRadius: 8, 
+                            marginBottom: 20 
+                        }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                                <Feather name="info" size={16} color="#60A5FA" />
+                                <Text style={{ color: '#60A5FA', fontWeight: '600', marginLeft: 8 }}>
+                                    Conformité Apple
+                                </Text>
+                            </View>
+                            <Text style={{ color: '#D1D5DB', fontSize: 14, lineHeight: 18 }}>
+                                Cette demande respecte les exigences d'Apple pour la transparence du suivi des applications (ATT).
+                                Votre choix sera respecté et peut être modifié dans les paramètres iOS.
+                            </Text>
+                        </View>
+
+                        <View style={{ 
+                            backgroundColor: '#374151', 
+                            padding: 16, 
+                            borderRadius: 8, 
+                            marginBottom: 20 
+                        }}>
+                            <Text style={{ color: 'white', fontWeight: '600', marginBottom: 8 }}>
+                                📞 Nous Contacter
+                            </Text>
+                            <Text style={{ color: '#D1D5DB', fontSize: 14 }}>
+                                Email: slimaneafoud1987@gmail.com{'\n'}
+                                Téléphone: +212 660 600 602{'\n'}
+                                Site: https://afoud.ma{'\n'}
+                                Adresse: G8X8+5Q Casablanca 20000, Maroc{'\n'}
+                                {'\n'}
+                                Pour toute question sur vos données ou cette politique de confidentialité.
+                            </Text>
+                        </View>
+                    </ScrollView>
+
+                    {/* Fixed Bottom Buttons */}
+                    <View style={{ 
+                        flexDirection: 'row', 
+                        paddingHorizontal: 20, 
+                        paddingVertical: 16,
+                        gap: 12,
+                        borderTopWidth: 1,
+                        borderTopColor: '#374151',
+                        backgroundColor: '#111827'
+                    }}>
                         <TouchableOpacity
                             onPress={onDecline}
-                            className="flex-1 bg-gray-700 py-4 rounded-lg"
-                            hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+                            style={{
+                                flex: 1,
+                                backgroundColor: '#4B5563',
+                                paddingVertical: 16,
+                                borderRadius: 8,
+                                alignItems: 'center',
+                                minHeight: 50
+                            }}
                         >
-                            <Text className="text-white text-center font-semibold">
+                            <Text style={{ color: 'white', fontWeight: '600', fontSize: 16 }}>
                                 Refuser le Suivi
                             </Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={onAccept}
-                            className="flex-1 bg-orange-500 py-4 rounded-lg"
-                            hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+                            style={{
+                                flex: 1,
+                                backgroundColor: '#F97316',
+                                paddingVertical: 16,
+                                borderRadius: 8,
+                                alignItems: 'center',
+                                minHeight: 50
+                            }}
                         >
-                            <Text className="text-white text-center font-semibold">
+                            <Text style={{ color: 'white', fontWeight: '600', fontSize: 16 }}>
                                 Accepter et Continuer
                             </Text>
                         </TouchableOpacity>
                     </View>
                 </SafeAreaView>
-            </SafeAreaView>
+            </View>
         </Modal>
     );
 };

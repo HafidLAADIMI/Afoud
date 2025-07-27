@@ -11,7 +11,7 @@ type RestaurantCardProps = {
 
 const ModernRestaurantCard: React.FC<RestaurantCardProps> = ({
                                                                  onPress,
-                                                                 title = "Dixie Restaurant",
+                                                                 title = "Afoud Restaurant",
                                                                  subtitle = "Savourez l'excellence"
                                                              }) => {
     return (

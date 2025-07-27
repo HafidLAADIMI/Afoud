@@ -136,7 +136,7 @@ export default function OrdersScreen() {
                         <Feather name="map-pin" size={16} color="#F97316" />
                         <Text className="text-orange-500 font-bold ml-2">Suivre Commande</Text>
                     </TouchableOpacity>
-
+                        {/*
                     <TouchableOpacity
                         className="flex-1 py-3 items-center justify-center flex-row"
                         onPress={() =>
@@ -151,6 +151,7 @@ export default function OrdersScreen() {
                         <Feather name="repeat" size={16} color="#F97316" />
                         <Text className="text-orange-500 font-bold ml-2">Commander à nouveau</Text>
                     </TouchableOpacity>
+                     */}
                 </View>
             </TouchableOpacity>
         );
