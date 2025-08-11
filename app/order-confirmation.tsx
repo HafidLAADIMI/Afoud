@@ -49,219 +49,281 @@ const OrderConfirmationScreen = () => {
     const handleTrackOrder = () => { if (orderId) router.push(`/(protected)/(tabs)/orders`); }; // Ensure this route exists
     const handleContinueShopping = () => router.replace('/'); // Adjusted path
 
-    if (loading) { /* ... Loading UI ... */
-        return (
-            <SafeAreaView style={styles.safeAreaLoading}>
-                <ActivityIndicator size="large" color="#F97316" />
-                <Text style={styles.loadingText}>Chargement de la confirmation...</Text>
-            </SafeAreaView>
-        );
-    }
-
-    if (error) { /* ... Error UI ... */
-        return (
-            <SafeAreaView style={styles.safeAreaError}>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => router.replace('/(protected)/(tabs)/home')} style={styles.headerButton}>
-                        <Feather name="home" size={24} color="white" />
-                    </TouchableOpacity>
-                    <Text style={styles.headerTitle}>Erreur de Commande</Text>
-                </View>
-                <View style={styles.errorContainer}>
-                    <Feather name="alert-circle" size={60} color="#E53E3E" />
-                    <Text style={styles.errorTitle}>Oops! Problème de Commande</Text>
-                    <Text style={styles.errorTextDetail}>{error}</Text>
-                    <TouchableOpacity onPress={handleContinueShopping} style={styles.errorButton}>
-                        <Text style={styles.errorButtonText}>Retour à l'Accueil</Text>
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
-        );
-    }
-
-    if (!order) { // Should be caught by error state if fetch fails, but as a fallback
-        return (
-            <SafeAreaView style={styles.safeAreaError}>
-                <Text style={styles.errorTextDetail}>Détails de la commande non disponibles.</Text>
-            </SafeAreaView>
-        );
-    }
-
-    // Determine correct total field from order object
-    const displayTotal = order.grandTotal != null ? order.grandTotal : (order.total != null ? order.total : 0);
-
-    const paymentMethodText = order.paymentMethod === 'card' || order.paymentMethod === 'online_payment'
-        ? 'Carte Bancaire'
-        : (order.paymentMethod === 'cash_on_delivery' || order.paymentMethod === 'cash'
-            ? 'Paiement à la Livraison'
-            : 'Non spécifié');
-
-    // NEW: Determine payment status
-    const isPaymentCompleted =
-        order.paymentDetails?.status === 'paid' ||
-        order.paymentDetails?.status === 'paid_online' ||
-        (order.paymentMethod === 'card' &&
-            (order.status === 'confirmed' || order.paymentDetails?.status));
-
-    const paymentStatusText = isPaymentCompleted
-        ? 'Payé'
-        : order.paymentMethod === 'cash_on_delivery' || order.paymentMethod === 'cash'
-            ? 'À payer à la livraison'
-            : 'En attente de paiement';
-
+    if (loading) {
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={styles.gradientColors} style={StyleSheet.absoluteFillObject} />
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <View style={styles.successIconContainer}>
-                    <LinearGradient colors={['#22c55e', '#16a34a']} style={styles.iconBackground}>
-                        <Feather name="check" size={60} color="white" />
-                    </LinearGradient>
+        <SafeAreaView className="flex-1 bg-gray-950">
+            <LinearGradient 
+                colors={['#0f172a', '#1e293b']} 
+                className="flex-1 justify-center items-center"
+            >
+                <View className="bg-gray-800/30 backdrop-blur-xl rounded-3xl p-8 mx-6 border border-gray-700/50">
+                    <ActivityIndicator size="large" color="#F97316" />
+                    <Text className="text-white mt-6 text-lg font-medium text-center">
+                        Chargement de la confirmation...
+                    </Text>
+                    <View className="w-32 h-1 bg-gray-700 rounded-full mt-4 overflow-hidden">
+                        <View className="w-3/4 h-full bg-orange-500 rounded-full" />
+                    </View>
                 </View>
-                <Text style={styles.successTitle}>Commande Passée avec Succès!</Text>
-                {orderId && (
-                    <Text style={styles.orderIdText}>Commande #{orderId.substring(0, 8)}...</Text>
-                )}
+            </LinearGradient>
+        </SafeAreaView>
+    );
+}
+
+if (error) {
+    return (
+        <SafeAreaView className="flex-1 bg-gray-950">
+            <LinearGradient colors={['#0f172a', '#1e293b']} className="flex-1">
+                {/* Enhanced Error Header */}
+                <View className="flex-row items-center px-4 py-6 bg-gray-900/80 backdrop-blur-xl border-b border-gray-800/50">
+                    <TouchableOpacity 
+                        onPress={() => router.replace('/(protected)/(tabs)/home')} 
+                        className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4"
+                    >
+                        <Feather name="home" size={22} color="white" />
+                    </TouchableOpacity>
+                    <Text className="text-white text-xl font-bold">Erreur de Commande</Text>
+                </View>
+
+                {/* Enhanced Error Content */}
+                <View className="flex-1 justify-center items-center px-6">
+                    <View className="bg-gray-800/40 backdrop-blur-xl rounded-3xl p-8 items-center border border-red-500/20">
+                        <View className="w-24 h-24 rounded-full bg-red-500/10 items-center justify-center mb-6">
+                            <Feather name="alert-circle" size={48} color="#EF4444" />
+                        </View>
+                        <Text className="text-white text-2xl font-bold mb-3 text-center">
+                            Oops! Problème de Commande
+                        </Text>
+                        <Text className="text-gray-400 text-center mb-8 text-base leading-6">
+                            {error}
+                        </Text>
+                        <TouchableOpacity 
+                            onPress={handleContinueShopping} 
+                            className="bg-red-500 w-full py-4 rounded-xl shadow-lg active:bg-red-600"
+                        >
+                            <Text className="text-white text-center font-bold text-lg">
+                                Retour à l'Accueil
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </LinearGradient>
+        </SafeAreaView>
+    );
+}
+
+if (!order) {
+    return (
+        <SafeAreaView className="flex-1 bg-gray-950 justify-center items-center">
+            <Text className="text-gray-400 text-base text-center">
+                Détails de la commande non disponibles.
+            </Text>
+        </SafeAreaView>
+    );
+}
+
+// Determine correct total field from order object
+const displayTotal = order.grandTotal != null ? order.grandTotal : (order.total != null ? order.total : 0);
+
+const paymentMethodText = order.paymentMethod === 'card' || order.paymentMethod === 'online_payment'
+    ? 'Carte Bancaire'
+    : (order.paymentMethod === 'cash_on_delivery' || order.paymentMethod === 'cash'
+        ? 'Paiement à la Livraison'
+        : 'Non spécifié');
+
+// Determine payment status
+const isPaymentCompleted =
+    order.paymentDetails?.status === 'paid' ||
+    order.paymentDetails?.status === 'paid_online' ||
+    (order.paymentMethod === 'card' &&
+        (order.status === 'confirmed' || order.paymentDetails?.status));
+
+const paymentStatusText = isPaymentCompleted
+    ? 'Payé'
+    : order.paymentMethod === 'cash_on_delivery' || order.paymentMethod === 'cash'
+        ? 'À payer à la livraison'
+        : 'En attente de paiement';
+
+return (
+    <SafeAreaView className="flex-1 bg-gray-950">
+        <LinearGradient colors={['#0f172a', '#1e293b']} className="absolute inset-0" />
+        
+        <ScrollView 
+            className="flex-1" 
+            contentContainerClassName="pb-8"
+            showsVerticalScrollIndicator={false}
+        >
+            <View className="px-4 pt-8 space-y-6">
+                {/* Success Icon */}
+                <View className="items-center mb-2">
+                    <View className="relative">
+                        <View className="w-28 h-28 rounded-full bg-green-500/20 items-center justify-center mb-6">
+                            <View className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-600 items-center justify-center shadow-2xl">
+                                <Feather name="check" size={40} color="white" />
+                            </View>
+                        </View>
+                        {/* Animated rings */}
+                        <View className="absolute inset-0 w-28 h-28 rounded-full border-2 border-green-400/30 animate-ping" />
+                    </View>
+                </View>
+
+                {/* Success Message */}
+                <View className="items-center mb-6">
+                    <Text className="text-white text-3xl font-bold text-center mb-2">
+                        Commande Confirmée!
+                    </Text>
+                    {/* {orderId && (
+                        // <View className="bg-gray-800/40 backdrop-blur-xl rounded-xl px-4 py-2 border border-gray-700/30">
+                        //     <Text className="text-orange-400 text-lg font-semibold">
+                        //         #{orderId.substring(0, 8)}...
+                        //     </Text>
+                        // </View>
+                    )} */}
+                </View>
 
                 {/* Order Details Card */}
-                <View style={styles.card}>
-                    <Text style={styles.cardTitle}>Récapitulatif de la Commande</Text>
-
-                    {/* Items Summary - Basic for confirmation, full details were on checkout */}
-                    {order.items && order.items.length > 0 && (
-                        <View style={styles.section}>
-                            <Text style={styles.sectionHeader}>Articles Commandés ({order.items.length})</Text>
-                            {order.items.slice(0,2).map((item, index) => ( // Show first 2 items as teaser
-                                <View key={item.productId || index} style={styles.itemRow}>
-                                    <Text style={styles.itemName} numberOfLines={1}>{item.name} (x{item.quantity})</Text>
-                                    <Text style={styles.itemPrice}>{(item.itemSubtotal || (item.priceAtPurchase * item.quantity))?.toFixed(2)} MAD</Text>
-                                </View>
-                            ))}
-                            {order.items.length > 2 && <Text style={styles.moreItemsText}>...et {order.items.length - 2} autre(s)</Text>}
-                        </View>
-                    )}
-
-                    {/* Delivery Address */}
-                    {order.deliveryOption === 'homeDelivery' && order.shippingAddress && (
-                        <View style={styles.section}>
-                            <View style={styles.detailRow}>
-                                <Feather name="map-pin" size={20} color="#F97316" style={styles.detailIcon} />
-                                <View>
-                                    <Text style={styles.detailLabel}>Livré à</Text>
-                                    <Text style={styles.detailValue}>{order.shippingAddress.address || 'Adresse non spécifiée'}</Text>
-                                </View>
+                <View className="bg-gray-800/40 backdrop-blur-xl rounded-2xl border border-gray-700/30 overflow-hidden">
+                    <View className="p-5 border-b border-gray-700/30">
+                        <View className="flex-row items-center">
+                            <View className="w-8 h-8 rounded-full bg-blue-500/20 items-center justify-center mr-3">
+                                <Feather name="shopping-bag" size={16} color="#3B82F6" />
                             </View>
+                            <Text className="text-white text-xl font-bold">Récapitulatif de la Commande</Text>
                         </View>
-                    )}
+                    </View>
 
-                    {/* Phone Number */}
-                    {order.phoneNumber && (
-                        <View style={styles.section}>
-                            <View style={styles.detailRow}>
-                                <Feather name="phone" size={20} color="#F97316" style={styles.detailIcon} />
-                                <View>
-                                    <Text style={styles.detailLabel}>Numéro de Contact</Text>
-                                    <Text style={styles.detailValue}>{order.phoneNumber}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    )}
-
-
-                    {/* Payment Method & Total */}
-                    <View style={styles.section}>
-                        <View style={styles.detailRow}>
-                            <Feather name={paymentMethodText === 'Carte Bancaire' ? 'credit-card' : 'dollar-sign'} size={20} color="#F97316" style={styles.detailIcon} />
+                    <View className="p-5 space-y-6">
+                        {/* Items Summary */}
+                        {order.items && order.items.length > 0 && (
                             <View>
-                                <Text style={styles.detailLabel}>Méthode de Paiement</Text>
-                                <Text style={styles.detailValue}>{paymentMethodText}</Text>
+                                <Text className="text-gray-300 text-sm font-semibold uppercase tracking-wide mb-3">
+                                    Articles Commandés ({order.items.length})
+                                </Text>
+                                <View className="space-y-3">
+                                    {/* {order.items.slice(0, 2).map((item, index) => (
+                                        <View key={item.productId || index} className="flex-row justify-between items-center py-2 bg-gray-700/20 rounded-lg px-3">
+                                            <Text className="text-gray-200 text-base flex-1 mr-2" numberOfLines={1}>
+                                                {item.name} (x{item.quantity})
+                                            </Text>
+                                            <Text className="text-white text-base font-semibold">
+                                                {(item.itemSubtotal || (item.priceAtPurchase * item.quantity))?.toFixed(2)} MAD
+                                            </Text>
+                                        </View>
+                                    ))} */}
+                                    {order.items.length > 2 && (
+                                        <Text className="text-gray-400 text-sm italic text-right mt-2">
+                                            ...et {order.items.length - 2} autre(s)
+                                        </Text>
+                                    )}
+                                </View>
                             </View>
-                        </View>
-                        <View style={[styles.detailRow, {marginTop: 12}]}>
-                            <FontAwesome5 name="money-bill-wave" size={20} color="#F97316" style={styles.detailIcon} />
-                            <View>
-                                <Text style={styles.detailLabel}>Montant Total</Text>
-                                <Text style={styles.totalAmountValue}>
-                                    {displayTotal.toFixed(2)} MAD
-                                </Text>
-                                {/* NEW: Display payment status */}
-                                <Text style={{
-                                    color: isPaymentCompleted ? '#22c55e' : '#f59e0b',
-                                    fontSize: 14,
-                                    marginTop: 2,
-                                    fontWeight: '500'
-                                }}>
-                                    {paymentStatusText}
-                                </Text>
+                        )}
+
+                        {/* Delivery Address */}
+                        {order.deliveryOption === 'homeDelivery' && order.shippingAddress && (
+                            <View className="bg-gray-700/20 rounded-xl p-4">
+                                <View className="flex-row items-start">
+                                    <View className="w-10 h-10 rounded-full bg-green-500/20 items-center justify-center mr-3 mt-1">
+                                        <Feather name="map-pin" size={18} color="#10B981" />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-gray-300 text-sm font-medium mb-1">Livré à</Text>
+                                        <Text className="text-white text-base font-medium leading-5">
+                                            {order.shippingAddress.address || 'Adresse non spécifiée'}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        )}
+
+                        {/* Contact Info */}
+                        {order.phoneNumber && (
+                            <View className="bg-gray-700/20 rounded-xl p-4">
+                                <View className="flex-row items-center">
+                                    <View className="w-10 h-10 rounded-full bg-blue-500/20 items-center justify-center mr-3">
+                                        <Feather name="phone" size={18} color="#3B82F6" />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-gray-300 text-sm font-medium mb-1">Contact</Text>
+                                        <Text className="text-white text-base font-medium">
+                                            {order.phoneNumber}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        )}
+
+                        {/* Payment Method & Total */}
+                        <View className="space-y-4">
+                            <View className="bg-gray-700/20 rounded-xl p-4">
+                                <View className="flex-row items-center">
+                                    <View className="w-10 h-10 rounded-full bg-purple-500/20 items-center justify-center mr-3">
+                                        <Feather 
+                                            name={paymentMethodText === 'Carte Bancaire' ? 'credit-card' : 'dollar-sign'} 
+                                            size={18} 
+                                            color="#8B5CF6" 
+                                        />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-gray-300 text-sm font-medium mb-1">Méthode de Paiement</Text>
+                                        <Text className="text-white text-base font-medium">
+                                            {paymentMethodText}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                            <View className="bg-orange-500/10 rounded-xl p-4 border border-orange-500/20">
+                                <View className="flex-row items-center">
+                                    <View className="w-10 h-10 rounded-full bg-orange-500/20 items-center justify-center mr-3">
+                                        <FontAwesome5 name="money-bill-wave" size={16} color="#F97316" />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-gray-300 text-sm font-medium mb-1">Montant Total</Text>
+                                        <Text className="text-orange-400 text-2xl font-bold">
+                                            {displayTotal.toFixed(2)} MAD
+                                        </Text>
+                                        <Text className={`text-sm font-medium mt-1 ${
+                                            isPaymentCompleted ? 'text-green-400' : 'text-yellow-400'
+                                        }`}>
+                                            {paymentStatusText}
+                                        </Text>
+                                    </View>
+                                </View>
                             </View>
                         </View>
                     </View>
                 </View>
 
-                <View style={styles.infoBox}>
-                    <Feather name="info" size={22} color="#60A5FA" />
-                    <Text style={styles.infoText}>
-                        Un e-mail de confirmation a été envoyé. Suivez votre commande dans "Mes Commandes".
-                    </Text>
-                </View>
 
-                <View style={styles.actionsContainer}>
-                    <TouchableOpacity style={[styles.actionButton, styles.secondaryButton]} onPress={handleGoToOrders}>
-                        <Feather name="list" size={18} color="white" style={{marginRight: 8}} />
-                        <Text style={styles.actionButtonText}>Mes Commandes</Text>
+                {/* Action Buttons */}
+                <View className="space-y-3 pt-2 gap-4">
+                    <TouchableOpacity 
+                        className="bg-gray-700/60 backdrop-blur-xl py-4 rounded-2xl flex-row items-center justify-center border border-gray-600/30 active:bg-gray-600/60" 
+                        onPress={handleGoToOrders}
+                    >
+                        <Feather name="list" size={18} color="white" />
+                        <Text className="text-white text-lg font-bold ml-3">
+                            Mes Commandes
+                        </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.actionButton, styles.tertiaryButton]} onPress={handleContinueShopping}>
-                        <Feather name="shopping-bag" size={18} color="#F97316" style={{marginRight: 8}} />
-                        <Text style={styles.tertiaryButtonText}>Continuer les Achats</Text>
+                    
+                    <TouchableOpacity 
+                        className="border-2 border-orange-500 py-4 rounded-2xl flex-row items-center justify-center active:bg-orange-500/10" 
+                        onPress={handleContinueShopping}
+                    >
+                        <Feather name="shopping-bag" size={18} color="#F97316" />
+                        <Text className="text-orange-400 text-lg font-bold ml-3">
+                            Continuer les Achats
+                        </Text>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
-    );
+            </View>
+        </ScrollView>
+    </SafeAreaView>
+);
 };
 
-// --- Styles ---
-const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#111827' },
-    safeAreaLoading: { flex: 1, backgroundColor: '#111827', justifyContent: 'center', alignItems: 'center' },
-    loadingText: { color: 'white', marginTop: 10, fontSize: 16 },
-    safeAreaError: { flex: 1, backgroundColor: '#111827' },
-    header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#374151', backgroundColor: 'rgba(31,41,55,0.8)' },
-    headerButton: { padding: 5, marginRight: 10 },
-    headerTitle: { color: 'white', fontSize: 20, fontWeight: '600' },
-    errorContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
-    errorTitle: { fontSize: 22, fontWeight: 'bold', color: 'white', marginTop: 16, marginBottom: 8, textAlign: 'center' },
-    errorTextDetail: { fontSize: 16, color: '#A0AEC0', textAlign: 'center', marginBottom: 24 },
-    errorButton: { backgroundColor: '#F97316', paddingVertical: 14, paddingHorizontal: 30, borderRadius: 25 },
-    errorButtonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
-    gradientColors: ['#1F2937', '#111827'],
-    scrollContainer: { flexGrow: 1, paddingVertical: 20, paddingHorizontal: 16 },
-    successIconContainer: { alignItems: 'center', marginVertical: 20 },
-    iconBackground: { width: 100, height: 100, borderRadius: 50, alignItems: 'center', justifyContent: 'center', shadowColor: '#10B981', shadowRadius: 20, shadowOpacity: 0.5, elevation: 10 },
-    successTitle: { color: 'white', fontSize: 26, fontWeight: 'bold', textAlign: 'center', marginBottom: 4 },
-    orderIdText: { color: '#A0AEC0', fontSize: 16, textAlign: 'center', marginBottom: 24 },
-    card: { backgroundColor: 'rgba(45, 55, 72, 0.6)', /* bg-gray-800 with opacity */ borderRadius: 16, padding: 20, marginBottom: 24, borderWidth: 1, borderColor: 'rgba(74, 85, 104, 0.4)' },
-    cardTitle: { color: 'white', fontSize: 20, fontWeight: '600', marginBottom: 16, borderBottomWidth: 1, borderBottomColor: 'rgba(74, 85, 104, 0.3)', paddingBottom: 12 },
-    section: { marginBottom: 12, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: 'rgba(74, 85, 104, 0.2)', },
-    sectionHeader: { color: '#CBD5E0', fontSize: 14, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 },
-    itemRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 4 },
-    itemName: { color: '#E2E8F0', fontSize: 15, flex: 1, marginRight: 8 },
-    itemPrice: { color: 'white', fontSize: 15, fontWeight: '500' },
-    moreItemsText: { color: '#A0AEC0', fontSize: 13, fontStyle: 'italic', textAlign: 'right', marginTop: 4 },
-    detailRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 0 /* Spacing handled by section */ },
-    detailIcon: { marginRight: 12, marginTop: 2 },
-    detailLabel: { color: '#A0AEC0', fontSize: 14, marginBottom: 2 },
-    detailValue: { color: 'white', fontSize: 16, fontWeight: '500', flexWrap: 'wrap' },
-    totalAmountValue: { color: '#F97316', fontSize: 20, fontWeight: 'bold' },
-    infoBox: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: 'rgba(55, 65, 81, 0.5)', /* bg-gray-700 with opacity */ padding: 16, borderRadius: 12, marginBottom: 24, borderWidth: 1, borderColor: 'rgba(74, 85, 104, 0.3)' },
-    infoText: { color: '#CBD5E0', fontSize: 14, marginLeft: 12, lineHeight: 20, flex: 1 },
-    actionsContainer: { paddingBottom: 20, gap: 12 },
-    actionButton: { flexDirection: 'row', paddingVertical: 16, borderRadius: 12, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 3, elevation: 4 },
-    primaryButton: { backgroundColor: '#F97316' },
-    secondaryButton: { backgroundColor: '#374151' /* gray-700 */ },
-    tertiaryButton: { borderWidth: 2, borderColor: '#F97316' },
-    actionButtonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
-    tertiaryButtonText: { color: '#F97316', fontSize: 16, fontWeight: 'bold' },
-});
+
 
 export default OrderConfirmationScreen;

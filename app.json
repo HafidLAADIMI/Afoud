@@ -11,7 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "scheme": "Afoud-users",
+    "scheme": "Afoud",
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -26,7 +26,7 @@
         "NSCameraUsageDescription": "This app needs access to camera to take photos of food items and upload images"
       },
       "config": {
-        "googleMapsApiKey": "AIzaSyDKkqzO1Ktr6EbmapmCv0HtqCe8_4M2AbY"
+        "googleMapsApiKey": "AIzaSyA-sjBct3sZ45E4wGLg4rVmboTuH5UgQHQ"
       }
     },
     "android": {
@@ -38,7 +38,7 @@
       "package": "com.afoudusers.app",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCXkLzEQDRf-DafFdkIHLNW_bOOOQhwXfo"
+          "apiKey": "AIzaSyBh59DQJEXejCeQSWZM083i_x-1Fav_GXs"
         }
       },
       "permissions": [

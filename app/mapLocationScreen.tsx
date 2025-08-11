@@ -1,19 +1,4 @@
-// 1. TEMPORARY TEST: Remove all restrictions from your Google Maps API keys
-// Go to Google Cloud Console > APIs & Services > Credentials
-// Edit both API keys and temporarily set:
-// - Application restrictions: None
-// - API restrictions: Don't restrict key
-// Test if maps work, then gradually add restrictions back
-
-// 2. Check required APIs are enabled:
-// ✅ Maps SDK for Android
-// ✅ Maps SDK for iOS
-// ✅ Geocoding API (for your reverse geocoding)
-// ✅ Places API (if using search)
-
-// 3. Update your MapLocationScreen with better error handling:
-
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import  { useEffect, useRef, useState, useCallback } from 'react';
 import {
     View,
     Text,
@@ -34,12 +19,59 @@ import * as Location from 'expo-location';
 import { useLocation } from "@/context/LocationContext";
 
 const INITIAL_REGION_FALLBACK = {
-    latitude: 33.5731, // Casablanca coordinates (your app location)
-    longitude: -7.5898,
+    latitude: 33.5360, // Center of the allowed regions
+    longitude: -7.6385,
     latitudeDelta: 0.02,
     longitudeDelta: 0.02,
 };
-
+// Define the allowed regions in Casablanca
+const ALLOWED_REGIONS = {
+    "Hay Oulfa": {
+        latitude: 33.5423,
+        longitude: -7.6532,
+        radius: 2000 // 2km radius
+    },
+    "Hay Hassani": {
+        latitude: 33.5156,
+        longitude: -7.6789,
+        radius: 2000
+    },
+    "Lissasfa": {
+        latitude: 33.5234,
+        longitude: -7.6123,
+        radius: 2000
+    },
+    "Almaz": {
+        latitude: 33.5378,
+        longitude: -7.6234,
+        radius: 2000
+    },
+    "Hay Laymoun": {
+        latitude: 33.5512,
+        longitude: -7.6445,
+        radius: 2000
+    },
+    "Ciel": {
+        latitude: 33.5289,
+        longitude: -7.6456,
+        radius: 2000
+    },
+    "Nassim": {
+        latitude: 33.5334,
+        longitude: -7.6298,
+        radius: 2000
+    },
+    "Sidi Maarouf": {
+        latitude: 33.5167,
+        longitude: -7.6234,
+        radius: 2000
+    },
+    "CFC": {
+        latitude: 33.5445,
+        longitude: -7.6567,
+        radius: 2000
+    }
+};
 export default function MapLocationScreen() {
     const params = useLocalSearchParams();
     const mapRef = useRef(null);
@@ -56,6 +88,38 @@ export default function MapLocationScreen() {
 
     const { setLocation } = useLocation();
     const [checkoutParamsToPassBack, setCheckoutParamsToPassBack] = useState({});
+    // Function to check if coordinates are within allowed regions
+    const isLocationInAllowedRegion = (latitude, longitude) => {
+        for (const [regionName, region] of Object.entries(ALLOWED_REGIONS)) {
+            const distance = getDistanceFromLatLonInM(
+                latitude, 
+                longitude, 
+                region.latitude, 
+                region.longitude
+            );
+            if (distance <= region.radius) {
+                return { allowed: true, region: regionName };
+            }
+        }
+        return { allowed: false, region: null };
+    };
+    // Helper function to calculate distance between two coordinates
+    const getDistanceFromLatLonInM = (lat1, lon1, lat2, lon2) => {
+        const R = 6371000; // Radius of the earth in meters
+        const dLat = deg2rad(lat2 - lat1);
+        const dLon = deg2rad(lon2 - lon1);
+        const a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        const d = R * c; // Distance in meters
+        return d;
+    };
+
+    const deg2rad = (deg) => {
+        return deg * (Math.PI/180);
+    };
 
     // Add map error handler
     const handleMapError = (error) => {
@@ -92,14 +156,31 @@ export default function MapLocationScreen() {
                         accuracy: Location.Accuracy.High,
                         timeout: 10000 // 10 second timeout
                     });
-                    const currentCoords = {
-                        latitude: location.coords.latitude,
-                        longitude: location.coords.longitude
-                    };
+                        const currentCoords = {
+                            latitude: location.coords.latitude,
+                            longitude: location.coords.longitude
+                        };
+                        const locationCheck = isLocationInAllowedRegion(currentCoords.latitude, currentCoords.longitude);
+
+                if (locationCheck.allowed) {
                     setInitialRegion({...currentCoords, latitudeDelta: 0.01, longitudeDelta: 0.01});
                     setCurrentRegion({...currentCoords, latitudeDelta: 0.01, longitudeDelta: 0.01});
                     setSelectedCoordinates(currentCoords);
                     reverseGeocode(currentCoords.latitude, currentCoords.longitude);
+                } else {
+                    // Use fallback to Casablanca if outside service area
+                    setInitialRegion(INITIAL_REGION_FALLBACK);
+                    setCurrentRegion(INITIAL_REGION_FALLBACK);
+                    setSelectedCoordinates({
+                        latitude: INITIAL_REGION_FALLBACK.latitude,
+                        longitude: INITIAL_REGION_FALLBACK.longitude
+                    });
+                    reverseGeocode(INITIAL_REGION_FALLBACK.latitude, INITIAL_REGION_FALLBACK.longitude);
+                }
+                    // setInitialRegion({...currentCoords, latitudeDelta: 0.01, longitudeDelta: 0.01});
+                    // setCurrentRegion({...currentCoords, latitudeDelta: 0.01, longitudeDelta: 0.01});
+                    // setSelectedCoordinates(currentCoords);
+                    // reverseGeocode(currentCoords.latitude, currentCoords.longitude);
                 } catch (e) {
                     console.error("Error getting current position", e);
                     // Fallback to Casablanca
@@ -159,21 +240,47 @@ export default function MapLocationScreen() {
         }
     }, []);
 
+  // Modified onMapRegionChangeComplete function
     const onMapRegionChangeComplete = (region) => {
+        const locationCheck = isLocationInAllowedRegion(region.latitude, region.longitude);
+        
+        if (!locationCheck.allowed) {
+            // Show warning that location is outside service area
+            setSelectedAddressString('Cette zone n\'est pas desservie');
+            setCurrentRegion(region);
+            setSelectedCoordinates({ latitude: region.latitude, longitude: region.longitude });
+            return;
+        }
+        
         setCurrentRegion(region);
         setSelectedCoordinates({ latitude: region.latitude, longitude: region.longitude });
         reverseGeocode(region.latitude, region.longitude);
     };
 
+
+    // Modified search function to validate results
     const handleSearch = async () => {
         if (!searchQuery.trim()) return;
         Keyboard.dismiss();
         setIsGeocoding(true);
         try {
-            let geocodedResults = await Location.geocodeAsync(searchQuery);
+            let geocodedResults = await Location.geocodeAsync(searchQuery + ", Casablanca, Morocco");
 
             if (geocodedResults && geocodedResults.length > 0) {
                 const firstResult = geocodedResults[0];
+                
+                // Check if the search result is in allowed region
+                const locationCheck = isLocationInAllowedRegion(firstResult.latitude, firstResult.longitude);
+                
+                if (!locationCheck.allowed) {
+                    Alert.alert(
+                        "Zone non desservie", 
+                        "Cette adresse se trouve en dehors de nos zones de livraison. Nous livrons uniquement dans: Hay Oulfa, Hay Hassani, Lissasfa, Almaz, Hay Laymoun, Ciel, Nassim, Sidi Maarouf, et CFC."
+                    );
+                    setIsGeocoding(false);
+                    return;
+                }
+                
                 const newRegion = {
                     latitude: firstResult.latitude,
                     longitude: firstResult.longitude,
@@ -184,7 +291,7 @@ export default function MapLocationScreen() {
                     mapRef.current.animateToRegion(newRegion, 1000);
                 }
             } else {
-                Alert.alert("Recherche Infructueuse", "Aucun lieu trouvé pour votre recherche.");
+                Alert.alert("Recherche Infructueuse", "Aucun lieu trouvé pour votre recherche dans nos zones de livraison.");
             }
         } catch (error) {
             console.error("Geocoding search error:", error);
@@ -194,9 +301,22 @@ export default function MapLocationScreen() {
         }
     };
 
+    // Modified handlePickLocation function
     const handlePickLocation = async() => {
         if (!selectedCoordinates || !selectedAddressString || selectedAddressString.includes('...')) {
             Alert.alert("Sélection Incomplète", "Veuillez attendre que l'adresse soit chargée ou sélectionnez un emplacement valide.");
+            return;
+        }
+
+        // Check if location is in allowed region
+        const locationCheck = isLocationInAllowedRegion(selectedCoordinates.latitude, selectedCoordinates.longitude);
+        
+        if (!locationCheck.allowed) {
+            Alert.alert(
+                "Zone non desservie", 
+                "Nous ne livrons que dans les zones suivantes: Hay Oulfa, Hay Hassani, Lissasfa, Almaz, Hay Laymoun, Ciel, Nassim, Sidi Maarouf, et CFC. Veuillez choisir une adresse dans l'une de ces zones.",
+                [{ text: "OK" }]
+            );
             return;
         }
 
@@ -219,6 +339,26 @@ export default function MapLocationScreen() {
         });
     };
 
+        useEffect(() => {
+        if (mapReady && initialRegion && mapRef.current) {
+            setTimeout(() => {
+                mapRef?.current?.animateToRegion(initialRegion, 1000);
+            }, 500);
+        }
+    }, [mapReady, initialRegion]);
+    useEffect(() => {
+    if (mapReady && initialRegion && mapRef.current) {
+        console.log('Checking if location is in allowed region...');
+        const locationCheck = isLocationInAllowedRegion(initialRegion.latitude, initialRegion.longitude);
+        console.log('Location check result:', locationCheck);
+        
+        if (!locationCheck.allowed) {
+            console.log('Location outside service area, using fallback');
+            // Force map to show Casablanca instead
+            mapRef.current.animateToRegion(INITIAL_REGION_FALLBACK, 1000);
+        }
+    }
+}, [mapReady, initialRegion]);
     // Show error screen if map fails to load
     if (mapError) {
         return (
@@ -293,17 +433,15 @@ export default function MapLocationScreen() {
                     onRegionChangeComplete={onMapRegionChangeComplete}
                     onMapReady={() => {
                         console.log('Map is ready!');
+                        console.log('Initial region:', initialRegion);
+                        console.log('Current region:', currentRegion);
                         setMapReady(true);
                     }}
-                    onError={handleMapError}
-                    showsUserLocation={true}
-                    showsMyLocationButton={false} // Use custom button for consistency
-                    loadingEnabled={!mapReady}
-                    minZoomLevel={5}
-                    maxZoomLevel={19}
-                    mapType="standard"
-                    // Remove customMapStyle temporarily to test if it's causing issues
-                    // customMapStyle={mapStyle}
+                    // Add these for debugging
+                    onMapLoaded={() => console.log('Map loaded successfully')}
+                    loadingEnabled={true}
+                    loadingIndicatorColor="#F97316"
+                    loadingBackgroundColor="#111827"
                 />
 
                 {/* Center Marker */}
