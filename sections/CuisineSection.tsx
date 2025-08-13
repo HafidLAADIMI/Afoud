@@ -64,7 +64,7 @@ const CuisineSection: React.FC<CuisineSectionProps> = ({
                         >
                             <View
                                 className="w-28 h-40 rounded-xl overflow-hidden"
-                                style={{ backgroundColor: '#374151' }}
+                                style={{ backgroundColor: '#f3f4f6' }}
                             >
                                 <Image
                                     source={imageSource}
@@ -94,12 +94,12 @@ const CuisineSection: React.FC<CuisineSectionProps> = ({
                             </View>
 
                             <View
-                                className="absolute -right-1 -top-1 bg-orange-500 rounded-full w-4 h-4"
+                                className="absolute -right-1 -top-1 rounded-full w-4 h-4"
                                 style={{
                                     position: 'absolute',
                                     top: -4,
                                     right: -4,
-                                    backgroundColor: '#F97316',
+                                    backgroundColor: '#a86e02',
                                     width: 16,
                                     height: 16,
                                     borderRadius: 8

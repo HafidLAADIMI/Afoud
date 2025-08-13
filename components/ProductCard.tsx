@@ -18,8 +18,8 @@ const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavo
     // Check if product exists
     if (!product) {
         return (
-            <View className="bg-gray-800 rounded-xl p-2 overflow-hidden">
-                <Text className="text-white">Produit non disponible</Text>
+            <View className="bg-gray-100 rounded-xl p-2 overflow-hidden">
+                <Text className="text-gray-600">Produit non disponible</Text>
             </View>
         );
     }
@@ -68,7 +68,7 @@ const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavo
     return (
         <TouchableOpacity
             onPress={onPress}
-            className="bg-gray-800 rounded-xl overflow-hidden shadow-md"
+            className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-200"
             activeOpacity={0.8}
         >
             {/* Product image */}
@@ -81,7 +81,7 @@ const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavo
 
                 {/* Discount badge */}
                 {hasDiscount && (
-                    <View className="absolute top-2 left-2 bg-orange-500 px-2 py-1 rounded">
+                    <View className="absolute top-2 left-2 px-2 py-1 rounded" style={{ backgroundColor: '#a86e02' }}>
                         <Text className="text-white text-xs font-bold">
                             -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
                         </Text>
@@ -91,16 +91,16 @@ const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavo
                 {/* Favorite button */}
                 <TouchableOpacity
                     onPress={handleFavoritePress}
-                    className="absolute top-2 right-2 bg-black/50 p-1 rounded-full"
+                    className="absolute top-2 right-2 bg-white/90 p-1 rounded-full"
                     disabled={isProcessing}
                 >
                     {isProcessing ? (
-                        <ActivityIndicator size="small" color="#F97316" />
+                        <ActivityIndicator size="small" color="#a86e02" />
                     ) : (
                         <Feather
                             name={isFavorite ? "heart" : "heart"}
                             size={16}
-                            color={isFavorite ? "#FF4D4F" : "#F97316"}
+                            color={isFavorite ? "#FF4D4F" : "#a86e02"}
                             style={isFavorite ? { opacity: 1 } : { opacity: 0.7 }}
                         />
                     )}
@@ -111,7 +111,7 @@ const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavo
             <View className="p-2">
                 {/* Product name */}
                 <Text
-                    className="text-white font-medium"
+                    className="text-gray-800 font-medium"
                     numberOfLines={1}
                 >
                     {product.name || 'Sans nom'}
@@ -119,7 +119,7 @@ const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavo
 
                 {/* Price display */}
                 <View className="flex-row items-center mt-1">
-                    <Text className="text-orange-500 font-bold">
+                    <Text className="font-bold" style={{ color: '#a86e02' }}>
                         {priceText}
                     </Text>
 
@@ -133,8 +133,8 @@ const ProductCard = ({ product, onPress, onFavoritePress, isFavorite: propIsFavo
                 {/* Rating display */}
                 {product.rating > 0 && (
                     <View className="flex-row items-center mt-1">
-                        <Feather name="star" size={12} color="#F97316" />
-                        <Text className="text-gray-400 text-xs ml-1">
+                        <Feather name="star" size={12} color="#a86e02" />
+                        <Text className="text-gray-600 text-xs ml-1">
                             {product.rating.toFixed(1)}
                         </Text>
 

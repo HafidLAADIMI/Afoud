@@ -51,8 +51,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                     keyExtractor={(item) => item.toString()}
                     renderItem={() => (
                         <View className="mr-4 items-center">
-                            <View className="w-16 h-16 rounded-full bg-gray-800 animate-pulse mb-2" />
-                            <View className="w-14 h-4 bg-gray-800 animate-pulse rounded-md" />
+                            <View className="w-16 h-16 rounded-full bg-gray-200 animate-pulse mb-2" />
+                            <View className="w-14 h-4 bg-gray-200 animate-pulse rounded-md" />
                         </View>
                     )}
                     showsHorizontalScrollIndicator={false}
@@ -70,10 +70,11 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                     title={title}
                     showArrow={false}
                 />
-                <View className="py-6 bg-gray-800 rounded-xl items-center justify-center my-2">
-                    <Text className="text-gray-400 text-center mb-3">Aucune catégorie disponible</Text>
+                <View className="py-6 bg-gray-100 rounded-xl items-center justify-center my-2">
+                    <Text className="text-gray-600 text-center mb-3">Aucune catégorie disponible</Text>
                     <TouchableOpacity
-                        className="bg-orange-500 px-4 py-2 rounded-lg"
+                        className="px-4 py-2 rounded-lg"
+                        style={{ backgroundColor: '#a86e02' }}
                         onPress={onViewAllPress}
                     >
                         <Text className="text-white font-medium">Parcourir le Menu</Text>

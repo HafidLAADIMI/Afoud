@@ -8,8 +8,8 @@ import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 // Assuming Badge is a custom component, ensure it's correctly imported or defined
 // import Badge from './Badge'; 
-const Badge = ({ text, bgColor = 'bg-orange-500' }) => ( // Simple Badge placeholder
-    <View className={`${bgColor} px-2 py-1 rounded-full shadow`}>
+const Badge = ({ text, bgColor = '#a86e02' }) => ( // Simple Badge placeholder
+    <View className="px-2 py-1 rounded-full shadow" style={{ backgroundColor: bgColor }}>
         <Text className="text-white text-xs font-bold">{text}</Text>
     </View>
 );
@@ -92,6 +92,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     const safePrice = (p: number | undefined, fallback = 0) => (typeof p === 'number' && !isNaN(p) ? p : fallback);
     const baseProductPrice = safePrice(product?.discountPrice) || safePrice(product?.price);
      console.log("discount price",product.discountPrice)
+
     // Calculates the price of ONE unit of the product including selected variations and addons
     const calculateItemPriceWithAddons = () => {
         if (!product) return 0;
@@ -180,9 +181,9 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         <Modal visible={isVisible} transparent onRequestClose={onClose} animationType="none">
             <TouchableOpacity activeOpacity={1} onPress={onClose} style={styles.overlay} />
             <Animated.View style={[styles.sheetContainer, { transform: [{ translateY: sheetY }] }]}>
-                <View className="bg-gray-900 rounded-t-3xl shadow-2xl max-h-[90vh]">
-                    <View className="items-center py-3 border-b border-gray-800">
-                        <View className="w-12 h-1.5 bg-gray-700 rounded-full" />
+                <View className="bg-white rounded-t-3xl shadow-2xl max-h-[90vh]">
+                    <View className="items-center py-3 border-b border-gray-200">
+                        <View className="w-12 h-1.5 bg-gray-400 rounded-full" />
                     </View>
 
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 180 }}>
@@ -195,14 +196,14 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             )}
                             {!product.isAvailable && (
                                 <View className="absolute top-4 right-4">
-                                    <Badge text="ÉPUISÉ" bgColor="bg-red-600" />
+                                    <Badge text="ÉPUISÉ" bgColor="#EF4444" />
                                 </View>
                             )}
                             <LinearGradient
-                                colors={['transparent', 'rgba(17,24,39,0.8)']}
+                                colors={['transparent', 'rgba(255,255,255,0.95)']}
                                 className="absolute bottom-0 left-0 right-0 h-20 justify-end p-4"
                             >
-                                <Text className="text-white text-2xl font-bold shadow-lg" numberOfLines={2}>{product.name}</Text>
+                                <Text className="text-gray-800 text-2xl font-bold shadow-lg" numberOfLines={2}>{product.name}</Text>
                             </LinearGradient>
                         </View>
 
@@ -215,12 +216,12 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                             {product.price.toFixed(2)} MAD
                                         </Text>
                                     )}
-                                    <Text className="text-orange-400 text-3xl font-bold">
+                                    <Text className="text-3xl font-bold" style={{ color: '#a86e02' }}>
                                         {baseProductPrice.toFixed(2)} MAD
                                     </Text>
                                 </View>
-                                <View className={`px-3 py-1 rounded-full ${product.isAvailable ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
-                                    <Text className={`font-semibold ${product.isAvailable ? 'text-green-400' : 'text-red-400'}`}>
+                                <View className={`px-3 py-1 rounded-full ${product.isAvailable ? 'bg-green-100' : 'bg-red-100'}`}>
+                                    <Text className={`font-semibold ${product.isAvailable ? 'text-green-600' : 'text-red-600'}`}>
                                         {product.isAvailable ? 'Disponible' : 'Épuisé'}
                                     </Text>
                                 </View>
@@ -229,24 +230,27 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             {/* Description */}
                             {product.description && (
                                 <View>
-                                    <Text className="text-white text-base font-semibold mb-1">Description</Text>
-                                    <Text className="text-gray-400 leading-relaxed">{product.description}</Text>
+                                    <Text className="text-gray-800 text-base font-semibold mb-1">Description</Text>
+                                    <Text className="text-gray-600 leading-relaxed">{product.description}</Text>
                                 </View>
                             )}
 
                             {/* Variations */}
                             {product.variations && product.variations.length > 0 && (
                                 <View>
-                                    <Text className="text-white text-lg font-semibold mb-2">Variations</Text>
+                                    <Text className="text-gray-800 text-lg font-semibold mb-2">Variations</Text>
                                     {product.variations.map((variation) => (
                                         <TouchableOpacity
                                             key={variation.id}
                                             onPress={() => handleToggleVariation(variation)}
                                             className={`flex-row justify-between items-center p-3 mb-2 rounded-lg border-2
-                                                ${selectedVariationOptions[variation.id] ? 'border-orange-500 bg-orange-500/10' : 'border-gray-700 bg-gray-800'}`}
+                                                ${selectedVariationOptions[variation.id] ? 'bg-orange-50' : 'bg-gray-50'}`}
+                                            style={{
+                                                borderColor: selectedVariationOptions[variation.id] ? '#a86e02' : '#e5e7eb'
+                                            }}
                                         >
-                                            <Text className={`text-base ${selectedVariationOptions[variation.id] ? 'text-orange-400' : 'text-gray-200'}`}>{variation.name}</Text>
-                                            <Text className={`text-base font-medium ${selectedVariationOptions[variation.id] ? 'text-orange-400' : 'text-gray-200'}`}>
+                                            <Text className={`text-base ${selectedVariationOptions[variation.id] ? 'text-gray-800' : 'text-gray-600'}`}>{variation.name}</Text>
+                                            <Text className={`text-base font-medium ${selectedVariationOptions[variation.id] ? 'text-gray-800' : 'text-gray-600'}`} style={selectedVariationOptions[variation.id] ? { color: '#a86e02' } : {}}>
                                                 + {safePrice(variation.price).toFixed(2)} MAD
                                             </Text>
                                         </TouchableOpacity>
@@ -257,16 +261,19 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             {/* Addons */}
                             {product.addons && product.addons.length > 0 && (
                                 <View>
-                                    <Text className="text-white text-lg font-semibold mb-2">Suppléments</Text>
+                                    <Text className="text-gray-800 text-lg font-semibold mb-2">Suppléments</Text>
                                     {product.addons.map((addon) => (
                                         <TouchableOpacity
                                             key={addon.id}
                                             onPress={() => handleToggleAddon(addon)}
                                             className={`flex-row justify-between items-center p-3 mb-2 rounded-lg border-2
-                                                ${selectedAddonOptions[addon.id] ? 'border-orange-500 bg-orange-500/10' : 'border-gray-700 bg-gray-800'}`}
+                                                ${selectedAddonOptions[addon.id] ? 'bg-orange-50' : 'bg-gray-50'}`}
+                                            style={{
+                                                borderColor: selectedAddonOptions[addon.id] ? '#a86e02' : '#e5e7eb'
+                                            }}
                                         >
-                                            <Text className={`text-base ${selectedAddonOptions[addon.id] ? 'text-orange-400' : 'text-gray-200'}`}>{addon.name}</Text>
-                                            <Text className={`text-base font-medium ${selectedAddonOptions[addon.id] ? 'text-orange-400' : 'text-gray-200'}`}>
+                                            <Text className={`text-base ${selectedAddonOptions[addon.id] ? 'text-gray-800' : 'text-gray-600'}`}>{addon.name}</Text>
+                                            <Text className={`text-base font-medium ${selectedAddonOptions[addon.id] ? 'text-gray-800' : 'text-gray-600'}`} style={selectedAddonOptions[addon.id] ? { color: '#a86e02' } : {}}>
                                                 + {safePrice(addon.price).toFixed(2)} MAD
                                             </Text>
                                         </TouchableOpacity>
@@ -277,28 +284,28 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </ScrollView>
 
                     {/* Bottom Action Bar */}
-                    <View className="absolute bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4 shadow-2xl">
+                    <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-2xl">
                         <View className="flex-row justify-between items-center mb-3">
-                            <Text className="text-gray-300 text-lg">Quantité:</Text>
-                            <View className="flex-row items-center bg-gray-800 rounded-full">
+                            <Text className="text-gray-600 text-lg">Quantité:</Text>
+                            <View className="flex-row items-center bg-gray-100 rounded-full">
                                 <TouchableOpacity
-                                    className="w-10 h-10 justify-center items-center active:bg-gray-700 rounded-l-full"
+                                    className="w-10 h-10 justify-center items-center active:bg-gray-200 rounded-l-full"
                                     onPress={() => qty > 1 && setQty(qty - 1)}
                                 >
-                                    <Feather name="minus" size={20} color={qty > 1 ? "white" : "gray-600"} />
+                                    <Feather name="minus" size={20} color={qty > 1 ? "#374151" : "#9CA3AF"} />
                                 </TouchableOpacity>
-                                <Text className="text-white text-lg font-bold w-12 text-center">{qty}</Text>
+                                <Text className="text-gray-800 text-lg font-bold w-12 text-center">{qty}</Text>
                                 <TouchableOpacity
-                                    className="w-10 h-10 justify-center items-center active:bg-gray-700 rounded-r-full"
+                                    className="w-10 h-10 justify-center items-center active:bg-gray-200 rounded-r-full"
                                     onPress={() => setQty(qty + 1)}
                                 >
-                                    <Feather name="plus" size={20} color="white" />
+                                    <Feather name="plus" size={20} color="#374151" />
                                 </TouchableOpacity>
                             </View>
                         </View>
                         <View className="flex-row justify-between items-center mb-4">
-                            <Text className="text-gray-300 text-lg">Total:</Text>
-                            <Text className="text-orange-400 font-bold text-2xl">
+                            <Text className="text-gray-600 text-lg">Total:</Text>
+                            <Text className="font-bold text-2xl" style={{ color: '#a86e02' }}>
                                 {currentOrderTotal.toFixed(2)} MAD
                             </Text>
                         </View>
@@ -306,7 +313,8 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             onPress={handleOrderPressInternal}
                             disabled={!product.isAvailable || !hasValidPrice(product)}
                             className={`py-4 rounded-xl items-center justify-center shadow-lg 
-                                ${(!product.isAvailable || !hasValidPrice(product)) ? 'bg-gray-700' : 'bg-orange-500 active:bg-orange-600'}`}
+                                ${(!product.isAvailable || !hasValidPrice(product)) ? 'bg-gray-300' : 'active:bg-orange-600'}`}
+                            style={(!product.isAvailable || !hasValidPrice(product)) ? {} : { backgroundColor: '#a86e02' }}
                         >
                             <Text className="text-white font-bold text-lg">
                                 Ajouter au Panier
@@ -322,7 +330,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(17, 24, 39, 0.85)', // Darker overlay from Tailwind bg-gray-900 with opacity
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Lighter overlay
     },
     sheetContainer: {
         position: 'absolute',

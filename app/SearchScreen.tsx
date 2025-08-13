@@ -222,30 +222,38 @@ export default function SearchScreen() {
 
         return (
             <View className="flex-1 justify-center items-center py-10">
-                <Feather name="search" size={48} color="#4B5563" />
-                <Text className="text-gray-400 mt-4 text-center px-6">
+                <View className="w-20 h-20 rounded-full bg-yellow-50 items-center justify-center mb-4">
+                    <Feather name="search" size={40} color="#a86e02" />
+                </View>
+                <Text className="text-gray-900 text-xl font-bold mb-2 text-center">
+                    {searchQuery.trim() !== '' ? 'Aucun résultat' : 'Découvrez nos produits'}
+                </Text>
+                <Text className="text-gray-600 text-center px-6 leading-6">
                     {searchQuery.trim() !== ''
                         ? `Aucun résultat trouvé pour "${searchQuery}"`
-                        : 'Aucun produit disponible actuellement'}
+                        : 'Explorez notre sélection de délicieux plats'}
                 </Text>
             </View>
         );
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-900">
-            <StatusBar barStyle="light-content" backgroundColor="#111827" />
+        <SafeAreaView className="flex-1 bg-gray-50">
+            <StatusBar barStyle="dark-content" backgroundColor="#F9FAFB" />
 
-            {/* Back button */}
-            <View className="px-4 pt-2 flex-row items-center">
-                <TouchableOpacity
-                    onPress={() => router.back()}
-                    className="bg-gray-800 rounded-full p-2 mr-3"
-                >
-                    <Feather name="arrow-left" size={24} color="white" />
-                </TouchableOpacity>
+            {/* Header with back button */}
+            <View className="px-5 py-4 bg-white border-b border-gray-200">
+                <View className="flex-row items-center">
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        className="w-10 h-10 rounded-xl bg-gray-100 items-center justify-center mr-4"
+                        activeOpacity={0.8}
+                    >
+                        <Feather name="arrow-left" size={20} color="#6B7280" />
+                    </TouchableOpacity>
 
-                <Text className="text-white text-xl font-semibold">Recherche</Text>
+                    <Text className="text-gray-900 text-xl font-bold">Recherche</Text>
+                </View>
             </View>
 
             {/* Header with Search Bar */}
@@ -256,33 +264,78 @@ export default function SearchScreen() {
             />
 
             {/* Main Content */}
-            <View className="flex-1 px-4 pt-2">
+            <View className="flex-1 px-5 pt-4">
                 {/* Results Count */}
-                {!isLoading && (
-                    <Text className="text-gray-400 mb-4">
-                        {products.length} {products.length > 1 ? 'produits trouvés' : 'produit trouvé'}
-                    </Text>
+                {!isLoading && products.length > 0 && (
+                    <View className="mb-4 bg-white rounded-xl p-4 border border-gray-200" style={{
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.05,
+                        shadowRadius: 8,
+                        elevation: 3,
+                    }}>
+                        <View className="flex-row items-center">
+                            <View className="w-8 h-8 rounded-full bg-yellow-50 items-center justify-center mr-3">
+                                <Feather name="package" size={16} color="#a86e02" />
+                            </View>
+                            <Text className="text-gray-900 font-semibold">
+                                {products.length} {products.length > 1 ? 'produits trouvés' : 'produit trouvé'}
+                            </Text>
+                        </View>
+                        {searchQuery.trim() !== '' && (
+                            <Text className="text-gray-600 text-sm mt-1 ml-11">
+                                pour "{searchQuery}"
+                            </Text>
+                        )}
+                    </View>
                 )}
 
                 {/* Loading Indicator */}
                 {isLoading && !isRefreshing && (
                     <View className="flex-1 justify-center items-center">
-                        <ActivityIndicator size="large" color="#F97316" />
-                        <Text className="text-gray-400 mt-4">Chargement des produits...</Text>
+                        <View className="bg-white rounded-2xl p-8 border border-gray-200" style={{
+                            shadowColor: '#000',
+                            shadowOffset: { width: 0, height: 4 },
+                            shadowOpacity: 0.1,
+                            shadowRadius: 12,
+                            elevation: 8,
+                        }}>
+                            <ActivityIndicator size="large" color="#a86e02" />
+                            <Text className="text-gray-700 mt-4 font-medium text-center">
+                                Chargement des produits...
+                            </Text>
+                        </View>
                     </View>
                 )}
 
                 {/* Error Message */}
                 {error && (
-                    <View className="flex-1 justify-center items-center">
-                        <Feather name="alert-circle" size={48} color="#EF4444" />
-                        <Text className="text-white mt-4 text-center">{error}</Text>
-                        <TouchableOpacity
-                            className="mt-4 bg-orange-500 px-6 py-3 rounded-full"
-                            onPress={loadInitialData}
-                        >
-                            <Text className="text-white font-bold">Réessayer</Text>
-                        </TouchableOpacity>
+                    <View className="flex-1 justify-center items-center px-6">
+                        <View className="bg-white rounded-2xl p-8 items-center border border-red-200" style={{
+                            shadowColor: '#000',
+                            shadowOffset: { width: 0, height: 4 },
+                            shadowOpacity: 0.1,
+                            shadowRadius: 12,
+                            elevation: 8,
+                        }}>
+                            <View className="w-20 h-20 rounded-full bg-red-50 items-center justify-center mb-4">
+                                <Feather name="alert-circle" size={40} color="#DC2626" />
+                            </View>
+                            <Text className="text-gray-900 text-xl font-bold mb-2 text-center">
+                                Erreur de chargement
+                            </Text>
+                            <Text className="text-gray-600 mb-6 text-center leading-6">
+                                {error}
+                            </Text>
+                            <TouchableOpacity
+                                className="py-3 px-6 rounded-xl"
+                                style={{ backgroundColor: '#a86e02' }}
+                                onPress={loadInitialData}
+                                activeOpacity={0.9}
+                            >
+                                <Text className="text-white font-bold">Réessayer</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 )}
 
@@ -308,8 +361,8 @@ export default function SearchScreen() {
                             <RefreshControl
                                 refreshing={isRefreshing}
                                 onRefresh={handleRefresh}
-                                tintColor="#F97316"
-                                colors={['#F97316']}
+                                tintColor="#a86e02"
+                                colors={['#a86e02']}
                             />
                         }
                         ListEmptyComponent={renderEmptyList}

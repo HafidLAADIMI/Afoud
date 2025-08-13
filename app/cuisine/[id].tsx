@@ -50,7 +50,7 @@ export default function CuisineDetailScreen() {
             console.log(`CuisineDetailScreen: Loading cuisine with ID: ${cuisineId}`);
             fetchCuisineDetails(cuisineId);
         } else {
-            console.error('No cuisineId provided in navigation params');
+            console.log('No cuisineId provided in navigation params');
             setError('ID de cuisine manquant');
             setIsLoading(false);
         }
@@ -160,18 +160,18 @@ export default function CuisineDetailScreen() {
     // Loading state
     if (isLoading) {
         return (
-            <SafeAreaView className="flex-1 bg-gray-900 p-4">
+            <SafeAreaView className="flex-1 bg-white p-4">
                 <View className="flex-row items-center mb-4">
                     <TouchableOpacity onPress={() => router.back()} className="mr-4">
-                        <Feather name="arrow-left" size={24} color="white" />
+                        <Feather name="arrow-left" size={24} color="#374151" />
                     </TouchableOpacity>
-                    <Text className="text-white text-xl font-bold">
+                    <Text className="text-gray-800 text-xl font-bold">
                         {cuisineName || 'Détails de la cuisine'}
                     </Text>
                 </View>
                 <View className="flex-1 justify-center items-center">
-                    <ActivityIndicator size="large" color="#F97316" />
-                    <Text className="text-white mt-4">Chargement des détails de la cuisine...</Text>
+                    <ActivityIndicator size="large" color="#a86e02" />
+                    <Text className="text-gray-700 mt-4">Chargement des détails de la cuisine...</Text>
                 </View>
             </SafeAreaView>
         );
@@ -180,15 +180,15 @@ export default function CuisineDetailScreen() {
     // Error state
     if (error || !cuisine) {
         return (
-            <SafeAreaView className="flex-1 bg-gray-900 p-4">
+            <SafeAreaView className="flex-1 bg-white p-4">
                 <View className="flex-row items-center mb-4">
                     <TouchableOpacity onPress={() => router.back()} className="mr-4">
-                        <Feather name="arrow-left" size={24} color="white" />
+                        <Feather name="arrow-left" size={24} color="#374151" />
                     </TouchableOpacity>
-                    <Text className="text-white text-xl font-bold">Erreur</Text>
+                    <Text className="text-gray-800 text-xl font-bold">Erreur</Text>
                 </View>
                 <View className="flex-1 justify-center items-center">
-                    <Text className="text-white text-lg mb-4">
+                    <Text className="text-gray-800 text-lg mb-4">
                         {error || 'Échec du chargement des détails de la cuisine'}
                     </Text>
                     <TouchableOpacity
@@ -199,7 +199,8 @@ export default function CuisineDetailScreen() {
                                 router.back();
                             }
                         }}
-                        className="bg-orange-500 px-6 py-3 rounded-full"
+                        className="px-6 py-3 rounded-full"
+                        style={{ backgroundColor: '#a86e02' }}
                     >
                         <Text className="text-white font-bold">
                             {cuisineId ? 'Réessayer' : 'Retour'}
@@ -227,7 +228,7 @@ export default function CuisineDetailScreen() {
     });
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-900">
+        <SafeAreaView className="flex-1 bg-white">
             <ScrollView showsVerticalScrollIndicator={false}>
                 {/* Hero Section with Cuisine Image */}
                 <View className="relative h-60 w-full">
@@ -265,13 +266,13 @@ export default function CuisineDetailScreen() {
                     {/* About This Cuisine */}
                     <View className="mb-6">
                         <View className="flex-row items-center mb-2">
-                            <View className="w-1 h-6 bg-orange-500 rounded-full mr-2" />
-                            <Text className="text-white text-lg font-bold">
+                            <View className="w-1 h-6 rounded-full mr-2" style={{ backgroundColor: '#a86e02' }} />
+                            <Text className="text-gray-800 text-lg font-bold">
                                 À propos de{" "}
                                 <Text>{cuisine?.name}</Text>
                             </Text>
                         </View>
-                        <Text className="text-gray-400">
+                        <Text className="text-gray-600">
                             {cuisine?.longDescription ||
                                 `${cuisine?.name} est connue pour ses saveurs riches et ses plats variés. Notre restaurant vous propose l'authentique goût de la cuisine ${cuisine?.name} préparée avec des ingrédients frais et des recettes traditionnelles.`}
                         </Text>
@@ -288,13 +289,14 @@ export default function CuisineDetailScreen() {
                                 <TouchableOpacity
                                     key={index}
                                     className={`px-4 py-2 mr-2 rounded-full ${
-                                        selectedFilter === category ? 'bg-orange-500' : 'bg-gray-800'
+                                        selectedFilter === category ? '' : 'bg-gray-100'
                                     }`}
+                                    style={selectedFilter === category ? { backgroundColor: '#a86e02' } : {}}
                                     onPress={() => setSelectedFilter(category)}
                                 >
                                     <Text
                                         className={`${
-                                            selectedFilter === category ? 'text-white' : 'text-gray-400'
+                                            selectedFilter === category ? 'text-white' : 'text-gray-600'
                                         } capitalize`}
                                     >
                                         {category}
@@ -305,11 +307,11 @@ export default function CuisineDetailScreen() {
                     )}
 
                     {/* Products Grid */}
-                    <Text className="text-white text-lg font-bold mb-4">Articles au menu</Text>
+                    <Text className="text-gray-800 text-lg font-bold mb-4">Articles au menu</Text>
 
                     {filteredProducts.length === 0 ? (
                         <View className="py-12 items-center">
-                            <Text className="text-gray-400">Aucun article trouvé dans cette catégorie</Text>
+                            <Text className="text-gray-600">Aucun article trouvé dans cette catégorie</Text>
                         </View>
                     ) : (
                         <View className="flex-row flex-wrap justify-between">

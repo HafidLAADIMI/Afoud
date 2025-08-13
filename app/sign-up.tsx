@@ -310,9 +310,9 @@ export default function SignUpScreen() {
     // Show loading while checking privacy status
     if (isCheckingPrivacy) {
         return (
-            <SafeAreaView className="flex-1 bg-gray-900 justify-center items-center">
-                <ActivityIndicator size="large" color="#F97316" />
-                <Text className="text-white mt-4">Chargement...</Text>
+            <SafeAreaView className="flex-1 bg-gray-50 justify-center items-center">
+                <ActivityIndicator size="large" color="#a86e02" />
+                <Text className="text-gray-700 mt-4">Chargement...</Text>
             </SafeAreaView>
         );
     }
@@ -323,11 +323,11 @@ export default function SignUpScreen() {
     }
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-900">
-            <StatusBar backgroundColor="#111827" barStyle="light-content" />
+        <SafeAreaView className="flex-1 bg-gray-50">
+            <StatusBar backgroundColor="#f9fafb" barStyle="dark-content" />
 
             {/* Header */}
-            <LinearGradient colors={['#F97316', '#EA580C']} className="w-full h-1/4 absolute" />
+            <LinearGradient colors={['#a86e02', '#8b5a02']} className="w-full h-1/4 absolute" />
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -338,24 +338,24 @@ export default function SignUpScreen() {
                     <View className="items-center justify-center py-8">
                         <Image
                             source={require('@/assets/logo.jpg')}
-                            className="w-20 h-20 mb-2"
-                            resizeMode="contain"
+                            className="w-28 h-28 mb-2 rounded-full"
+                            resizeMode="cover"
                         />
                         <Text className="text-white text-2xl font-bold">Créer un Compte</Text>
-                        <Text className="text-white/80 text-base">Inscrivez-vous pour commencer</Text>
+                        <Text className="text-white/90 text-base">Inscrivez-vous pour commencer</Text>
                     </View>
 
                     {/* Sign Up form */}
-                    <View className="bg-white rounded-t-3xl flex-1 px-6 pt-8">
+                    <View className="bg-white rounded-t-3xl flex-1 px-6 pt-8 shadow-lg">
                         {/* Name input */}
                         <View className="mb-4">
-                            <Text className="text-gray-700 mb-2 font-medium">Nom Complet</Text>
-                            <View className={`flex-row items-center border rounded-xl px-4 py-2 ${
-                                nameError ? 'border-red-500' : 'border-gray-300'
+                            <Text className="text-gray-800 mb-2 font-medium">Nom Complet</Text>
+                            <View className={`flex-row items-center border rounded-xl px-4 py-3 bg-gray-50 ${
+                                nameError ? 'border-red-500' : 'border-gray-200'
                             }`}>
-                                <Feather name="user" size={20} color={nameError ? "#EF4444" : "#9CA3AF"} />
+                                <Feather name="user" size={20} color={nameError ? "#EF4444" : "#6B7280"} />
                                 <TextInput
-                                    className="flex-1 ml-2 text-gray-800"
+                                    className="flex-1 ml-3 text-gray-800"
                                     placeholder="Votre nom complet"
                                     placeholderTextColor="#9CA3AF"
                                     value={name}
@@ -371,13 +371,13 @@ export default function SignUpScreen() {
 
                         {/* Email input */}
                         <View className="mb-4">
-                            <Text className="text-gray-700 mb-2 font-medium">Email</Text>
-                            <View className={`flex-row items-center border rounded-xl px-4 py-2 ${
-                                emailError ? 'border-red-500' : 'border-gray-300'
+                            <Text className="text-gray-800 mb-2 font-medium">Email</Text>
+                            <View className={`flex-row items-center border rounded-xl px-4 py-3 bg-gray-50 ${
+                                emailError ? 'border-red-500' : 'border-gray-200'
                             }`}>
-                                <Feather name="mail" size={20} color={emailError ? "#EF4444" : "#9CA3AF"} />
+                                <Feather name="mail" size={20} color={emailError ? "#EF4444" : "#6B7280"} />
                                 <TextInput
-                                    className="flex-1 ml-2 text-gray-800"
+                                    className="flex-1 ml-3 text-gray-800"
                                     placeholder="votre@email.com"
                                     placeholderTextColor="#9CA3AF"
                                     keyboardType="email-address"
@@ -395,13 +395,13 @@ export default function SignUpScreen() {
 
                         {/* Password input */}
                         <View className="mb-4">
-                            <Text className="text-gray-700 mb-2 font-medium">Mot de passe</Text>
-                            <View className={`flex-row items-center border rounded-xl px-4 py-2 ${
-                                passwordError ? 'border-red-500' : 'border-gray-300'
+                            <Text className="text-gray-800 mb-2 font-medium">Mot de passe</Text>
+                            <View className={`flex-row items-center border rounded-xl px-4 py-3 bg-gray-50 ${
+                                passwordError ? 'border-red-500' : 'border-gray-200'
                             }`}>
-                                <Feather name="lock" size={20} color={passwordError ? "#EF4444" : "#9CA3AF"} />
+                                <Feather name="lock" size={20} color={passwordError ? "#EF4444" : "#6B7280"} />
                                 <TextInput
-                                    className="flex-1 ml-2 text-gray-800"
+                                    className="flex-1 ml-3 text-gray-800"
                                     placeholder="Créer un mot de passe"
                                     placeholderTextColor="#9CA3AF"
                                     secureTextEntry={!isPasswordVisible}
@@ -419,7 +419,7 @@ export default function SignUpScreen() {
                                     <Feather
                                         name={isPasswordVisible ? "eye-off" : "eye"}
                                         size={20}
-                                        color="#9CA3AF"
+                                        color="#6B7280"
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -447,13 +447,13 @@ export default function SignUpScreen() {
 
                         {/* Confirm Password input */}
                         <View className="mb-6">
-                            <Text className="text-gray-700 mb-2 font-medium">Confirmer le Mot de passe</Text>
-                            <View className={`flex-row items-center border rounded-xl px-4 py-2 ${
-                                confirmPasswordError ? 'border-red-500' : 'border-gray-300'
+                            <Text className="text-gray-800 mb-2 font-medium">Confirmer le Mot de passe</Text>
+                            <View className={`flex-row items-center border rounded-xl px-4 py-3 bg-gray-50 ${
+                                confirmPasswordError ? 'border-red-500' : 'border-gray-200'
                             }`}>
-                                <Feather name="lock" size={20} color={confirmPasswordError ? "#EF4444" : "#9CA3AF"} />
+                                <Feather name="lock" size={20} color={confirmPasswordError ? "#EF4444" : "#6B7280"} />
                                 <TextInput
-                                    className="flex-1 ml-2 text-gray-800"
+                                    className="flex-1 ml-3 text-gray-800"
                                     placeholder="Confirmer le mot de passe"
                                     placeholderTextColor="#9CA3AF"
                                     secureTextEntry={!isConfirmPasswordVisible}
@@ -471,7 +471,7 @@ export default function SignUpScreen() {
                                     <Feather
                                         name={isConfirmPasswordVisible ? "eye-off" : "eye"}
                                         size={20}
-                                        color="#9CA3AF"
+                                        color="#6B7280"
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -480,7 +480,8 @@ export default function SignUpScreen() {
 
                         {/* Sign Up button */}
                         <TouchableOpacity
-                            className="bg-orange-500 py-3 rounded-xl items-center mb-6"
+                            className="py-4 rounded-xl items-center mb-6 shadow-sm"
+                            style={{ backgroundColor: '#a86e02' }}
                             onPress={handleSignUp}
                             disabled={isLoading}
                             accessibilityLabel="Bouton de création de compte"
@@ -495,9 +496,9 @@ export default function SignUpScreen() {
 
                         {/* Divider */}
                         <View className="flex-row items-center mb-6">
-                            <View className="flex-1 h-0.5 bg-gray-300" />
+                            <View className="flex-1 h-0.5 bg-gray-200" />
                             <Text className="mx-4 text-gray-500">OU</Text>
-                            <View className="flex-1 h-0.5 bg-gray-300" />
+                            <View className="flex-1 h-0.5 bg-gray-200" />
                         </View>
 
                         {/* Login link */}
@@ -507,7 +508,7 @@ export default function SignUpScreen() {
                                 onPress={navigateToLogin}
                                 accessibilityLabel="Se connecter à un compte existant"
                             >
-                                <Text className="text-orange-500 font-semibold">Se Connecter</Text>
+                                <Text className="font-semibold" style={{ color: '#a86e02' }}>Se Connecter</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -517,7 +518,7 @@ export default function SignUpScreen() {
                                 onPress={() => setShowPrivacyDisclosure(true)}
                                 className="flex-row items-center"
                             >
-                                <Feather name="shield" size={16} color="#9CA3AF" />
+                                <Feather name="shield" size={16} color="#6B7280" />
                                 <Text className="text-gray-500 text-sm ml-2">
                                     Paramètres de confidentialité
                                 </Text>

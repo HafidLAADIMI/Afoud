@@ -54,11 +54,11 @@ export default function TermsConditionsScreen() {
     ];
 
     return (
-        <SafeAreaView className="flex-1 bg-white">
-            <StatusBar backgroundColor="#111827" barStyle="light-content" />
+        <SafeAreaView className="flex-1 bg-gray-50">
+            <StatusBar backgroundColor="#F9FAFB" barStyle="dark-content" />
 
             {/* En-tête avec dégradé */}
-            <LinearGradient colors={['#F97316', '#EA580C']} className="w-full h-24 absolute z-10">
+            <LinearGradient colors={['#a86e02', '#8b5a02']} className="w-full h-24 absolute z-10">
                 <Stack.Screen
                     options={{
                         headerShown: true,
@@ -73,17 +73,23 @@ export default function TermsConditionsScreen() {
 
             <ScrollView className="flex-1 mt-14" showsVerticalScrollIndicator={false}>
                 {/* En-tête des conditions */}
-                <View className="px-5 py-8 bg-orange-50 rounded-b-3xl mb-5 mt-5">
-                    <Text className="text-2xl font-bold text-gray-800 mb-3 text-center">
+                <View className="px-5 py-8 bg-yellow-50 rounded-b-3xl mb-5 mt-5 border border-yellow-100">
+                    <Text className="text-2xl font-bold text-gray-900 mb-3 text-center">
                         Conditions Générales
                     </Text>
-                    <Text className="text-base text-gray-600 text-center px-2">
+                    <Text className="text-base text-gray-600 text-center px-2 leading-6">
                         Veuillez lire attentivement les conditions générales qui régissent l'utilisation de nos services
                     </Text>
                 </View>
 
                 {/* Introduction */}
-                <View className="px-5 py-4 border-b border-gray-200">
+                <View className="px-5 py-4 border-b border-gray-200 bg-white mx-5 rounded-xl mb-4" style={{
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.05,
+                    shadowRadius: 8,
+                    elevation: 3,
+                }}>
                     <Text className="text-sm leading-6 text-gray-600 mb-4">
                         Ces conditions générales définissent les termes et conditions d'utilisation des services proposés par Afoud Restaurant, accessible via notre application mobile et notre site web. En utilisant nos services, vous acceptez d'être lié par ces conditions. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.
                     </Text>
@@ -99,8 +105,14 @@ export default function TermsConditionsScreen() {
 
                 {/* Sections des conditions */}
                 {termsSections.map((section, index) => (
-                    <View key={index} className="px-5 py-4 border-b border-gray-200">
-                        <Text className="text-base font-semibold text-gray-800 mb-2">
+                    <View key={index} className="px-5 py-4 border-b border-gray-200 bg-white mx-5 rounded-xl mb-4" style={{
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.05,
+                        shadowRadius: 8,
+                        elevation: 3,
+                    }}>
+                        <Text className="text-base font-semibold text-gray-900 mb-2">
                             {index + 1}. {section.title}
                         </Text>
                         <Text className="text-sm leading-6 text-gray-600">
@@ -110,14 +122,20 @@ export default function TermsConditionsScreen() {
                 ))}
 
                 {/* Vos droits */}
-                <View className="px-5 py-4 border-b border-gray-200">
-                    <Text className="text-lg font-bold text-gray-800 mb-3">
+                <View className="px-5 py-4 border-b border-gray-200 bg-white mx-5 rounded-xl mb-4" style={{
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.05,
+                    shadowRadius: 8,
+                    elevation: 3,
+                }}>
+                    <Text className="text-lg font-bold text-gray-900 mb-3">
                         Vos droits en tant que client
                     </Text>
 
                     <View className="mb-4">
                         <View className="flex-row mb-2 items-center">
-                            <MaterialIcons name="check-circle" size={18} color="#F97316" />
+                            <MaterialIcons name="check-circle" size={18} color="#a86e02" />
                             <Text className="ml-2 text-sm text-gray-700 font-medium">
                                 Droit à l'information
                             </Text>
@@ -129,7 +147,7 @@ export default function TermsConditionsScreen() {
 
                     <View className="mb-4">
                         <View className="flex-row mb-2 items-center">
-                            <MaterialIcons name="check-circle" size={18} color="#F97316" />
+                            <MaterialIcons name="check-circle" size={18} color="#a86e02" />
                             <Text className="ml-2 text-sm text-gray-700 font-medium">
                                 Droit à la qualité
                             </Text>
@@ -141,7 +159,7 @@ export default function TermsConditionsScreen() {
 
                     <View className="mb-4">
                         <View className="flex-row mb-2 items-center">
-                            <MaterialIcons name="check-circle" size={18} color="#F97316" />
+                            <MaterialIcons name="check-circle" size={18} color="#a86e02" />
                             <Text className="ml-2 text-sm text-gray-700 font-medium">
                                 Droit de réclamation
                             </Text>
@@ -153,7 +171,7 @@ export default function TermsConditionsScreen() {
 
                     <View>
                         <View className="flex-row mb-2 items-center">
-                            <MaterialIcons name="check-circle" size={18} color="#F97316" />
+                            <MaterialIcons name="check-circle" size={18} color="#a86e02" />
                             <Text className="ml-2 text-sm text-gray-700 font-medium">
                                 Droit à la confidentialité
                             </Text>
@@ -165,15 +183,21 @@ export default function TermsConditionsScreen() {
                 </View>
 
                 {/* Acceptation des conditions */}
-                <View className="px-5 py-6 border-b border-gray-200">
-                    <Text className="text-base font-semibold text-gray-800 mb-4">
+                <View className="px-5 py-6 border-b border-gray-200 bg-white mx-5 rounded-xl mb-4" style={{
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.05,
+                    shadowRadius: 8,
+                    elevation: 3,
+                }}>
+                    <Text className="text-base font-semibold text-gray-900 mb-4">
                         Acceptation des conditions
                     </Text>
 
-                    <View className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
+                    <View className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
                         <View className="flex-row justify-between items-center mb-4">
                             <View className="flex-1">
-                                <Text className="text-sm font-medium text-gray-800 mb-1">
+                                <Text className="text-sm font-medium text-gray-900 mb-1">
                                     J'accepte les conditions générales
                                 </Text>
                                 <Text className="text-xs text-gray-500">
@@ -183,15 +207,15 @@ export default function TermsConditionsScreen() {
                             <Switch
                                 value={acceptTerms}
                                 onValueChange={setAcceptTerms}
-                                trackColor={{ false: "#D1D5DB", true: "#FDBA74" }}
-                                thumbColor={acceptTerms ? "#F97316" : "#F3F4F6"}
+                                trackColor={{ false: "#D1D5DB", true: "#FDE68A" }}
+                                thumbColor={acceptTerms ? "#a86e02" : "#F3F4F6"}
                                 ios_backgroundColor="#D1D5DB"
                             />
                         </View>
 
                         <View className="flex-row justify-between items-center">
                             <View className="flex-1">
-                                <Text className="text-sm font-medium text-gray-800 mb-1">
+                                <Text className="text-sm font-medium text-gray-900 mb-1">
                                     Recevoir les mises à jour
                                 </Text>
                                 <Text className="text-xs text-gray-500">
@@ -201,8 +225,8 @@ export default function TermsConditionsScreen() {
                             <Switch
                                 value={acceptUpdates}
                                 onValueChange={setAcceptUpdates}
-                                trackColor={{ false: "#D1D5DB", true: "#FDBA74" }}
-                                thumbColor={acceptUpdates ? "#F97316" : "#F3F4F6"}
+                                trackColor={{ false: "#D1D5DB", true: "#FDE68A" }}
+                                thumbColor={acceptUpdates ? "#a86e02" : "#F3F4F6"}
                                 ios_backgroundColor="#D1D5DB"
                             />
                         </View>
@@ -210,9 +234,13 @@ export default function TermsConditionsScreen() {
 
                     <TouchableOpacity
                         className={`py-3 rounded-lg items-center ${
-                            acceptTerms ? 'bg-orange-500' : 'bg-gray-300'
+                            acceptTerms ? '' : ''
                         }`}
+                        style={{
+                            backgroundColor: acceptTerms ? '#a86e02' : '#D1D5DB'
+                        }}
                         disabled={!acceptTerms}
+                        activeOpacity={0.9}
                     >
                         <Text className={`font-medium ${
                             acceptTerms ? 'text-white' : 'text-gray-500'
@@ -223,10 +251,16 @@ export default function TermsConditionsScreen() {
                 </View>
 
                 {/* Coordonnées et mise à jour */}
-                <View className="px-5 py-6">
+                <View className="px-5 py-6 bg-white mx-5 rounded-xl mb-8" style={{
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.05,
+                    shadowRadius: 8,
+                    elevation: 3,
+                }}>
                     <View className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                         <View className="flex-row items-center mb-3">
-                            <MaterialIcons name="update" size={18} color="#F97316" />
+                            <MaterialIcons name="update" size={18} color="#a86e02" />
                             <Text className="ml-2 text-sm text-gray-600">
                                 Dernière mise à jour : 21 mai 2025
                             </Text>
@@ -235,7 +269,8 @@ export default function TermsConditionsScreen() {
                         <Text className="text-sm text-gray-600 mb-3">
                             Pour toute question concernant nos conditions générales, veuillez contacter notre service client à{' '}
                             <Text
-                                className="text-orange-500 font-medium"
+                                className="font-medium"
+                                style={{ color: '#a86e02' }}
                                 onPress={contactSupport}
                             >
                                 support@afoud.ma
@@ -243,10 +278,12 @@ export default function TermsConditionsScreen() {
                         </Text>
 
                         <TouchableOpacity
-                            className="flex-row items-center justify-center bg-orange-500 py-2 rounded-lg"
+                            className="flex-row items-center justify-center py-2 rounded-lg"
+                            style={{ backgroundColor: '#a86e02' }}
                             onPress={contactSupport}
                             accessibilityLabel="Contacter le service client"
                             accessibilityRole="button"
+                            activeOpacity={0.9}
                         >
                             <Feather name="headphones" size={16} color="#FFFFFF" />
                             <Text className="ml-2 text-white font-medium">

@@ -65,7 +65,7 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
             <TouchableOpacity
                 onPress={() => handleItemPress(item)}
                 activeOpacity={0.8}
-                className="mr-4 rounded-xl overflow-hidden bg-gray-800"
+                className="mr-4 rounded-xl overflow-hidden bg-white"
                 style={styles.card}
             >
                 <View>
@@ -92,7 +92,7 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
 
                     {/* Discount Tag */}
                     {discountPercentage > 0 && (
-                        <View className="absolute top-2 left-2 bg-orange-500 px-3 py-1 rounded-md">
+                        <View className="absolute top-2 left-2 px-3 py-1 rounded-md" style={{ backgroundColor: '#a86e02' }}>
                             <Text className="text-white font-bold">{discountPercentage}% RÉDUCTION</Text>
                         </View>
                     )}
@@ -108,18 +108,18 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
                 <View className="p-3">
                     {/* Restaurant Name if available */}
                     {item.restaurantId && (
-                        <Text className="text-gray-400 text-sm mb-1">Restaurant ID: {item.restaurantId}</Text>
+                        <Text className="text-gray-600 text-sm mb-1">Restaurant ID: {item.restaurantId}</Text>
                     )}
 
                     {/* Food Name */}
-                    <Text className="text-white text-lg font-bold mb-1" numberOfLines={1}>
+                    <Text className="text-gray-800 text-lg font-bold mb-1" numberOfLines={1}>
                         {item.name}
                     </Text>
 
                     {/* Rating */}
                     <View className="flex-row items-center mb-2">
                         <Feather name="star" size={16} color="#F59E0B" />
-                        <Text className="text-white ml-1">
+                        <Text className="text-gray-700 ml-1">
                             {item.rating || "4.0"} {item.reviewCount ? `(${item.reviewCount})` : "(1)"}
                         </Text>
                     </View>
@@ -128,11 +128,11 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
                     <View className="flex-row items-center">
                         {hasDiscount ? (
                             <>
-                                <Text className="text-gray-400 line-through mr-2">
+                                <Text className="text-gray-500 line-through mr-2">
                                     {item.price.toFixed(2)} MAD
                                 </Text>
                                 {hasValidDisplayPrice ? (
-                                    <Text className="text-white text-xl font-bold">
+                                    <Text className="text-gray-800 text-xl font-bold">
                                         {item.discountPrice.toFixed(2)} MAD
                                     </Text>
                                 ) : (
@@ -143,7 +143,7 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
                             </>
                         ) : (
                             hasValidDisplayPrice ? (
-                                <Text className="text-white text-xl font-bold">
+                                <Text className="text-gray-800 text-xl font-bold">
                                     {displayPrice.toFixed(2)} MAD
                                 </Text>
                             ) : (
@@ -156,14 +156,14 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
 
                     {/* Add Button */}
                     <TouchableOpacity
-                        className="absolute bottom-3 right-3 bg-gray-900 rounded-full p-2"
+                        className="absolute bottom-3 right-3 bg-gray-100 rounded-full p-2"
                         onPress={() => handleItemPress(item)}
                         disabled={!hasValidDisplayPrice || !isProductAvailable}
                     >
                         <Feather
                             name={hasValidDisplayPrice && isProductAvailable ? "plus" : "x"}
                             size={20}
-                            color={hasValidDisplayPrice && isProductAvailable ? "#F97316" : "#EF4444"}
+                            color={hasValidDisplayPrice && isProductAvailable ? "#a86e02" : "#EF4444"}
                         />
                     </TouchableOpacity>
                 </View>
@@ -176,13 +176,13 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
             {/* Section Title */}
             <View className="px-4 flex-row justify-between items-center mb-4">
                 <View>
-                    <Text className="text-white text-xl font-bold">{title}</Text>
+                    <Text className="text-gray-800 text-xl font-bold">{title}</Text>
                     {subtitle && (
-                        <Text className="text-gray-400 mt-1">{subtitle}</Text>
+                        <Text className="text-gray-600 mt-1">{subtitle}</Text>
                     )}
                 </View>
-                <View className="bg-gray-800/60 p-2 rounded-full">
-                    <Feather name="arrow-right" size={20} color="#F97316" />
+                <View className="bg-gray-100 p-2 rounded-full">
+                    <Feather name="arrow-right" size={20} color="#a86e02" />
                 </View>
             </View>
 

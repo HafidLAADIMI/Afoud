@@ -31,8 +31,8 @@ const CustomToggleSwitch = ({ value, onValueChange }) => (
     <TouchableOpacity
         onPress={onValueChange}
         activeOpacity={0.8}
-        className={`w-14 h-7 rounded-full flex-row items-center transition-all duration-300
-                ${value ? 'bg-orange-500' : 'bg-gray-600'}`}
+        className={`w-14 h-7 rounded-full flex-row items-center transition-all duration-300`}
+        style={{ backgroundColor: value ? '#a86e02' : '#6B7280' }}
     >
         <View
             className={`w-5 h-5 rounded-full bg-white transition-all duration-300
@@ -47,12 +47,12 @@ const CustomToggleSwitch = ({ value, onValueChange }) => (
 /* ----------------------------------------------------------------- */
 const MenuItem = ({ icon, label, onPress, isLast = false, badge = null }) => (
     <TouchableOpacity
-        className={`px-4 py-4 flex-row items-center ${isLast ? '' : 'border-b border-gray-700'}`}
+        className={`px-4 py-4 flex-row items-center ${isLast ? '' : 'border-b border-gray-200'}`}
         activeOpacity={0.7}
         onPress={onPress}
     >
         <View className="w-9 items-center">{icon}</View>
-        <Text className="text-white font-medium ml-3 flex-1">{label}</Text>
+        <Text className="text-gray-800 font-medium ml-3 flex-1">{label}</Text>
 
         {badge && (
             <View className="bg-red-500 px-2 py-0.5 rounded-full">
@@ -67,10 +67,10 @@ const MenuItem = ({ icon, label, onPress, isLast = false, badge = null }) => (
 const Section = ({ title, children }) => (
     <View className="mx-4 mb-6">
         <View className="flex-row items-center mb-2">
-            <View className="w-2 h-2 rounded-full bg-orange-500 mr-2" />
-            <Text className="text-orange-500 text-base font-bold">{title}</Text>
+            <View className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: '#a86e02' }} />
+            <Text className="text-base font-bold" style={{ color: '#a86e02' }}>{title}</Text>
         </View>
-        <View className="bg-gray-800 rounded-xl overflow-hidden shadow-lg shadow-black/20">
+        <View className="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
             {children}
         </View>
     </View>
@@ -112,11 +112,11 @@ export default function SidebarScreen() {
 
     /* UI ------------------------------------------------------------- */
     return (
-        <SafeAreaView className="flex-1 bg-gray-900">
-            <StatusBar backgroundColor="#111827" barStyle="light-content" />
+        <SafeAreaView className="flex-1 bg-gray-50">
+            <StatusBar backgroundColor="#f9fafb" barStyle="dark-content" />
 
             {/* ───── User header ───── */}
-            <LinearGradient colors={['#F97316', '#EA580C']} className="px-4 py-6">
+            <LinearGradient colors={['#a86e02', '#8b5a02']} className="px-4 py-6">
                 <View className="flex-row items-center">
                     <View className="w-16 h-16 rounded-full bg-white/20 justify-center items-center
                           overflow-hidden border-2 border-white/30">
@@ -173,31 +173,31 @@ export default function SidebarScreen() {
 
                 {/* General --------------------------------------------------- */}
                 <Section title="Général">
-                    <MenuItem icon={<Feather name="user" size={20} color="#F97316" />}
+                    <MenuItem icon={<Feather name="user" size={20} color="#a86e02" />}
                               label="Profil"
                               onPress={() => router.push('/profileScreen')} />
                      {/*  ---------------------------------------------------
-                    <MenuItem icon={<MaterialIcons name="location-on" size={20} color="#F97316" />}
+                    <MenuItem icon={<MaterialIcons name="location-on" size={20} color="#a86e02" />}
                               label="Mes Adresses"
                            />
 
-                    <MenuItem icon={<Ionicons name="language-outline" size={20} color="#F97316" />}
+                    <MenuItem icon={<Ionicons name="language-outline" size={20} color="#a86e02" />}
                               label="Langue"
                            /*   onPress={() => router.push('/languageScreen')} 
                          */}
                          {/* 
-                    <View className="px-4 py-4 flex-row items-center justify-between border-b border-gray-700">
+                    <View className="px-4 py-4 flex-row items-center justify-between border-b border-gray-200">
                         <View className="flex-row items-center">
                             <View className="w-9 items-center">
-                                <Feather name="moon" size={20} color="#F97316" />
+                                <Feather name="moon" size={20} color="#a86e02" />
                             </View>
-                            <Text className="text-white font-medium ml-3">Mode Sombre</Text>
+                            <Text className="text-gray-800 font-medium ml-3">Mode Sombre</Text>
                         </View>
                         <CustomToggleSwitch value={isDarkMode} onValueChange={()=>{}} />
                     </View>
                             */}
                             {/* 
-                    <MenuItem icon={<Feather name="bell" size={20} color="#F97316" />}
+                    <MenuItem icon={<Feather name="bell" size={20} color="#a86e02" />}
                               label="Notifications"
 
                               isLast
@@ -207,16 +207,16 @@ export default function SidebarScreen() {
 
                 {/* Promotions & Rewards ------------------------------------- 
                 <Section title="Promotions & Récompenses">
-                    <MenuItem icon={<FontAwesome name="ticket" size={20} color="#F97316" />}
+                    <MenuItem icon={<FontAwesome name="ticket" size={20} color="#a86e02" />}
                               label="Mes Coupons"
                               badge={user ? '2' : undefined}
                              />
 
-                    <MenuItem icon={<Feather name="gift" size={20} color="#F97316" />}
+                    <MenuItem icon={<Feather name="gift" size={20} color="#a86e02" />}
                               label="Récompenses"
                             />
 
-                    <MenuItem icon={<Feather name="credit-card" size={20} color="#F97316" />}
+                    <MenuItem icon={<Feather name="credit-card" size={20} color="#a86e02" />}
                               label="Méthodes de Paiement"
 
                               isLast />
@@ -225,13 +225,13 @@ export default function SidebarScreen() {
 
                 {/* Earn with Us --------------------------------------------- 
                 <Section title="Gagnez avec Nous">
-                    <MenuItem icon={<Feather name="users" size={20} color="#F97316" />}
+                    <MenuItem icon={<Feather name="users" size={20} color="#a86e02" />}
                               label="Parrainage & Gains"
                                />
-                    <MenuItem icon={<Feather name="navigation" size={20} color="#F97316" />}
+                    <MenuItem icon={<Feather name="navigation" size={20} color="#a86e02" />}
                               label="Devenir Livreur Partenaire"
                               />
-                    <MenuItem icon={<FontAwesome name="building" size={20} color="#F97316" />}
+                    <MenuItem icon={<FontAwesome name="building" size={20} color="#a86e02" />}
                               label="Référencer Votre Restaurant"
 
                               isLast />
@@ -241,16 +241,16 @@ export default function SidebarScreen() {
 
                 {/* Help & Support ------------------------------------------- */}
                 <Section title="Aide & Support">
-                    <MenuItem onPress={()=>router.push("/apropos")} icon={<Feather name="info" size={20} color="#F97316" />}
+                    <MenuItem onPress={()=>router.push("/apropos")} icon={<Feather name="info" size={20} color="#a86e02" />}
                               label="À Propos"
                               />
-                      <MenuItem onPress={()=>router.push("/helpAndSupportScreen")} icon={<Feather name="help-circle" size={20} color="#F97316" />}
+                      <MenuItem onPress={()=>router.push("/helpAndSupportScreen")} icon={<Feather name="help-circle" size={20} color="#a86e02" />}
                               label="Aide & Support"
                               />
-                    <MenuItem onPress={()=>router.push("/termsConditionsScreen")} icon={<Feather name="file-text" size={20} color="#F97316" />}
+                    <MenuItem onPress={()=>router.push("/termsConditionsScreen")} icon={<Feather name="file-text" size={20} color="#a86e02" />}
                               label="Conditions Générales"
                               />
-                    <MenuItem onPress={()=>router.push("/privacyPolicyScreen")} icon={<Feather name="shield" size={20} color="#F97316" />}
+                    <MenuItem onPress={()=>router.push("/privacyPolicyScreen")} icon={<Feather name="shield" size={20} color="#a86e02" />}
                               label="Politique de Confidentialité"
 
                               isLast />
@@ -260,15 +260,16 @@ export default function SidebarScreen() {
                 <View className="items-center justify-center my-6 pb-10">
                     {user ? (
                         <TouchableOpacity
-                            className="bg-gray-800 px-8 py-3 rounded-xl flex-row items-center shadow-md shadow-black/30"
+                            className="bg-white px-8 py-3 rounded-xl flex-row items-center shadow-md border border-gray-200"
                             onPress={handleSignOut}
                         >
-                            <Feather name="log-out" size={20} color="#F97316" />
-                            <Text className="text-orange-500 font-bold ml-2">Se Déconnecter</Text>
+                            <Feather name="log-out" size={20} color="#a86e02" />
+                            <Text className="font-bold ml-2" style={{ color: '#a86e02' }}>Se Déconnecter</Text>
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
-                            className="bg-orange-500 px-8 py-3 rounded-xl flex-row items-center shadow-md shadow-black/30"
+                            className="px-8 py-3 rounded-xl flex-row items-center shadow-md"
+                            style={{ backgroundColor: '#a86e02' }}
                             onPress={() => router.push('/login')}
                         >
                             <Feather name="log-in" size={20} color="white" />

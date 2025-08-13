@@ -26,7 +26,7 @@ export default function ForgotPasswordScreen() {
     // Send password reset email
     const handleResetPassword = async () => {
         if (!email) {
-            Alert.alert('Error', 'Please enter your email address');
+            Alert.alert('Erreur', 'Veuillez saisir votre adresse email');
             return;
         }
 
@@ -37,10 +37,10 @@ export default function ForgotPasswordScreen() {
             if (success) {
                 setResetSent(true);
             } else {
-                Alert.alert('Error', error?.message || 'Failed to send reset email');
+                Alert.alert('Erreur', error?.message || 'Échec de l\'envoi de l\'email de réinitialisation');
             }
         } catch (error: any) {
-            Alert.alert('Error', error.message || 'An error occurred');
+            Alert.alert('Erreur', error.message || 'Une erreur est survenue');
         } finally {
             setIsLoading(false);
         }
@@ -52,91 +52,99 @@ export default function ForgotPasswordScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-900">
-            <StatusBar backgroundColor="#111827" barStyle="light-content" />
+        <SafeAreaView className="flex-1 bg-gray-50">
+            <StatusBar backgroundColor="#f9fafb" barStyle="dark-content" />
 
             {/* Header */}
-            <LinearGradient colors={['#F97316', '#EA580C']} className="w-full h-1/4 absolute" />
+            <LinearGradient colors={['#a86e02', '#8b5a02']} className="w-full h-1/4 absolute" />
 
             {/* Back button */}
             <TouchableOpacity
-                className="absolute top-12 left-4 z-10 bg-white/20 rounded-full p-2"
+                className="absolute top-12 left-4 z-10 bg-white/90 rounded-full p-3 shadow-sm"
                 onPress={navigateToLogin}
+                accessibilityLabel="Retour à la connexion"
             >
-                <Feather name="arrow-left" size={24} color="white" />
+                <Feather name="arrow-left" size={24} color="#a86e02" />
             </TouchableOpacity>
 
             {/* Content */}
             <View className="flex-1 justify-center px-6">
-                <View className="bg-white rounded-2xl p-6 shadow-lg">
+                <View className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
                     <View className="items-center mb-6">
-                        <Image
-                            source={require('@/assets/forgot-password.png')}
-                            className="w-32 h-32 mb-4"
-                            resizeMode="contain"
-                        />
+                        <View className="w-20 h-20 bg-yellow-50 rounded-full items-center justify-center mb-4" style={{ backgroundColor: '#fef7ed' }}>
+                            <Feather name="lock" size={32} color="#a86e02" />
+                        </View>
                         <Text className="text-xl font-bold text-gray-800 text-center">
-                            Forgot Password?
+                            Mot de passe oublié ?
                         </Text>
-                        <Text className="text-gray-600 text-center mt-2">
-                            Enter your email address and we'll send you a link to reset your password
+                        <Text className="text-gray-600 text-center mt-2 leading-5">
+                            Saisissez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe
                         </Text>
                     </View>
 
                     {resetSent ? (
                         <View className="items-center">
-                            <View className="bg-green-100 p-4 rounded-xl mb-4 w-full">
-                                <Text className="text-green-800 text-center">
-                                    Password reset link has been sent to your email address.
-                                    Please check your inbox.
+                            <View className="bg-green-50 border border-green-200 p-4 rounded-xl mb-6 w-full">
+                                <View className="flex-row items-center mb-2">
+                                    <Feather name="check-circle" size={20} color="#10B981" />
+                                    <Text className="text-green-800 font-medium ml-2">Email envoyé !</Text>
+                                </View>
+                                <Text className="text-green-700 text-sm">
+                                    Le lien de réinitialisation a été envoyé à votre adresse email. Veuillez vérifier votre boîte de réception.
                                 </Text>
                             </View>
                             <TouchableOpacity
-                                className="bg-orange-500 py-3 rounded-xl items-center w-full"
+                                className="py-4 rounded-xl items-center w-full shadow-sm"
+                                style={{ backgroundColor: '#a86e02' }}
                                 onPress={navigateToLogin}
+                                accessibilityLabel="Retour à la connexion"
                             >
-                                <Text className="text-white font-bold">Back to Login</Text>
+                                <Text className="text-white font-bold text-lg">Retour à la connexion</Text>
                             </TouchableOpacity>
                         </View>
                     ) : (
                         <>
                             {/* Email input */}
                             <View className="mb-6">
-                                <Text className="text-gray-700 mb-2 font-medium">Email</Text>
-                                <View className="flex-row items-center border border-gray-300 rounded-xl px-4 py-3">
-                                    <Feather name="mail" size={20} color="#9CA3AF" />
+                                <Text className="text-gray-800 mb-2 font-medium">Email</Text>
+                                <View className="flex-row items-center border border-gray-200 rounded-xl px-4 py-3 bg-gray-50">
+                                    <Feather name="mail" size={20} color="#6B7280" />
                                     <TextInput
-                                        className="flex-1 ml-2 text-gray-800"
-                                        placeholder="your@email.com"
+                                        className="flex-1 ml-3 text-gray-800"
+                                        placeholder="votre@email.com"
                                         placeholderTextColor="#9CA3AF"
                                         keyboardType="email-address"
                                         autoCapitalize="none"
                                         value={email}
                                         onChangeText={setEmail}
+                                        accessibilityLabel="Champ d'adresse email"
                                     />
                                 </View>
                             </View>
 
                             {/* Submit button */}
                             <TouchableOpacity
-                                className="bg-orange-500 py-3 rounded-xl items-center mb-4"
+                                className="py-4 rounded-xl items-center mb-4 shadow-sm"
+                                style={{ backgroundColor: '#a86e02' }}
                                 onPress={handleResetPassword}
                                 disabled={isLoading}
+                                accessibilityLabel="Envoyer le lien de réinitialisation"
                             >
                                 {isLoading ? (
                                     <ActivityIndicator color="white" />
                                 ) : (
-                                    <Text className="text-white font-bold">Send Reset Link</Text>
+                                    <Text className="text-white font-bold text-lg">Envoyer le lien</Text>
                                 )}
                             </TouchableOpacity>
 
                             {/* Back to login */}
                             <TouchableOpacity
-                                className="py-2 items-center"
+                                className="py-3 items-center"
                                 onPress={navigateToLogin}
+                                accessibilityLabel="Retour à la connexion"
                             >
                                 <Text className="text-gray-600">
-                                    Remember your password? <Text className="text-orange-500 font-semibold">Sign In</Text>
+                                    Vous vous souvenez de votre mot de passe ? <Text className="font-semibold" style={{ color: '#a86e02' }}>Se connecter</Text>
                                 </Text>
                             </TouchableOpacity>
                         </>

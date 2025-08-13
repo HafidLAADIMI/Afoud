@@ -252,11 +252,11 @@ export default function HomeScreen() {
     ─────────────────────────────────── */
     if (loading)
         return (
-            <SafeAreaView className="flex-1 bg-gray-900">
+            <SafeAreaView className="flex-1 bg-white">
                 <Header search={search} setSearch={setSearch} />
-                <View className="flex-1 items-center justify-center">
-                    <ActivityIndicator size="large" color="#F97316" />
-                    <Text className="text-white mt-4 font-medium">
+                <View className="flex-1 items-center justify-center bg-white">
+                    <ActivityIndicator size="large" color="#a86e02" />
+                    <Text className="text-gray-800 mt-4 font-medium">
                         Chargement du contenu frais...
                     </Text>
                 </View>
@@ -265,11 +265,11 @@ export default function HomeScreen() {
 
     if (error)
         return (
-            <SafeAreaView className="flex-1 bg-gray-900">
+            <SafeAreaView className="flex-1 bg-white">
                 <Header search={search} setSearch={setSearch} />
-                <View className="flex-1 items-center justify-center px-4">
-                    <Text className="text-white text-center mb-4 text-lg">{error}</Text>
-                    <View className="bg-orange-500 px-8 py-3 rounded-full">
+                <View className="flex-1 items-center justify-center px-4 bg-white">
+                    <Text className="text-gray-800 text-center mb-4 text-lg">{error}</Text>
+                    <View style={{ backgroundColor: '#a86e02' }} className="px-8 py-3 rounded-full">
                         <Text className="text-white font-semibold" onPress={() => fetchData()}>
                             Réessayer
                         </Text>
@@ -279,22 +279,28 @@ export default function HomeScreen() {
         );
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-900">
+        <SafeAreaView className="flex-1 bg-white">
             <Header search={search} setSearch={setSearch} />
             <NetworkStatusBar isOffline={isOffline} />
 
             <ScrollView
-                className="flex-1"
+                className="flex-1 bg-white"
                 showsVerticalScrollIndicator={false}
                 refreshControl={
                     <RefreshControl
                         refreshing={isRefreshing}
                         onRefresh={handleRefresh}
-                        tintColor="#F97316"
-                        colors={['#F97316']}
+                        tintColor="#a86e02"
+                        colors={['#a86e02']}
                     />
                 }
             >
+
+                  {/* Nearby */}
+                <View className="mt-8">
+                    <FindNearbyCard
+                    />
+                </View>
                 {/* Featured Carousel */}
                 {carouselItems.length > 0 && (
                     <View className="my-4">
@@ -341,11 +347,7 @@ export default function HomeScreen() {
                     />
                 )}
 
-                {/* Nearby */}
-                <View className="mt-8">
-                    <FindNearbyCard
-                    />
-                </View>
+              
 
                 {/* Highlight */}
                 <HighlightsSection
@@ -354,11 +356,7 @@ export default function HomeScreen() {
                     buttonText="Commander Maintenant"
                 />
 
-                {/* Dine-In */}
-                <View className="mt-6">
-                    <DineInCard/>
-
-                </View>
+               
 
                 {/* Cuisines */}
                 {cuisines.length > 0 && (
@@ -370,6 +368,7 @@ export default function HomeScreen() {
                 )}
 
                <RestaurantGallerySection images={galleryImages}/>
+            
                 <View className="h-8" />
             </ScrollView>
 
@@ -383,7 +382,7 @@ export default function HomeScreen() {
                 />
             )}
 
-            <StatusBar backgroundColor="#111827" barStyle="light-content" />
+            <StatusBar backgroundColor="#f9fafb" barStyle="dark-content" />
         </SafeAreaView>
     );
 }

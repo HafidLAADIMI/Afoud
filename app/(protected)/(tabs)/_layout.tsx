@@ -8,15 +8,20 @@ export default function TabsLayout() {
             screenOptions={{
                 headerShown: false,
                 tabBarStyle: {
-                    backgroundColor: '#111827', // Dark background matching home screen
-                    borderTopColor: '#1F2937', // Slightly lighter border
+                    backgroundColor: '#ffffff', // White background for light mode
+                    borderTopColor: '#e5e7eb', // Light gray border
                     borderTopWidth: 1,
                     height: 60,
                     paddingBottom: 10,
                     paddingHorizontal: 10,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: -2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 3,
+                    elevation: 5,
                 },
-                tabBarActiveTintColor: '#F97316', // Orange accent color from home screen
-                tabBarInactiveTintColor: '#6B7280', // Gray for inactive tabs
+                tabBarActiveTintColor: '#a86e02', // Your brand color for active tabs
+                tabBarInactiveTintColor: '#6B7280', // Gray for inactive tabs (unchanged for good contrast)
             }}
         >
             <Tabs.Screen
@@ -41,22 +46,22 @@ export default function TabsLayout() {
                     ),
                 }}
             />
-            {/*
-
-            <Tabs.Screen
-                name="cart"
-                options={{
-                    tabBarIcon: ({color}) => (
-                        <View
-                            className="w-14 h-14 rounded-full bg-gray-900 border-2 border-orange-500 -mt-5 justify-center items-center shadow-lg"
-                        >
-                            <FontAwesome name="shopping-cart" size={26} color="white"/>
-                        </View>
-                    ),
-                    tabBarLabel: () => null,
-                }}
-            />
-                */}
+            {/**
+             * <Tabs.Screen
+             * name="cart"
+             * options={{
+             * tabBarIcon: ({color}) => (
+             * <View
+             * className="w-14 h-14 rounded-full bg-white border-2 -mt-5 justify-center items-center shadow-lg"
+             * style={{ borderColor: '#a86e02' }}
+             * >
+             * <FontAwesome name="shopping-cart" size={26} color="#a86e02"/>
+             * </View>
+             * ),
+             * tabBarLabel: () => null,
+             * }}
+             * />
+             * */}
             <Tabs.Screen
                 name="orders"
                 options={{

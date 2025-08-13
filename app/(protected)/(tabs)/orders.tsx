@@ -66,16 +66,16 @@ export default function OrdersScreen() {
 
         return (
             <TouchableOpacity
-                className="bg-gray-800 rounded-xl mb-4 overflow-hidden shadow-xl shadow-black/30"
+                className="bg-white rounded-xl mb-4 overflow-hidden shadow-lg"
                 activeOpacity={0.9}
                 onPress={() => router.push(`/order-details/${item.id}`)}
             >
                 {/* header */}
-                <LinearGradient colors={['#1F2937', '#111827']}
-                                className="px-4 py-3 border-b border-gray-700 flex-row justify-between items-center">
+                <LinearGradient colors={['#f9fafb', '#f3f4f6']}
+                                className="px-4 py-3 border-b border-gray-200 flex-row justify-between items-center">
                     <View className="flex-row items-center">
-                        <Text className="text-white font-bold mr-2">Commande #{item.id}</Text>
-                        <Text className="text-gray-400 text-xs">{item.date}</Text>
+                        <Text className="text-gray-800 font-bold mr-2">Commande #{item.id}</Text>
+                        <Text className="text-gray-600 text-xs">{item.date}</Text>
                     </View>
 
                     <View className={`px-3 py-1 rounded-full ${style.bg} bg-opacity-20 flex-row items-center`}>
@@ -88,8 +88,8 @@ export default function OrdersScreen() {
 
                 {/* restaurant */}
                 <View className="px-4 pt-3 pb-1 flex-row items-center">
-                    <Feather name="home" size={16} color="#F97316" />
-                    <Text className="text-white font-medium ml-2">{item.restaurant}</Text>
+                    <Feather name="home" size={16} color="#a86e02" />
+                    <Text className="text-gray-800 font-medium ml-2">{item.restaurant}</Text>
                 </View>
 
                 {/* items */}
@@ -98,10 +98,10 @@ export default function OrdersScreen() {
                         <View key={oi.id} className="flex-row items-center mb-3">
                             <Image source={{ uri: oi.image }} className="w-12 h-12 rounded-lg" />
                             <View className="ml-3 flex-1">
-                                <Text className="text-white">{oi.name}</Text>
+                                <Text className="text-gray-800">{oi.name}</Text>
                                 <View className="flex-row justify-between">
-                                    <Text className="text-gray-400">x{oi.quantity}</Text>
-                                    <Text className="text-gray-300">
+                                    <Text className="text-gray-600">x{oi.quantity}</Text>
+                                    <Text className="text-gray-700">
                                         {Number((oi.price ?? 0) * (oi.quantity ?? 0)).toFixed(2)} MAD
                                     </Text>
                                 </View>
@@ -110,31 +110,31 @@ export default function OrdersScreen() {
                     ))}
 
                     {item.items?.length > 2 && (
-                        <Text className="text-gray-400 text-xs italic ml-2 mb-2">
+                        <Text className="text-gray-600 text-xs italic ml-2 mb-2">
                             +{item.items.length - 2} articles supplémentaires
                         </Text>
                     )}
 
                     {/* total */}
                     {item.total == null && console.warn('Order lacks total:', item.id)}
-                    <View className="flex-row justify-between items-center mt-2 pt-3 border-t border-gray-700">
-                        <Text className="text-gray-400">Montant total</Text>
-                        <Text className="text-orange-500 font-bold">
+                    <View className="flex-row justify-between items-center mt-2 pt-3 border-t border-gray-200">
+                        <Text className="text-gray-600">Montant total</Text>
+                        <Text className="font-bold" style={{ color: '#a86e02' }}>
                             {Number(item.total ?? 0).toFixed(2)} MAD
                         </Text>
                     </View>
                 </View>
 
                 {/* actions */}
-                <View className="flex-row border-t border-gray-700 mt-2">
+                <View className="flex-row border-t border-gray-200 mt-2">
                     <TouchableOpacity
-                        className="flex-1 py-3 items-center justify-center border-r border-gray-700 flex-row"
+                        className="flex-1 py-3 items-center justify-center border-r border-gray-200 flex-row"
                         onPress={() =>
                             trackOrder(item.id).then(() => router.push(`/order-details/${item.id}`))
                         }
                     >
-                        <Feather name="map-pin" size={16} color="#F97316" />
-                        <Text className="text-orange-500 font-bold ml-2">Suivre Commande</Text>
+                        <Feather name="map-pin" size={16} color="#a86e02" />
+                        <Text className="font-bold ml-2" style={{ color: '#a86e02' }}>Suivre Commande</Text>
                     </TouchableOpacity>
                         {/*
                     <TouchableOpacity
@@ -148,8 +148,8 @@ export default function OrdersScreen() {
                             )
                         }
                     >
-                        <Feather name="repeat" size={16} color="#F97316" />
-                        <Text className="text-orange-500 font-bold ml-2">Commander à nouveau</Text>
+                        <Feather name="repeat" size={16} color="#a86e02" />
+                        <Text className="font-bold ml-2" style={{ color: '#a86e02' }}>Commander à nouveau</Text>
                     </TouchableOpacity>
                      */}
                 </View>
@@ -160,15 +160,16 @@ export default function OrdersScreen() {
     /* empty list */
     const Empty = () => (
         <View className="flex-1 justify-center items-center py-20">
-            <View className="bg-gray-800 w-20 h-20 rounded-full items-center justify-center mb-6">
+            <View className="bg-gray-100 w-20 h-20 rounded-full items-center justify-center mb-6">
                 <Feather name="shopping-bag" size={40} color="#6B7280" />
             </View>
-            <Text className="text-white text-xl font-bold mb-2">Pas encore de commandes</Text>
-            <Text className="text-gray-400 text-center px-8 mb-8">
+            <Text className="text-gray-800 text-xl font-bold mb-2">Pas encore de commandes</Text>
+            <Text className="text-gray-600 text-center px-8 mb-8">
                 Votre historique de commandes apparaîtra ici dès que vous aurez passé votre première commande
             </Text>
             <TouchableOpacity
-                className="bg-orange-500 px-6 py-3 rounded-xl shadow-lg shadow-orange-900/30"
+                className="px-6 py-3 rounded-xl shadow-lg"
+                style={{ backgroundColor: '#a86e02' }}
                 onPress={() => router.push('/')}
             >
                 <Text className="text-white font-bold">Commencer à Commander</Text>
@@ -178,20 +179,20 @@ export default function OrdersScreen() {
 
     /* UI */
     return (
-        <SafeAreaView className="flex-1 bg-gray-900">
-            <StatusBar backgroundColor="#111827" barStyle="light-content" />
+        <SafeAreaView className="flex-1 bg-white">
+            <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
 
-            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-800">
-                <Text className="text-white text-xl font-bold">Mes Commandes</Text>
+            <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-200">
+                <Text className="text-gray-800 text-xl font-bold">Mes Commandes</Text>
                 <TouchableOpacity
-                    className="bg-gray-800 w-10 h-10 rounded-full items-center justify-center"
+                    className="bg-gray-100 w-10 h-10 rounded-full items-center justify-center"
                     onPress={() => router.push('/search')}
                 >
-                    <Feather name="search" size={20} color="white" />
+                    <Feather name="search" size={20} color="#6B7280" />
                 </TouchableOpacity>
             </View>
 
-            <View className="flex-row border-b border-gray-800">
+            <View className="flex-row border-b border-gray-200">
                 <TabButton
                     label="Toutes"
                     isActive={activeTab === 'all'}
@@ -210,7 +211,7 @@ export default function OrdersScreen() {
             </View>
 
             <FlatList
-                className="bg-gray-900 px-4 pt-4"
+                className="bg-white px-4 pt-4"
                 data={filtered()}
                 renderItem={renderOrderItem}
                 keyExtractor={item => item.id}
@@ -219,8 +220,8 @@ export default function OrdersScreen() {
                 ListEmptyComponent={!loading ? Empty : null}
                 ListHeaderComponent={loading ? (
                     <View className="items-center justify-center py-20">
-                        <ActivityIndicator size="large" color="#F97316" />
-                        <Text className="text-white mt-4">Chargement des commandes...</Text>
+                        <ActivityIndicator size="large" color="#a86e02" />
+                        <Text className="text-gray-700 mt-4">Chargement des commandes...</Text>
                     </View>
                 ) : null}
             />
@@ -231,10 +232,12 @@ export default function OrdersScreen() {
 /* tab button */
 const TabButton = ({ label, isActive, onPress }) => (
     <TouchableOpacity
-        className={`flex-1 py-3 ${isActive ? 'border-b-2 border-orange-500' : ''}`}
+        className={`flex-1 py-3 ${isActive ? 'border-b-2' : ''}`}
+        style={{ borderBottomColor: isActive ? '#a86e02' : 'transparent' }}
         onPress={onPress}
     >
-        <Text className={`text-center font-medium ${isActive ? 'text-orange-500' : 'text-gray-400'}`}>
+        <Text className={`text-center font-medium ${isActive ? '' : 'text-gray-600'}`}
+              style={{ color: isActive ? '#a86e02' : '#6B7280' }}>
             {label}
         </Text>
     </TouchableOpacity>

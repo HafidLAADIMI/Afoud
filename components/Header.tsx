@@ -45,27 +45,21 @@ const Header = ({
     };
 
     return (
-        <View className="bg-gray-900 pt-2 pb-3 px-4 shadow-md" style={styles.header}>
+        <View className="bg-white pt-2 pb-3 px-4 shadow-md" style={styles.header}>
             {/* Top row with location and profile */}
             <View className="flex-row justify-between items-center mb-3">
-                {/* Location button */}
-                <TouchableOpacity
-                    className="flex-row items-center"
-                    onPress={handleLocationPress}
-                >
-                    <Feather name="map-pin" size={18} color="#F97316"/>
-                    <Text className="text-white font-medium ml-1 mr-2" numberOfLines={1} ellipsizeMode="tail"
-                          style={{maxWidth: 200}}>
-                        {getDisplayAddress()}
-                    </Text>
-                    <Feather name="chevron-down" size={16} color="#F97316"/>
-                </TouchableOpacity>
+                
+               <View className="flex-row items-center">
+    <Text className="text-2xl font-bold" style={{ color: '#a86e02' }}>
+        AFOOD
+    </Text>
+</View>
 
                 {/* User profile and actions */}
                 <View className="flex-row items-center">
                     <TouchableOpacity onPress={() => router.push('/profileScreen')}>
-                        <View className="w-8 h-8 rounded-full bg-gray-700 items-center justify-center">
-                            <Feather name="user" size={18} color="white"/>
+                        <View className="w-8 h-8 rounded-full bg-gray-100 items-center justify-center">
+                            <Feather name="user" size={18} color="#a86e02"/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -74,19 +68,19 @@ const Header = ({
             {/* Search bar */}
             {isSearchScreen ? (
                 // Interactive search input on search screen
-                <View className="flex-row items-center bg-gray-800 px-3 py-2 rounded-xl">
-                    <Feather name="search" size={20} color="#9CA3AF"/>
+                <View className="flex-row items-center bg-gray-100 px-3 py-2 rounded-xl">
+                    <Feather name="search" size={20} color="#6B7280"/>
                     <TextInput
                         value={search}
                         onChangeText={setSearch}
                         placeholder="Chercher des plats ..."
                         placeholderTextColor="#9CA3AF"
-                        className="flex-1 ml-2 text-white"
+                        className="flex-1 ml-2 text-gray-800"
                         autoFocus={true}
                     />
                     {search.length > 0 && (
                         <TouchableOpacity onPress={() => setSearch('')}>
-                            <Feather name="x" size={20} color="#9CA3AF"/>
+                            <Feather name="x" size={20} color="#6B7280"/>
                         </TouchableOpacity>
                     )}
                 </View>
@@ -94,10 +88,10 @@ const Header = ({
                 // Non-interactive search bar that redirects to search screen
                 <TouchableOpacity
                     onPress={handleSearchPress}
-                    className="flex-row items-center bg-gray-800 px-3 py-2 rounded-xl"
+                    className="flex-row items-center bg-gray-100 px-3 py-2 rounded-xl"
                 >
-                    <Feather name="search" size={20} color="#9CA3AF"/>
-                    <Text className="flex-1 ml-2 text-gray-400">Chercher des plats ...</Text>
+                    <Feather name="search" size={20} color="#6B7280"/>
+                    <Text className="flex-1 ml-2 text-gray-500">Chercher des plats ...</Text>
                 </TouchableOpacity>
             )}
         </View>

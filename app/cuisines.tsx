@@ -68,16 +68,16 @@ export default function CuisinesScreen() {
 
     if (isLoading) {
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#111827', padding: 16 }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff', padding: 16 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
                     <TouchableOpacity onPress={() => router.back()} style={{ marginRight: 16 }}>
-                        <Feather name="arrow-left" size={24} color="white" />
+                        <Feather name="arrow-left" size={24} color="#374151" />
                     </TouchableOpacity>
-                    <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Cuisines</Text>
+                    <Text style={{ color: '#374151', fontSize: 20, fontWeight: 'bold' }}>Cuisines</Text>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator size="large" color="#F97316" />
-                    <Text style={{ color: 'white', marginTop: 16 }}>Loading cuisines...</Text>
+                    <ActivityIndicator size="large" color="#a86e02" />
+                    <Text style={{ color: '#6B7280', marginTop: 16 }}>Loading cuisines...</Text>
                 </View>
             </SafeAreaView>
         );
@@ -142,7 +142,7 @@ export default function CuisinesScreen() {
                     {/* Optional: Show number of restaurants */}
                     {item.restaurantCount ? (
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
-                            <Feather name="shopping-bag" size={12} color="#F97316" />
+                            <Feather name="shopping-bag" size={12} color="#a86e02" />
                             <Text style={{ color: '#d1d5db', fontSize: 12, marginLeft: 4 }}>
                                 {restaurantCountText}
                             </Text>
@@ -155,7 +155,7 @@ export default function CuisinesScreen() {
                     position: 'absolute',
                     top: 8,
                     right: 8,
-                    backgroundColor: 'rgba(249, 115, 22, 0.8)',
+                    backgroundColor: 'rgba(168, 110, 2, 0.8)',
                     borderRadius: 999,
                     padding: 4
                 }}>
@@ -166,28 +166,30 @@ export default function CuisinesScreen() {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#111827', padding: 16 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff', padding: 16 }}>
             {/* Header */}
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
                 <TouchableOpacity onPress={() => router.back()} style={{ marginRight: 16 }}>
-                    <Feather name="arrow-left" size={24} color="white" />
+                    <Feather name="arrow-left" size={24} color="#374151" />
                 </TouchableOpacity>
-                <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', flex: 1 }}>
+                <Text style={{ color: '#374151', fontSize: 20, fontWeight: 'bold', flex: 1 }}>
                     Popular Cuisines
                 </Text>
-                <Text style={{ color: '#F97316', fontSize: 16 }}>
+                <Text style={{ color: '#a86e02', fontSize: 16 }}>
                     {filteredCuisines.length} Cuisines
                 </Text>
             </View>
 
             {/* Search Bar */}
             <View style={{
-                backgroundColor: '#1f2937',
+                backgroundColor: '#f9fafb',
                 borderRadius: 9999,
                 flexDirection: 'row',
                 alignItems: 'center',
                 marginBottom: 24,
-                paddingHorizontal: 16
+                paddingHorizontal: 16,
+                borderWidth: 1,
+                borderColor: '#e5e7eb'
             }}>
                 <Feather name="search" size={20} color="#6B7280" />
                 <TextInput
@@ -195,19 +197,19 @@ export default function CuisinesScreen() {
                     placeholderTextColor="#6B7280"
                     value={searchQuery}
                     onChangeText={handleSearch}
-                    style={{ flex: 1, color: 'white', marginLeft: 8, paddingVertical: 12 }}
+                    style={{ flex: 1, color: '#374151', marginLeft: 8, paddingVertical: 12 }}
                 />
             </View>
 
             {/* Cuisines Grid */}
             {filteredCuisines.length === 0 ? (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ color: '#9ca3af', textAlign: 'center', marginBottom: 16 }}>
+                    <Text style={{ color: '#6B7280', textAlign: 'center', marginBottom: 16 }}>
                         No cuisines found
                     </Text>
                     <TouchableOpacity
                         onPress={retryFetch}
-                        style={{ backgroundColor: '#F97316', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 9999 }}
+                        style={{ backgroundColor: '#a86e02', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 9999 }}
                     >
                         <Text style={{ color: 'white', fontWeight: 'bold' }}>Retry</Text>
                     </TouchableOpacity>

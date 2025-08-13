@@ -97,9 +97,9 @@ export default function RootLayout() {
 
     if (!isFirestoreReady) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-900">
-                <ActivityIndicator size="large" color="#F97316"/>
-                <Text className="text-white mt-4">Loading...</Text>
+            <View className="flex-1 justify-center items-center bg-white">
+                <ActivityIndicator size="large" color="#a86e02"/>
+                <Text className="text-black mt-4">Loading...</Text>
             </View>
         );
     }

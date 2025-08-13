@@ -11,12 +11,12 @@ type SectionHeaderProps = {
 };
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({
-                                                         title,
-                                                         subtitle,
-                                                         showArrow = false,
-                                                         showStars = false,
-                                                         onPress
-                                                     }) => {
+    title,
+    subtitle,
+    showArrow = false,
+    showStars = false,
+    onPress
+}) => {
     return (
         <View className="mb-4">
             {/* Title row with optional arrow */}
@@ -25,35 +25,35 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
                 <View className="flex-row items-center">
                     {/* Decorative vertical line */}
                     {!showStars && (
-                        <View className="w-1 h-5 bg-orange-500 rounded-full mr-2" />
+                        <View className="w-1 h-5 rounded-full mr-2" style={{ backgroundColor: '#a86e02' }} />
                     )}
-
+                    
                     {/* Stars decoration */}
                     {showStars && (
                         <View className="flex-row mr-2">
-                            <Feather name="star" size={16} color="#F97316" />
-                            <Feather name="star" size={16} color="#F97316" style={{ marginLeft: -5 }} />
+                            <Feather name="star" size={16} color="#a86e02" />
+                            <Feather name="star" size={16} color="#a86e02" style={{ marginLeft: -5 }} />
                         </View>
                     )}
-
-                    <Text className="text-white font-bold text-lg">{title}</Text>
+                    
+                    <Text className="text-gray-800 font-bold text-lg">{title}</Text>
                 </View>
-
+                
                 {/* View all button with arrow */}
                 {showArrow && onPress && (
                     <TouchableOpacity
                         onPress={onPress}
                         className="flex-row items-center"
                     >
-                        <Text className="text-orange-400 font-medium mr-1">Voir tout</Text>
-                        <Feather name="chevron-right" size={16} color="#FB923C" />
+                        <Text className="font-medium mr-1" style={{ color: '#a86e02' }}>Voir tout</Text>
+                        <Feather name="chevron-right" size={16} color="#a86e02" />
                     </TouchableOpacity>
                 )}
             </View>
-
+            
             {/* Optional subtitle */}
             {subtitle && (
-                <Text className="text-gray-400 text-sm mt-1 ml-3">
+                <Text className="text-gray-600 text-sm mt-1 ml-3">
                     {subtitle}
                 </Text>
             )}

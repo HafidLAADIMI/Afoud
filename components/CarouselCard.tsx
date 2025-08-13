@@ -28,12 +28,12 @@ const CarouselCard: React.FC<CarouselCardProps> = ({
             >
                 <View
                     style={{ width, height }}
-                    className="rounded-xl bg-gray-800 overflow-hidden"
+                    className="rounded-xl bg-gray-200 overflow-hidden"
                 >
-                    <View className="absolute inset-0 bg-gray-700 animate-pulse" />
+                    <View className="absolute inset-0 bg-gray-300 animate-pulse" />
                     <View className="p-4 h-full justify-end">
-                        <View className="bg-gray-700 h-6 w-3/4 rounded-md mb-2 animate-pulse" />
-                        <View className="bg-gray-700 h-4 w-1/2 rounded-md animate-pulse" />
+                        <View className="bg-gray-300 h-6 w-3/4 rounded-md mb-2 animate-pulse" />
+                        <View className="bg-gray-300 h-4 w-1/2 rounded-md animate-pulse" />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -46,7 +46,7 @@ const CarouselCard: React.FC<CarouselCardProps> = ({
         : require('@/assets/placeholder.png'); // Make sure you have this placeholder image
 
     // Determine background color class from item or use default
-    const bgColorClass = item.bgColor || 'bg-orange-600';
+    const bgColorClass = item.bgColor || 'bg-yellow-600';
 
     return (
         <TouchableOpacity
@@ -69,7 +69,7 @@ const CarouselCard: React.FC<CarouselCardProps> = ({
                         className="p-5 flex justify-between"
                     >
                         <View className="flex-row justify-end">
-                            <View className={`${bgColorClass} px-3 py-1 rounded-full`}>
+                            <View className={`${bgColorClass}`} style={{ backgroundColor: '#a86e02', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 20 }}>
                                 <Text className="text-white font-medium text-xs">En Vedette</Text>
                             </View>
                         </View>

@@ -135,15 +135,16 @@ export default function FavoritesScreen() {
 
         return (
             <View className="flex-1 justify-center items-center py-10">
-                <Feather name="heart" size={48} color="#4B5563" />
-                <Text className="text-gray-400 mt-4 text-center px-6">
+                <Feather name="heart" size={48} color="#9CA3AF" />
+                <Text className="text-gray-700 mt-4 text-center px-6">
                     Vous n'avez aucun produit en favoris.
                 </Text>
-                <Text className="text-gray-500 mt-2 text-center px-6 text-sm">
+                <Text className="text-gray-600 mt-2 text-center px-6 text-sm">
                     Ajoutez des produits à vos favoris pour les retrouver ici facilement.
                 </Text>
                 <TouchableOpacity
-                    className="mt-4 bg-orange-500 px-6 py-3 rounded-full"
+                    className="mt-4 px-6 py-3 rounded-xl shadow-lg"
+                    style={{ backgroundColor: '#a86e02' }}
                     onPress={() => router.push('/SearchScreen')}
                 >
                     <Text className="text-white font-bold">Découvrir des produits</Text>
@@ -191,8 +192,8 @@ export default function FavoritesScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-900">
-            <StatusBar barStyle="light-content" backgroundColor="#111827" />
+        <SafeAreaView className="flex-1 bg-white">
+            <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
             {/* Header */}
             <Header isSearchScreen={false} />
@@ -201,14 +202,14 @@ export default function FavoritesScreen() {
             <View className="flex-1 px-4 pt-2">
                 {/* Title and Clear Button */}
                 <View className="flex-row justify-between items-center mb-4">
-                    <Text className="text-white text-xl font-bold">
+                    <Text className="text-gray-800 text-xl font-bold">
                         Mes Favoris
                     </Text>
 
                     {favorites.length > 0 && (
                         <TouchableOpacity
                             onPress={clearAllFavorites}
-                            className="bg-gray-800 px-3 py-1 rounded-full"
+                            className="bg-gray-100 px-3 py-1 rounded-full"
                         >
                             <Text className="text-red-500">Tout supprimer</Text>
                         </TouchableOpacity>
@@ -217,7 +218,7 @@ export default function FavoritesScreen() {
 
                 {/* Results Count */}
                 {!isLoading && favorites.length > 0 && (
-                    <Text className="text-gray-400 mb-4">
+                    <Text className="text-gray-600 mb-4">
                         {favorites.length} {favorites.length > 1 ? 'produits en favoris' : 'produit en favoris'}
                     </Text>
                 )}
@@ -225,8 +226,8 @@ export default function FavoritesScreen() {
                 {/* Loading Indicator */}
                 {isLoading && !isRefreshing && (
                     <View className="flex-1 justify-center items-center">
-                        <ActivityIndicator size="large" color="#F97316" />
-                        <Text className="text-gray-400 mt-4">Chargement de vos favoris...</Text>
+                        <ActivityIndicator size="large" color="#a86e02" />
+                        <Text className="text-gray-700 mt-4">Chargement de vos favoris...</Text>
                     </View>
                 )}
 
@@ -234,9 +235,10 @@ export default function FavoritesScreen() {
                 {error && (
                     <View className="flex-1 justify-center items-center">
                         <Feather name="alert-circle" size={48} color="#EF4444" />
-                        <Text className="text-white mt-4 text-center">{error}</Text>
+                        <Text className="text-gray-800 mt-4 text-center">{error}</Text>
                         <TouchableOpacity
-                            className="mt-4 bg-orange-500 px-6 py-3 rounded-full"
+                            className="mt-4 px-6 py-3 rounded-xl shadow-lg"
+                            style={{ backgroundColor: '#a86e02' }}
                             onPress={loadFavorites}
                         >
                             <Text className="text-white font-bold">Réessayer</Text>
@@ -266,8 +268,8 @@ export default function FavoritesScreen() {
                             <RefreshControl
                                 refreshing={isRefreshing}
                                 onRefresh={handleRefresh}
-                                tintColor="#F97316"
-                                colors={['#F97316']}
+                                tintColor="#a86e02"
+                                colors={['#a86e02']}
                             />
                         }
                         ListEmptyComponent={renderEmptyList}

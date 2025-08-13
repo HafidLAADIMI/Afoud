@@ -62,9 +62,11 @@ const HighlightsSection: React.FC<HighlightsSectionProps> = ({
                     subtitle="Chargement de la recommandation..."
                     showStars={false}
                 />
-                <View className="h-56 bg-gray-800 rounded-xl justify-center items-center">
-                    <ActivityIndicator size="large" color="#F97316" />
-                    <Text className="text-white mt-2">Chargement...</Text>
+                <View className="h-56 bg-white rounded-2xl border border-gray-200 justify-center items-center">
+                    <View className="bg-yellow-50 p-4 rounded-full mb-3">
+                        <ActivityIndicator size="large" color="#a86e02" />
+                    </View>
+                    <Text className="text-gray-600 font-medium">Chargement...</Text>
                 </View>
             </View>
         );
@@ -79,9 +81,11 @@ const HighlightsSection: React.FC<HighlightsSectionProps> = ({
                     subtitle="Indisponible pour le moment"
                     showStars={false}
                 />
-                <View className="h-56 bg-gray-800 rounded-xl justify-center items-center">
-                    <Feather name="alert-circle" size={32} color="#F97316" />
-                    <Text className="text-white mt-2">{error}</Text>
+                <View className="h-56 bg-white rounded-2xl border border-gray-200 justify-center items-center">
+                    <View className="bg-yellow-50 p-4 rounded-full mb-3">
+                        <Feather name="alert-circle" size={32} color="#a86e02" />
+                    </View>
+                    <Text className="text-gray-600 mt-2 text-center px-4">{error}</Text>
                 </View>
             </View>
         );
@@ -106,9 +110,9 @@ const HighlightsSection: React.FC<HighlightsSectionProps> = ({
             />
 
             <TouchableOpacity
-                className="rounded-xl overflow-hidden"
+                className="rounded-2xl overflow-hidden bg-white border border-gray-100"
                 onPress={() => onPress(highlight)}
-                activeOpacity={0.9}
+                activeOpacity={0.95}
                 style={styles.cardShadow}
             >
                 <View className="relative">
@@ -120,19 +124,19 @@ const HighlightsSection: React.FC<HighlightsSectionProps> = ({
 
                     {/* Overlay gradient for better text readability */}
                     <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                        colors={['transparent', 'rgba(0,0,0,0.7)']}
                         className="absolute inset-0"
                     />
 
                     {/* Content overlay */}
-                    <View className="absolute bottom-0 left-0 right-0 p-4">
-                        <View className="flex-row items-center mb-1">
-                            <View className="bg-orange-500 rounded-full px-3 py-1 mr-2">
+                    <View className="absolute bottom-0 left-0 right-0 p-5">
+                        <View className="flex-row items-center mb-2">
+                            <View className="bg-yellow-600 rounded-full px-4 py-1.5 mr-3">
                                 <Text className="text-white text-xs font-bold">À LA UNE</Text>
                             </View>
 
                             {highlight.price && (
-                                <View className="bg-white rounded-full px-3 py-1">
+                                <View className="bg-white/95 rounded-full px-4 py-1.5">
                                     <Text className="text-gray-900 text-xs font-bold">
                                         {highlight.price.toFixed(2)} MAD
                                     </Text>
@@ -140,17 +144,25 @@ const HighlightsSection: React.FC<HighlightsSectionProps> = ({
                             )}
                         </View>
 
-                        <Text className="text-white font-bold text-xl mb-1">{highlight.name}</Text>
+                        <Text className="text-white font-bold text-xl mb-2">{highlight.name}</Text>
 
                         {highlight.description && (
-                            <Text className="text-gray-300 mb-3" numberOfLines={2}>
+                            <Text className="text-gray-200 mb-4 leading-5" numberOfLines={2}>
                                 {highlight.description}
                             </Text>
                         )}
 
                         <TouchableOpacity
-                            className="flex-row items-center self-start bg-orange-500 px-4 py-2 rounded-full mt-2"
+                            className="flex-row items-center self-start bg-yellow-600 px-5 py-3 rounded-full"
                             onPress={() => onPress(highlight)}
+                            activeOpacity={0.9}
+                            style={{
+                                shadowColor: '#a86e02',
+                                shadowOffset: { width: 0, height: 4 },
+                                shadowOpacity: 0.3,
+                                shadowRadius: 8,
+                                elevation: 5,
+                            }}
                         >
                             <Text className="text-white font-bold mr-2">{buttonText}</Text>
                             <Feather name="arrow-right" size={16} color="white" />
@@ -159,27 +171,33 @@ const HighlightsSection: React.FC<HighlightsSectionProps> = ({
                 </View>
 
                 {/* Additional details section */}
-                <View className="bg-gray-800 p-4">
+                <View className="bg-white p-5 border-t border-gray-100">
                     <View className="flex-row justify-between items-center">
                         <View className="flex-row items-center">
-                            <Feather name="clock" size={14} color="#F97316" />
-                            <Text className="text-gray-300 text-xs ml-1">
+                            <View className="bg-yellow-50 p-1.5 rounded-full mr-2">
+                                <Feather name="clock" size={14} color="#a86e02" />
+                            </View>
+                            <Text className="text-gray-600 text-sm font-medium">
                                 {highlight.estimatedTime || '20-30 min'}
                             </Text>
                         </View>
 
                         <View className="flex-row items-center">
-                            <Feather name="star" size={14} color="#F97316" />
-                            <Text className="text-gray-300 text-xs ml-1">
+                            <View className="bg-yellow-50 p-1.5 rounded-full mr-2">
+                                <Feather name="star" size={14} color="#a86e02" />
+                            </View>
+                            <Text className="text-gray-600 text-sm font-medium">
                                 {highlight.rating?.toFixed(1) || '4.8'}
-                                {highlight.reviewCount ? ` (${highlight.reviewCount}+ avis)` : ''}
+                                {highlight.reviewCount ? ` (${highlight.reviewCount}+)` : ''}
                             </Text>
                         </View>
 
                         <View className="flex-row items-center">
-                            <Feather name="thumbs-up" size={14} color="#F97316" />
-                            <Text className="text-gray-300 text-xs ml-1">
-                                {highlight.positivePercentage || 98}% positif
+                            <View className="bg-yellow-50 p-1.5 rounded-full mr-2">
+                                <Feather name="thumbs-up" size={14} color="#a86e02" />
+                            </View>
+                            <Text className="text-gray-600 text-sm font-medium">
+                                {highlight.positivePercentage || 98}%
                             </Text>
                         </View>
                     </View>
@@ -188,11 +206,12 @@ const HighlightsSection: React.FC<HighlightsSectionProps> = ({
 
             {/* Refresh option */}
             <TouchableOpacity
-                className="self-center mt-2 flex-row items-center"
+                className="self-center mt-4 flex-row items-center bg-yellow-50 px-4 py-2 rounded-full"
                 onPress={fetchSuggestion}
+                activeOpacity={0.8}
             >
-                <Feather name="refresh-cw" size={14} color="#F97316" />
-                <Text className="text-orange-500 ml-1 text-sm">Actualiser</Text>
+                <Feather name="refresh-cw" size={14} color="#a86e02" />
+                <Text className="text-yellow-700 ml-2 text-sm font-medium">Actualiser la suggestion</Text>
             </TouchableOpacity>
         </View>
     );
@@ -201,10 +220,10 @@ const HighlightsSection: React.FC<HighlightsSectionProps> = ({
 const styles = StyleSheet.create({
     cardShadow: {
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
         shadowRadius: 12,
-        elevation: 10,
+        elevation: 8,
     }
 });
 
