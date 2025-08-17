@@ -18,18 +18,18 @@ import { Stack } from 'expo-router';
 export default function AboutScreen() {
     // Informations statiques sur le restaurant
     const RESTAURANT_INFO = {
-        name: 'Afoud',
+        name: 'Afood',
         tagline: 'Saveurs authentiques du monde à Casablanca',
-        description: 'Afoud est votre destination culinaire pour découvrir les saveurs authentiques du monde. Nos recettes traditionnelles et notre engagement envers la qualité nous distinguent depuis notre ouverture.',
+        description: 'Afood est votre destination culinaire pour découvrir les saveurs authentiques du monde. Nos recettes traditionnelles et notre engagement envers la qualité nous distinguent depuis notre ouverture.',
         foundedYear: 2020,
         address: 'G8X8+5Q Casablanca 20000, Maroc',
         phone: '+212 660 600 602',
-        email: 'slimaneafoud1987@gmail.com',
-        website: 'www.afoud.ma',
+        email: 'slimaneAfood1987@gmail.com',
+        website: 'www.Afood.ma',
         socialMedia: [
-            { name: 'Facebook', icon: 'facebook', url: 'https://facebook.com/afoudrestaurant' },
-            { name: 'Instagram', icon: 'instagram', url: 'https://instagram.com/afoudrestaurant' },
-            { name: 'Twitter', icon: 'twitter', url: 'https://twitter.com/afoudrestaurant' }
+            { name: 'Facebook', icon: 'facebook', url: 'https://facebook.com/Afoodrestaurant' },
+            { name: 'Instagram', icon: 'instagram', url: 'https://instagram.com/Afoodrestaurant' },
+            { name: 'Twitter', icon: 'twitter', url: 'https://twitter.com/Afoodrestaurant' }
         ],
         features: [
             { name: 'Livraison Rapide', icon: 'truck' },
@@ -148,10 +148,10 @@ export default function AboutScreen() {
                         Notre fondateur est un véritable explorateur culinaire, dont la passion pour les saveurs du monde l'a mené à découvrir les secrets des cuisines traditionnelles. C'est lors de ses voyages à travers l'Europe, l'Asie et les Amériques qu'il a développé une profonde appréciation pour la diversité gastronomique mondiale.
                     </Text>
                     <Text className="text-sm leading-6 text-gray-600 mb-3">
-                        De retour au Maroc, inspiré par ces rencontres culinaires exceptionnelles, il a décidé d'ouvrir Afoud. Son rêve ? Créer un restaurant qui célèbre la richesse des traditions culinaires internationales, tout en respectant l'art de vivre marocain.
+                        De retour au Maroc, inspiré par ces rencontres culinaires exceptionnelles, il a décidé d'ouvrir Afood. Son rêve ? Créer un restaurant qui célèbre la richesse des traditions culinaires internationales, tout en respectant l'art de vivre marocain.
                     </Text>
                     <Text className="text-sm leading-6 text-gray-600 mb-3">
-                        Aujourd'hui, Afoud incarne cette vision multiculturelle, en proposant une cuisine fusion qui raconte l'histoire des saveurs du monde, adaptées aux goûts locaux avec passion et authenticité.
+                        Aujourd'hui, Afood incarne cette vision multiculturelle, en proposant une cuisine fusion qui raconte l'histoire des saveurs du monde, adaptées aux goûts locaux avec passion et authenticité.
                     </Text>
                 </View>
 
@@ -165,10 +165,10 @@ export default function AboutScreen() {
                 }}>
                     <Text className="text-lg font-bold text-gray-900 mb-3">Notre Mission</Text>
                     <Text className="text-sm leading-6 text-gray-600 mb-3">
-                        Chez Afoud, notre mission est de faire découvrir les saveurs authentiques du monde à travers une cuisine de qualité, préparée avec amour et expertise. Nous croyons que la gastronomie est un langage universel qui unit les cultures et crée des moments de partage inoubliables.
+                        Chez Afood, notre mission est de faire découvrir les saveurs authentiques du monde à travers une cuisine de qualité, préparée avec amour et expertise. Nous croyons que la gastronomie est un langage universel qui unit les cultures et crée des moments de partage inoubliables.
                     </Text>
                     <Text className="text-sm leading-6 text-gray-600 mb-3">
-                        Nous nous engageons à sélectionner les meilleurs ingrédients, à maintenir des standards d'excellence élevés, et à offrir une expérience culinaire exceptionnelle que ce soit en livraison, à emporter ou sur place. Notre objectif : que chaque repas chez Afoud soit une invitation au voyage gustatif.
+                        Nous nous engageons à sélectionner les meilleurs ingrédients, à maintenir des standards d'excellence élevés, et à offrir une expérience culinaire exceptionnelle que ce soit en livraison, à emporter ou sur place. Notre objectif : que chaque repas chez Afood soit une invitation au voyage gustatif.
                     </Text>
                 </View>
 
@@ -294,7 +294,7 @@ export default function AboutScreen() {
                 <View className="items-center p-5">
                     <Text className="text-xs text-gray-400 mb-1">Version {RESTAURANT_INFO.appVersion}</Text>
                     <Text className="text-xs text-gray-400 text-center">
-                        © {new Date().getFullYear()} Afoud Restaurant. Tous droits réservés.
+                        © {new Date().getFullYear()} Afood Restaurant. Tous droits réservés.
                     </Text>
                 </View>
             </ScrollView>

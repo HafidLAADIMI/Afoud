@@ -16,7 +16,7 @@ import { Feather, MaterialIcons } from '@expo/vector-icons';
 export default function PrivacyPolicyScreen() {
     // Fonction pour envoyer un email
     const sendPrivacyEmail = () => {
-        Linking.openURL('mailto:slimaneafoud1987@gmail.com')
+        Linking.openURL('mailto:slimaneAfood1987@gmail.com')
             .catch(err => console.error('Erreur lors de l\'ouverture du client email:', err));
     };
 
@@ -93,7 +93,7 @@ export default function PrivacyPolicyScreen() {
                         Politique de Confidentialité
                     </Text>
                     <Text className="text-base text-gray-600 text-center leading-6">
-                        Chez Afoud, nous prenons la protection de vos données personnelles très au sérieux
+                        Chez Afood, nous prenons la protection de vos données personnelles très au sérieux
                     </Text>
                 </View>
 
@@ -112,10 +112,10 @@ export default function PrivacyPolicyScreen() {
                         Cette page présente notre politique de confidentialité et nos pratiques concernant la collecte et le traitement de vos données personnelles. En tant qu'entreprise de restauration opérant à Casablanca, nous respectons strictement la loi 09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel.
                     </Text>
                     <Text className="text-sm leading-6 text-gray-600 mb-4">
-                        Afoud propose des services de livraison, commandes à emporter et restauration sur place. Nous collectons uniquement les données nécessaires pour assurer ces services : informations de contact, adresses de livraison, préférences culinaires et données de paiement sécurisées.
+                        Afood propose des services de livraison, commandes à emporter et restauration sur place. Nous collectons uniquement les données nécessaires pour assurer ces services : informations de contact, adresses de livraison, préférences culinaires et données de paiement sécurisées.
                     </Text>
                     <Text className="text-sm leading-6 text-gray-600">
-                        Afoud s'engage à respecter et protéger votre vie privée conformément aux lois marocaines et aux meilleures pratiques internationales en matière de protection des données.
+                        Afood s'engage à respecter et protéger votre vie privée conformément aux lois marocaines et aux meilleures pratiques internationales en matière de protection des données.
                     </Text>
                 </View>
 
@@ -131,7 +131,7 @@ export default function PrivacyPolicyScreen() {
                         Nos services et spécialités
                     </Text>
                     <Text className="text-sm text-gray-600 mb-3">
-                        Afoud vous propose une variété de cuisines : Marocaine, Italienne, Indienne, Mexicaine, Américaine, Française et bien d'autres spécialités.
+                        Afood vous propose une variété de cuisines : Marocaine, Italienne, Indienne, Mexicaine, Américaine, Française et bien d'autres spécialités.
                     </Text>
                     <View className="flex-row flex-wrap gap-2 mb-4">
                         {['Livraison', 'À emporter', 'Sur place'].map((service, index) => (
@@ -232,7 +232,7 @@ export default function PrivacyPolicyScreen() {
                         >
                             <Feather name="mail" size={16} color="#FFFFFF" />
                             <Text className="ml-2 text-white font-medium">
-                                slimaneafoud1987@gmail.com
+                                slimaneAfood1987@gmail.com
                             </Text>
                         </TouchableOpacity>
 
@@ -288,7 +288,7 @@ export default function PrivacyPolicyScreen() {
                             Données de Localisation
                         </Text>
                         <Text className="text-xs text-yellow-700 leading-5">
-                            Afoud utilise votre localisation uniquement pour optimiser les livraisons dans la région de Casablanca.
+                            Afood utilise votre localisation uniquement pour optimiser les livraisons dans la région de Casablanca.
                             Vos données de géolocalisation ne sont jamais partagées avec des tiers à des fins commerciales
                             et sont supprimées après la livraison de votre commande.
                         </Text>

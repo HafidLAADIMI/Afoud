@@ -9,7 +9,7 @@ export default function HelpSupportScreen() {
     const contactInfo = {
         address: "G8X8+5Q Casablanca 20000 Casablanca Maroc",
         phone: "+212660600602",
-        email: "slimaneafoud1987@gmail.com"
+        email: "slimaneAfood1987@gmail.com"
     };
 
     const handleCall = () => {

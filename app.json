@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Afoud",
-    "slug": "Afoud",
+    "name": "Afood",
+    "slug": "Afood",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
@@ -11,14 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "scheme": "Afoud",
+    "scheme": "Afood",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
       "buildNumber": "6",
-      "bundleIdentifier": "com.afoudusers.app",
+      "bundleIdentifier": "com.Afoudusers.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSLocationWhenInUseUsageDescription": "We need your location to show you nearby delivery locations",
@@ -35,7 +35,7 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.afoudusers.app",
+      "package": "com.Afoodusers.app",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBh59DQJEXejCeQSWZM083i_x-1Fav_GXs"
@@ -81,7 +81,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "7eb06956-3ef2-4205-9aba-3e64a318800f"
+        "projectId": "97d09126-0e35-4d00-aa38-3b4ab5b7edc0"
       }
     }
   }

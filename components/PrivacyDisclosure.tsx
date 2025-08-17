@@ -27,7 +27,7 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
     const [showFullPolicy, setShowFullPolicy] = useState(false);
 
     const openExternalPolicy = () => {
-        Linking.openURL('https://afoud.ma').catch(err => 
+        Linking.openURL('https://Afood.ma').catch(err => 
             console.error('Error opening URL:', err)
         );
     };
@@ -195,9 +195,9 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                                 📞 Contact
                             </Text>
                             <Text style={{ color: '#6B7280', fontSize: 14 }}>
-                                Email: slimaneafoud1987@gmail.com{'\n'}
+                                Email: slimaneAfood1987@gmail.com{'\n'}
                                 Téléphone: +212 660 600 602{'\n'}
-                                Site web: https://afoud.ma
+                                Site web: https://Afood.ma
                             </Text>
                         </View>
                     </ScrollView>
@@ -308,7 +308,7 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                     >
                         <View style={{ backgroundColor: '#FFFFFF', borderRadius: 16, padding: 20, marginBottom: 20, borderWidth: 1, borderColor: '#E5E7EB' }}>
                             <Text style={{ color: '#111827', fontSize: 18, fontWeight: '600', marginBottom: 16 }}>
-                                Bienvenue chez Afoud
+                                Bienvenue chez Afood
                             </Text>
 
                             <Text style={{ color: '#6B7280', fontSize: 16, lineHeight: 22, marginBottom: 20 }}>
@@ -403,9 +403,9 @@ export const PrivacyDisclosure: React.FC<PrivacyDisclosureProps> = ({
                                 📞 Nous Contacter
                             </Text>
                             <Text style={{ color: '#6B7280', fontSize: 14 }}>
-                                Email: slimaneafoud1987@gmail.com{'\n'}
+                                Email: slimaneAfood1987@gmail.com{'\n'}
                                 Téléphone: +212 660 600 602{'\n'}
-                                Site: https://afoud.ma{'\n'}
+                                Site: https://Afood.ma{'\n'}
                                 Adresse: G8X8+5Q Casablanca 20000, Maroc{'\n'}
                                 {'\n'}
                                 Pour toute question sur vos données ou cette politique de confidentialité.
