@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import {
     View,
     Text,
     TouchableOpacity,
     Image,
-    FlatList,
+    
     ActivityIndicator,
     ScrollView,
-    Alert
+    
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
@@ -24,8 +24,6 @@ import * as FirebaseUtils from '@/utils/firebase';
 export default function CuisineDetailScreen() {
     // Get the parameters from the URL
     const params = useGlobalSearchParams();
-    console.log('Raw params received:', params);
-
     // Extract and format cuisineId - handle different possible formats
     const rawCuisineId = params.cuisineId || params.id || null;
     const cuisineId = rawCuisineId ? decodeURIComponent(String(rawCuisineId)) : null;
@@ -47,10 +45,8 @@ export default function CuisineDetailScreen() {
 
     useEffect(() => {
         if (cuisineId) {
-            console.log(`CuisineDetailScreen: Loading cuisine with ID: ${cuisineId}`);
             fetchCuisineDetails(cuisineId);
         } else {
-            console.log('No cuisineId provided in navigation params');
             setError('ID de cuisine manquant');
             setIsLoading(false);
         }
@@ -64,7 +60,6 @@ export default function CuisineDetailScreen() {
 
             // First, get the cuisine data
             const cuisineData = await FirebaseUtils.getCuisineById(id);
-            console.log('Cuisine data received:', cuisineData);
 
             if (!cuisineData) {
                 console.error(`No cuisine found with ID: ${id}`);
@@ -76,10 +71,10 @@ export default function CuisineDetailScreen() {
             }
 
             setCuisine(cuisineData);
+    
 
             // Then, get the products for this cuisine
             const productsData = await FirebaseUtils.getProductsByCuisine(id);
-            console.log(`Products data received: ${productsData?.length || 0} items`);
 
             if (!productsData || productsData.length === 0) {
                 console.warn(`No products found for cuisine ID: ${id}`);
@@ -99,17 +94,12 @@ export default function CuisineDetailScreen() {
         setSelectedProduct(product);
         setDetailVisible(true);
     };
-    console.log("selected product : ", selectedProduct)
-    console.log("selected cuisine : " , cuisine)
-
     const handleOrderNow = (
         itemPriceWithAddons,  // Single item total price with options
         quantity,
         orderDetails  // Coming from ProductDetailModal
     ) => {
         setDetailVisible(false);
-
-        console.log('CuisineDetailScreen - Order details:', JSON.stringify(orderDetails));
 
         // Create persistedProductData with all necessary details for checkout
         const persistedProductData = {
@@ -219,13 +209,6 @@ export default function CuisineDetailScreen() {
     const cuisineImageSource = cuisine?.image && typeof cuisine.image === 'string'
         ? { uri: cuisine.image }
         : require('@/assets/placeholder.png');
-
-    console.log('Rendering cuisine details with:', {
-        cuisineName: cuisine?.name,
-        productCount: products?.length,
-        filteredCount: filteredProducts?.length,
-        categories: productCategories
-    });
 
     return (
         <SafeAreaView className="flex-1 bg-white">

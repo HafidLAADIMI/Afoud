@@ -35,7 +35,6 @@ import {
 import CategorySection from '@/sections/CategorySection';
 import TrendingSection from '@/sections/TrendingSection';
 import FindNearbyCard from '@/components/FindNearbyCard';
-import DineInCard from '@/components/DineInCard';
 import HighlightsSection from '@/sections/HighlightsSection';
 import CuisineSection from '@/sections/CuisineSection';
 
@@ -193,7 +192,7 @@ export default function HomeScreen() {
             // Prioritiser les propriétés de prix dans l'ordre correct
             price: product.price || product.discountedPrice || (product.originalPrice || 0),
         };
-
+       checkout
         // Si nous avons un prix avec remise mais pas de prix principal, le définir
         if (!normalizedProduct.price && product.discountedPrice) {
             normalizedProduct.price = product.discountedPrice;
@@ -219,24 +218,40 @@ export default function HomeScreen() {
     /* ───────────────────────────────────
        "ORDER NOW" INSIDE SHEET
     ─────────────────────────────────── */
-    const handleOrderNow = (
-        total: number,
-        quantity: number,
-        addons: Record<string, boolean>,
-    ) => {
+// In your HomeScreen, replace the handleOrderNow function with this:
+
+const handleOrderNow = (
+    itemPriceWithAddons: number,
+    quantity: number,
+    selectedProductDetails: any,
+) => {
+    console.log('=== DEBUG: Received in HomeScreen handleOrderNow ===');
+    console.log('selectedBases:', selectedProductDetails.selectedBases);
+    console.log('selectedIngredients:', selectedProductDetails.selectedIngredients);
+    console.log('selectedToppings:', selectedProductDetails.selectedToppings);
+    console.log('selectedSauces:', selectedProductDetails.selectedSauces);
+    
+    // Test JSON serialization one more time before navigation
+    try {
+        const jsonString = JSON.stringify(selectedProductDetails);
+        const parsedTest = JSON.parse(jsonString);
+        
+        console.log('=== DEBUG: HomeScreen JSON test ===');
+        console.log('selectedBases after HomeScreen JSON test:', parsedTest.selectedBases);
+        console.log('selectedIngredients after HomeScreen JSON test:', parsedTest.selectedIngredients);
+        
         setDetailVisible(false);
         router.push({
             pathname: '/checkout',
             params: {
-                totalAmount: total.toString(),
-                quantity: quantity.toString(),
-                addons: JSON.stringify(addons),
-                id: selectedProduct?.id ?? '',
+                persistedProductData: jsonString,
             },
         });
-    };
-
-
+    } catch (error) {
+        console.error('HomeScreen JSON serialization error:', error);
+        Alert.alert("Erreur", "Problème avec les données de navigation");
+    }
+};
 
     const highlightItem: Product = {
         id: 'highlight1',
@@ -377,7 +392,6 @@ export default function HomeScreen() {
                 <ProductDetailModal
                     isVisible={detailVisible}
                     onClose={() => setDetailVisible(false)}
-                    onOrder={handleOrderNow}
                     product={selectedProduct}
                 />
             )}

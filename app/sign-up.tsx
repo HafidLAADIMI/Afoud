@@ -341,8 +341,8 @@ export default function SignUpScreen() {
                             className="w-28 h-28 mb-2 rounded-full"
                             resizeMode="cover"
                         />
-                        <Text className="text-white text-2xl font-bold">Créer un Compte</Text>
-                        <Text className="text-white/90 text-base">Inscrivez-vous pour commencer</Text>
+                        <Text className="text-black text-2xl font-bold">Créer un Compte</Text>
+                        <Text className="text-black/90 text-base">Inscrivez-vous pour commencer</Text>
                     </View>
 
                     {/* Sign Up form */}

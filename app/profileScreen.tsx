@@ -136,7 +136,7 @@ const ProfileScreen = () => {
                                     </LinearGradient>
                                 )}
                             </View>
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 className="absolute bottom-1 right-1 bg-white p-2 rounded-full border-2 border-yellow-100"
                                 onPress={navigateToEditProfile}
                                 activeOpacity={0.8}
@@ -149,62 +149,22 @@ const ProfileScreen = () => {
                                 }}
                             >
                                 <Feather name="edit-3" size={16} color="#a86e02" />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         
-                        <Text className="text-2xl font-bold text-gray-900 mb-1">
-                            {user ? user.displayName || 'Utilisateur' : 'Utilisateur'}
-                        </Text>
+                    
                         <Text className="text-gray-600 mb-1">{user?.email}</Text>
 
                         {userProfile?.phoneNumber && (
                             <Text className="text-gray-500 text-sm">{userProfile.phoneNumber}</Text>
                         )}
 
-                        {/* Status badges */}
-                        <View className="flex-row mt-4">
-                            <View className="px-3 py-1.5 bg-yellow-50 rounded-full mx-1 border border-yellow-100">
-                                <Text className="text-yellow-700 text-sm font-medium">
-                                    <FontAwesome name="star" size={12} color="#a86e02" /> Membre VIP
-                                </Text>
-                            </View>
-                            <View className="px-3 py-1.5 bg-green-50 rounded-full mx-1 border border-green-100">
-                                <Text className="text-green-700 text-sm font-medium">
-                                    <FontAwesome name="shield" size={12} color="#059669" /> Vérifié
-                                </Text>
-                            </View>
-                        </View>
+                    
+                       
                     </View>
 
                     {/* Profile sections */}
-                    <View className="p-5">
-                        {/* Referral section */}
-                        <View className="bg-gradient-to-r from-yellow-50 to-orange-50 p-4 rounded-xl mb-5 border border-yellow-100">
-                            <View className="flex-row justify-between items-center mb-3">
-                                <View className="flex-row items-center">
-                                    <View className="bg-yellow-100 p-2 rounded-full mr-3">
-                                        <Feather name="gift" size={16} color="#a86e02" />
-                                    </View>
-                                    <Text className="text-gray-900 font-bold text-lg">Code de Parrainage</Text>
-                                </View>
-                                <TouchableOpacity
-                                    className="px-4 py-2 rounded-lg"
-                                    style={{ backgroundColor: '#a86e02' }}
-                                    onPress={handleShare}
-                                    activeOpacity={0.9}
-                                >
-                                    <Text className="text-white font-bold text-sm">Partager</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <Text className="text-gray-600 mb-3 text-sm leading-5">
-                                Partagez votre code avec des amis et gagnez des récompenses !
-                            </Text>
-                            <View className="bg-white p-3 rounded-lg flex-row justify-center border border-yellow-200">
-                                <Text className="font-bold text-lg tracking-wider" style={{ color: '#a86e02' }}>
-                                    {user?.uid.substring(0, 8).toUpperCase()}
-                                </Text>
-                            </View>
-                        </View>
+                    <View className="p-5">         
 
                         {/* Profile menu */}
                         <View className="bg-white rounded-xl overflow-hidden border border-gray-100">

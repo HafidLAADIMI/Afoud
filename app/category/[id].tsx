@@ -80,7 +80,6 @@ export default function CategoryDetailScreen() {
 
             // Get the associated cuisine
             const cuisineData = await FirebaseUtils.getCuisineFromCategory(id);
-            console.log('Cuisine data received:', cuisineData);
             setCuisine(cuisineData);
 
             // Get products for this category

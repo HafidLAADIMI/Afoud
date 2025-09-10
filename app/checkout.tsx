@@ -195,6 +195,7 @@ export default function CheckoutScreen() {
     // State variables
     const [currentUser, setCurrentUser] = useState(null);
     const [userEmail, setUserEmail] = useState('');
+    const [userName, setUserName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState(params.phoneNumber as string || '');
     const [selectedRegion, setSelectedRegion] = useState(params.selectedRegion as string || '');
     const [deliveryAddress, setDeliveryAddress] = useState(params.deliveryAddress as string || '');
@@ -223,7 +224,7 @@ export default function CheckoutScreen() {
                 }
                 setCurrentUser(user); 
                 setUserEmail(user.email || '');
-
+                setUserName(user.displayName || '');
                 if (!phoneNumber) {
                     const profile = await FirebaseUtils.getUserProfile(user.uid);
                     if (profile && profile.phoneNumber) setPhoneNumber(profile.phoneNumber);
@@ -236,58 +237,106 @@ export default function CheckoutScreen() {
     }, [router]);
 
     // Handle product data
-    useEffect(() => {
-        const initializeCart = async () => {
-            setIsLoading(true);
-            let itemsToSet = [];
-            let subTotalToSet = 0;
+    // In your CheckoutScreen, replace the product data handling section with this:
 
-            // Try to load from params first, then Firebase
-            if (params.persistedProductData) {
-                try {
-                    const productData = JSON.parse(params.persistedProductData as string);
-                    const quantity = Number(productData.quantity) || 1;
-                    const itemPrice = Number(productData.itemPriceWithAddons) || 0;
-                    const itemSubtotal = itemPrice * quantity;
+// Handle product data
+useEffect(() => {
+    const initializeCart = async () => {
+        setIsLoading(true);
+        let itemsToSet = [];
+        let subTotalToSet = 0;
 
-                    itemsToSet = [{
-                        productId: productData.productId,
-                        name: productData.productName,
-                        quantity: quantity,
-                        priceAtPurchase: Number(productData.basePrice) || 0,
-                        selectedAddons: productData.selectedAddons || [],
-                        selectedVariations: productData.selectedVariations || [],
-                        itemSubtotal: itemSubtotal,
-                        image: productData.imageUri ? { uri: productData.imageUri } : null,
-                        restaurantId: productData.restaurantId,
-                        cuisineId: productData.cuisineId,
-                    }];
-                    subTotalToSet = itemSubtotal;
-                } catch (e) {
-                    console.error('Error parsing product data:', e);
-                }
+        // Try to load from params first, then Firebase
+        if (params.persistedProductData) {
+            try {
+                const productData = JSON.parse(params.persistedProductData as string);
+                
+                console.log('=== DEBUG: Raw productData ===');
+                console.log('productData:', productData);
+                console.log('selectedBases type:', typeof productData.selectedBases);
+                console.log('selectedBases value:', productData.selectedBases);
+                
+                const quantity = Number(productData.quantity) || 1;
+                const itemPrice = Number(productData.itemPriceWithAddons) || 0;
+                const itemSubtotal = itemPrice * quantity;
+
+                // Ensure all arrays exist with proper fallbacks
+                const safeSelectedBases = Array.isArray(productData.selectedBases) 
+                    ? productData.selectedBases 
+                    : [];
+                const safeSelectedIngredients = Array.isArray(productData.selectedIngredients) 
+                    ? productData.selectedIngredients 
+                    : [];
+                const safeSelectedToppings = Array.isArray(productData.selectedToppings) 
+                    ? productData.selectedToppings 
+                    : [];
+                const safeSelectedSauces = Array.isArray(productData.selectedSauces) 
+                    ? productData.selectedSauces 
+                    : [];
+                const safeSelectedAddons = Array.isArray(productData.selectedAddons) 
+                    ? productData.selectedAddons 
+                    : [];
+                const safeSelectedVariations = Array.isArray(productData.selectedVariations) 
+                    ? productData.selectedVariations 
+                    : [];
+
+                console.log('=== DEBUG: Safe arrays ===');
+                console.log('safeSelectedBases:', safeSelectedBases);
+                console.log('safeSelectedIngredients:', safeSelectedIngredients);
+                console.log('safeSelectedToppings:', safeSelectedToppings);
+                console.log('safeSelectedSauces:', safeSelectedSauces);
+
+                itemsToSet = [{
+                    productId: productData.productId,
+                    name: productData.productName,
+                    quantity: quantity,
+                    priceAtPurchase: Number(productData.basePrice) || 0,
+                    selectedAddons: safeSelectedAddons,
+                    selectedVariations: safeSelectedVariations,
+                    selectedBases: safeSelectedBases,
+                    selectedIngredients: safeSelectedIngredients,
+                    selectedToppings: safeSelectedToppings,
+                    selectedSauces: safeSelectedSauces,
+                    ingredientsPricing: productData.ingredientsPricing || null,
+                    itemSubtotal: itemSubtotal,
+                    image: productData.imageUri ? { uri: productData.imageUri } : null,
+                    restaurantId: productData.restaurantId,
+                    cuisineId: productData.cuisineId,
+                }];
+
+                console.log('=== DEBUG: Final itemsToSet ===');
+                console.log('selectedBases:', itemsToSet[0]?.selectedBases);
+                console.log('selectedIngredients:', itemsToSet[0]?.selectedIngredients);
+                console.log('selectedToppings:', itemsToSet[0]?.selectedToppings);
+                console.log('selectedSauces:', itemsToSet[0]?.selectedSauces);
+                
+                subTotalToSet = itemSubtotal;
+            } catch (e) {
+                console.error('Error parsing product data:', e);
+                console.error('Raw params.persistedProductData:', params.persistedProductData);
             }
-
-            // Load from Firebase if no params
-            if (itemsToSet.length === 0) {
-                try {
-                    const firebaseItems = await FirebaseUtils.getCartItems();
-                    itemsToSet = firebaseItems;
-                    subTotalToSet = await FirebaseUtils.getCartTotal();
-                } catch (error) { 
-                    console.error('Error loading cart:', error); 
-                }
-            }
-            
-            setCartItems(itemsToSet);
-            setSubTotalAmount(subTotalToSet);
-            setIsLoading(false);
-        };
-
-        if (currentUser !== null) {
-            initializeCart();
         }
-    }, [currentUser, params.persistedProductData]);
+
+        // Load from Firebase if no params
+        if (itemsToSet.length === 0) {
+            try {
+                const firebaseItems = await FirebaseUtils.getCartItems();
+                itemsToSet = firebaseItems;
+                subTotalToSet = await FirebaseUtils.getCartTotal();
+            } catch (error) { 
+                console.error('Error loading cart:', error); 
+            }
+        }
+        
+        setCartItems(itemsToSet);
+        setSubTotalAmount(subTotalToSet);
+        setIsLoading(false);
+    };
+
+    if (currentUser !== null) {
+        initializeCart();
+    }
+}, [currentUser, params.persistedProductData]);
 
     // Calculate Grand Total
     useEffect(() => {
@@ -343,28 +392,34 @@ export default function CheckoutScreen() {
         }
 
         setPlacingOrder(true);
-
+        
         try {
             // Prepare order data
-            const orderItems = cartItems.map(item => ({
-                productId: item.productId || item.id,
-                name: item.name,
-                quantity: Number(item.quantity) || 1,
-                priceAtPurchase: Number(item.priceAtPurchase || item.price) || 0,
-                selectedAddons: item.selectedAddons || [],
-                selectedVariations: item.selectedVariations || [],
-                itemSubtotal: Number(item.itemSubtotal) || 0,
-                image: item.image?.uri || null,
-                restaurantId: item.restaurantId,
-                cuisineId: item.cuisineId,
-            }));
+          const orderItems = cartItems.map(item => ({
+            productId: item.productId || item.id,
+            name: item.name,
+            quantity: Number(item.quantity) || 1,
+            priceAtPurchase: Number(item.priceAtPurchase || item.price) || 0,
+            selectedAddons: item.selectedAddons || [],
+            selectedVariations: item.selectedVariations || [],
+            selectedBases: item.selectedBases || [],
+            selectedIngredients: item.selectedIngredients || [],
+            selectedToppings: item.selectedToppings || [],
+            selectedSauces: item.selectedSauces || [],
+            ingredientsPricing: item.ingredientsPricing || null,
+            itemSubtotal: Number(item.itemSubtotal) || 0,
+            image: item.image?.uri || null,
+            restaurantId: item.restaurantId,
+            cuisineId: item.cuisineId,
+        }));
 
             const tipValue = parseFloat(String(tipAmount)) || 0;
             const total = subTotalAmount + tipValue;
-            const regionData = ALLOWED_REGIONS[selectedRegion] || null;
-
+            const regionData = ALLOWED_REGIONS[selectedRegion]   || null ;
+            
             const orderData = {
                 userEmail: userEmail,
+                userName:userName,
                 phoneNumber: phoneNumber.trim(),
                 items: orderItems,
                 subTotalAmount: subTotalAmount,
@@ -384,6 +439,8 @@ export default function CheckoutScreen() {
                 paymentDetails: { status: 'pending_cod', message: 'Paiement à la livraison' },
                 status: 'pending',
             };
+
+            console.log(orderData)
 
             const newOrderId = await FirebaseUtils.createOrder(orderData);
             await FirebaseUtils.clearCart();
@@ -489,6 +546,12 @@ export default function CheckoutScreen() {
                                     <Text className="text-gray-700 text-base">{userEmail}</Text>
                                 </View>
                             </View>
+                            <View>
+                                <Text className="text-sm font-semibold text-gray-700 mb-2">Name</Text>
+                                <View className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                    <Text className="text-gray-700 text-base">{userName}</Text>
+                                </View>
+                            </View>
                             <PhoneNumberInput value={phoneNumber} onChangeText={setPhoneNumber} />
                         </View>
                     </View>
@@ -540,36 +603,7 @@ export default function CheckoutScreen() {
                         </View>
                     </View>
 
-                    {/* Tip Section */}
-                    {/* <View className="bg-white p-5 rounded-2xl border border-gray-200">
-                        <View className="flex-row items-center mb-5">
-                            <View className="w-10 h-10 rounded-xl bg-purple-50 items-center justify-center mr-3">
-                                <Feather name="heart" size={18} color="#8B5CF6" />
-                            </View>
-                            <Text className="text-xl font-bold text-gray-900">Pourboire (Optionnel)</Text>
-                        </View>
-                        
-                        <View className="flex-row mb-4">
-                            <TipButton amount={5} selected={tipAmount === 5} onPress={() => handleSelectTip(5)} />
-                            <TipButton amount={10} selected={tipAmount === 10} onPress={() => handleSelectTip(10)} />
-                            <TipButton amount={15} selected={tipAmount === 15} onPress={() => handleSelectTip(15)} />
-                            <TipButton amount={20} selected={tipAmount === 20} onPress={() => handleSelectTip(20)} />
-                        </View>
-                        
-                        <View>
-                            <Text className="text-sm font-semibold text-gray-700 mb-2">
-                                Montant Personnalisé
-                            </Text>
-                            <TextInput
-                                className="bg-white text-gray-900 p-4 rounded-xl border-2 border-gray-200 text-base"
-                                placeholder="Entrez un montant en MAD"
-                                placeholderTextColor="#9CA3AF"
-                                value={customTip}
-                                onChangeText={handleCustomTipChange}
-                                keyboardType="numeric"
-                            />
-                        </View>
-                    </View> */}
+               
 
                     {/* Payment Method */}
                     <View className="bg-white p-5 rounded-2xl border border-gray-200">

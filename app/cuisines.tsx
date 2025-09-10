@@ -32,8 +32,6 @@ export default function CuisinesScreen() {
             console.log('Fetching cuisines...');
             const fetchedCuisines = await getCuisines();
 
-            console.log(`Fetched ${fetchedCuisines.length} cuisines:`,
-                fetchedCuisines.map(c => `${c.id}: ${c.name}`).join(', '));
 
             setCuisines(fetchedCuisines);
             setFilteredCuisines(fetchedCuisines);
@@ -54,7 +52,6 @@ export default function CuisinesScreen() {
     };
 
     const handleCuisinePress = (cuisine) => {
-        console.log(`Navigating to cuisine: ${cuisine.id} - ${cuisine.name}`);
         // Navigate to cuisine detail screen with the cuisine ID
         router.push({
             pathname: '/cuisine/[cuisineId]',

@@ -292,8 +292,8 @@ export default function LoginScreen() {
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                     <View className="items-center py-12">
                         <Image source={require('@/assets/logo.jpg')} className="w-28 h-28 mb-4 rounded-full" />
-                        <Text className="text-white text-2xl font-bold">Bon Retour !</Text>
-                        <Text className="text-white/90">Connectez-vous pour continuer</Text>
+                        <Text className="text-black text-2xl font-bold">Bon Retour !</Text>
+                        <Text className="text-black/90">Connectez-vous pour continuer</Text>
                     </View>
 
                     <View className="bg-white rounded-t-3xl flex-1 px-6 pt-8 shadow-lg">
@@ -364,12 +364,12 @@ export default function LoginScreen() {
                                 </View>
                                 <Text className="text-gray-700">Se souvenir de moi</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 onPress={navigateToForgotPassword}
                                 accessibilityLabel="Mot de passe oublié"
                             >
                                 <Text style={{ color: '#a86e02' }} className="font-medium">Mot de passe oublié ?</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
 
                         <TouchableOpacity

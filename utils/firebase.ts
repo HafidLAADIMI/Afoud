@@ -739,70 +739,118 @@
      * @param {string} cuisineId - ID of the cuisine
      * @returns {Promise<any[]>} Array of products
      */
-    export const getProductsByCuisine = async (cuisineId: string): Promise<any[]> => {
-        try {
-            console.log(`Fetching products for cuisine ID: ${cuisineId}`);
-    
-            if (!cuisineId) {
-                console.error('Invalid cuisineId provided');
-                return [];
-            }
-    
-            // Query products by cuisineId field
-            const productsRef = collection(db, 'products');
-            const q = query(productsRef, where('cuisineId', '==', cuisineId));
-            const snapshot = await getDocs(q);
-    
-            if (snapshot.empty) {
-                console.warn(`No products found for cuisine ID: ${cuisineId}`);
-                return [];
-            }
-    
-            console.log(`Found ${snapshot.docs.length} products for cuisine ${cuisineId}`);
-    
-            // Map products to the expected Product interface format
-            const products = snapshot.docs.map(doc => {
-                const rawData = { id: doc.id, ...doc.data() };
-    
-                // Map from the current structure to the Product interface
-                return {
-                    id: rawData.id || '',
-                    name: rawData.name || 'Unnamed Product',
-                    description: rawData.description || '',
-                    image: typeof rawData.image === 'string' ? rawData.image :
-                        (rawData.image && rawData.image.uri ? rawData.image.uri : ''),
-                    price: Number(rawData.price || rawData.discountedPrice || 0),
-                    discountPrice: Number(rawData.discountPrice || 0),
-                    images: [typeof rawData.image === 'string' ? rawData.image :
-                        (rawData.image && rawData.image.uri ? rawData.image.uri : '')].filter(Boolean),
-                    categoryId: rawData.categoryId || '',
-                    // Map isVeg to isAvailable if isAvailable is not present
-                    isAvailable: rawData.isAvailable !== undefined ? rawData.isAvailable :
-                        (rawData.isVeg !== undefined ? rawData.isVeg : true),
-                    preparationTime: Number(rawData.preparationTime || 15),
-                    variations: Array.isArray(rawData.variations) ? rawData.variations : [],
-                    // Ensure addons are properly structured
-                    addons: Array.isArray(rawData.addons) ? rawData.addons.map(addon => ({
-                        id: addon.id || '',
-                        name: addon.name || '',
-                        price: Number(addon.price || 0)
-                    })) : [],
-                    restaurantId: rawData.restaurantId || '1',
-                    totalSold: Number(rawData.totalSold || 0), // Correction ici: a0 -> 0
-                    rating: Number(rawData.rating || 0),
-                    reviewCount: Number(rawData.reviewCount || 0),
-                    cuisineId: rawData.cuisineId || cuisineId,
-                    subCategory: rawData.subCategory || '' // Ajout du champ subCategory qui est utilisé pour le filtrage
-                };
-            });
-    
-            console.log("Normalized products:", JSON.stringify(products[0]));
-            return products;
-        } catch (error) {
-            console.error(`Error fetching products for cuisine ${cuisineId}:`, error);
+export const getProductsByCuisine = async (cuisineId: string): Promise<any[]> => {
+    try {
+        console.log(`Fetching products for cuisine ID: ${cuisineId}`);
+
+        if (!cuisineId) {
+            console.error('Invalid cuisineId provided');
             return [];
         }
-    };
+
+        // Query products by cuisineId field
+        const productsRef = collection(db, 'products');
+        const q = query(productsRef, where('cuisineId', '==', cuisineId));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+            console.warn(`No products found for cuisine ID: ${cuisineId}`);
+            return [];
+        }
+
+        console.log(`Found ${snapshot.docs.length} products for cuisine ${cuisineId}`);
+
+        // Map products to the complete Product interface format
+        const products = snapshot.docs.map(doc => {
+            const rawData = { id: doc.id, ...doc.data() };
+            console.log('Raw product data:', rawData);
+
+            // Map from the current structure to the complete Product interface
+          return {
+                id: rawData.id || '',
+                name: rawData.name || 'Unnamed Product',
+                description: rawData.description || '',
+                image: typeof rawData.image === 'string' ? rawData.image :
+                    (rawData.image && rawData.image.uri ? rawData.image.uri : ''),
+                price: Number(rawData.price || rawData.discountedPrice || 0),
+                discountPrice: Number(rawData.discountPrice || 0),
+                images: [typeof rawData.image === 'string' ? rawData.image :
+                    (rawData.image && rawData.image.uri ? rawData.image.uri : '')].filter(Boolean),
+                categoryId: rawData.categoryId || '',
+                cuisineId: rawData.cuisineId || cuisineId,
+                
+                // Basic product info
+                isAvailable: rawData.isAvailable !== undefined ? rawData.isAvailable : true,
+                preparationTime: Number(rawData.preparationTime || 15),
+                rating: Number(rawData.rating || 0),
+                reviewCount: Number(rawData.reviewCount || 0),
+                totalSold: Number(rawData.totalSold || 0),
+                restaurantId: rawData.restaurantId || '1',
+                subCategory: rawData.subCategory || '',
+
+                // Legacy support
+                variations: Array.isArray(rawData.variations) ? rawData.variations : [],
+                addons: Array.isArray(rawData.addons) ? rawData.addons.map(addon => ({
+                    id: addon.id || '',
+                    name: addon.name || '',
+                    price: Number(addon.price || 0),
+                    isAvailable: addon.isAvailable !== undefined ? addon.isAvailable : true
+                })) : [],
+
+                // NEW CUSTOMIZATION SYSTEM
+                // Bases (with pricing)
+                bases: Array.isArray(rawData.bases) ? rawData.bases.map(base => ({
+                    id: base.id || '',
+                    name: base.name || '',
+                    price: Number(base.price || 0),
+                    isAvailable: base.isAvailable !== undefined ? base.isAvailable : true
+                })) : [],
+
+                // UPDATED: Ingredients now have pricing from your data
+                ingredients: Array.isArray(rawData.ingredients) ? rawData.ingredients.map(ingredient => ({
+                    id: ingredient.id || '',
+                    name: ingredient.name || '',
+                    price: Number(ingredient.price || 0), // Now uses actual price from data
+                    isAvailable: ingredient.isAvailable !== undefined ? ingredient.isAvailable : true
+                })) : [],
+
+                // Toppings (with pricing)
+                toppings: Array.isArray(rawData.toppings) ? rawData.toppings.map(topping => ({
+                    id: topping.id || '',
+                    name: topping.name || '',
+                    price: Number(topping.price || 0),
+                    isAvailable: topping.isAvailable !== undefined ? topping.isAvailable : true
+                })) : [],
+
+                // Sauces (with pricing)
+                sauces: Array.isArray(rawData.sauces) ? rawData.sauces.map(sauce => ({
+                    id: sauce.id || '',
+                    name: sauce.name || '',
+                    price: Number(sauce.price || 0),
+                    isAvailable: sauce.isAvailable !== undefined ? sauce.isAvailable : true
+                })) : [],
+
+                // Selection limits from your data
+                maxIngredientSelection: Number(rawData.maxIngredientSelection || 12),
+                minIngredientSelection: Number(rawData.minIngredientSelection || 0),
+                maxToppingSelection: Number(rawData.maxToppingSelection || 4),
+                minToppingSelection: Number(rawData.minToppingSelection || 0),
+                maxSauceSelection: Number(rawData.maxSauceSelection || 1),
+                minSauceSelection: Number(rawData.minSauceSelection || 0),
+
+                // UPDATED: Now uses actual values from your data structure
+                freeIngredientLimit: Number(rawData.maxIngredientSelection || 5), // Free limit = maxIngredientSelection
+                defaultIngredientExcessPrice: Number(rawData.defaultIngredientExcessPrice || 6) // Your fallback price
+            };
+        });
+
+        console.log("Normalized products with full customization:", JSON.stringify(products[0], null, 2));
+        return products;
+    } catch (error) {
+        console.error(`Error fetching products for cuisine ${cuisineId}:`, error);
+        return [];
+    }
+};
     /**
      * Get products by category
      * @param {string} categoryId - ID of the category
@@ -1341,73 +1389,88 @@ export const clearAllFavorites = async (): Promise<void> => {
 
             // CRITICAL FIX: Handle both item structures (from checkout and from product details)
             // Notice we check for both selectedAddons/selectedVariations AND addons/variations
-            const formattedItems = Array.isArray(orderData.items)
-                ? orderData.items.map(item => {
-                    // Get variations either from selectedVariations or variations
-                    const variations = Array.isArray(item.selectedVariations)
-                        ? item.selectedVariations
-                        : Array.isArray(item.variations)
-                            ? item.variations
-                            : [];
+           const formattedItems = Array.isArray(orderData.items)
+            ? orderData.items.map(item => {
+                // Get variations either from selectedVariations or variations
+                const variations = Array.isArray(item.selectedVariations)
+                    ? item.selectedVariations
+                    : Array.isArray(item.variations)
+                        ? item.variations
+                        : [];
 
-                    // Get addons either from selectedAddons or addons
-                    const addons = Array.isArray(item.selectedAddons)
-                        ? item.selectedAddons
-                        : Array.isArray(item.addons)
-                            ? item.addons
-                            : [];
+                // Get addons either from selectedAddons or addons
+                const addons = Array.isArray(item.selectedAddons)
+                    ? item.selectedAddons
+                    : Array.isArray(item.addons)
+                        ? item.addons
+                        : [];
 
-                    // CRITICAL FIX: Use priceAtPurchase if available, fall back to price
-                    const basePrice = parseFloat(String(item.priceAtPurchase || item.price || 0));
+                // Get the new customization fields
+                const bases = Array.isArray(item.selectedBases) ? item.selectedBases : [];
+                const ingredients = Array.isArray(item.selectedIngredients) ? item.selectedIngredients : [];
+                const toppings = Array.isArray(item.selectedToppings) ? item.selectedToppings : [];
+                const sauces = Array.isArray(item.selectedSauces) ? item.selectedSauces : [];
+                const ingredientsPricing = item.ingredientsPricing || null;
 
-                    // CRITICAL FIX: Use itemSubtotal if available
-                    const itemSubtotal = parseFloat(String(item.itemSubtotal || 0));
+                const basePrice = parseFloat(String(item.priceAtPurchase || item.price || 0));
+                const itemSubtotal = parseFloat(String(item.itemSubtotal || 0));
 
-                    return {
-                        id: item.productId || item.id || '',
-                        name: item.name || 'Unnamed Item',
-                        price: basePrice, // Use base price
-                        quantity: parseInt(String(item.quantity || 1)),
-                        image: item.image?.uri || (typeof item.image === 'string' ? item.image : ''),
-                        variations: variations,
-                        addons: addons,
-                        subtotal: itemSubtotal || basePrice * parseInt(String(item.quantity || 1))
-                    };
-                })
-                : [];
+                return {
+                    id: item.productId || item.id || '',
+                    name: item.name || 'Unnamed Item',
+                    price: basePrice,
+                    quantity: parseInt(String(item.quantity || 1)),
+                    image: item.image?.uri || (typeof item.image === 'string' ? item.image : ''),
+                    variations: variations,
+                    addons: addons,
+                    bases: bases,
+                    ingredients: ingredients,
+                    toppings: toppings,
+                    sauces: sauces,
+                    ingredientsPricing: ingredientsPricing,
+                    subtotal: itemSubtotal || basePrice * parseInt(String(item.quantity || 1))
+                };
+            })
+    : [];
 
             // Log the formatted items for debugging
             console.log('Formatted order items:', JSON.stringify(formattedItems, null, 2));
 
             // Calculate subtotal to ensure it's accurate, now accounting for item.subtotal
             const subtotal = formattedItems.reduce((sum, item) => {
-                // Use item.subtotal if already calculated, otherwise calculate manually
-                if (item.subtotal && item.subtotal > 0) {
-                    return sum + item.subtotal;
-                }
+                    // Always calculate from base price and options to ensure accuracy
+                        let itemTotal = item.price * item.quantity;
 
-                // Otherwise, calculate from base price and options
-                let itemTotal = item.price * item.quantity;
+                    // Add variations price
+                    if (Array.isArray(item.variations)) {
+                        const variationTotal = item.variations.reduce(
+                            (varSum, variation) => varSum + parseFloat(String(variation.price || 0)),
+                            0
+                        ) * item.quantity;
+                        itemTotal += variationTotal;
+                    }
 
-                // Add variations price
-                if (Array.isArray(item.variations)) {
-                    const variationTotal = item.variations.reduce(
-                        (varSum, variation) => varSum + parseFloat(String(variation.price || 0)),
-                        0
-                    ) * item.quantity;
-                    itemTotal += variationTotal;
-                }
+                    // Add addon prices
+                    if (Array.isArray(item.addons)) {
+                        const addonTotal = item.addons.reduce(
+                            (addonSum, addon) => addonSum + (parseFloat(String(addon.price || 0)) * (addon.quantity || 1)),
+                            0
+                        ) * item.quantity;
+                        itemTotal += addonTotal;
+                    }
 
-                // Add addon prices
-                if (Array.isArray(item.addons)) {
-                    const addonTotal = item.addons.reduce(
-                        (addonSum, addon) => addonSum + (parseFloat(String(addon.price || 0)) * (addon.quantity || 1)),
-                        0
-                    ) * item.quantity;
-                    itemTotal += addonTotal;
-                }
+                    // Add bases, ingredients, toppings, sauces prices
+                    ['bases', 'ingredients', 'toppings', 'sauces'].forEach(category => {
+                        if (Array.isArray(item[category])) {
+                            const categoryTotal = item[category].reduce(
+                                (catSum, categoryItem) => catSum + (parseFloat(String(categoryItem.price || 0)) * (categoryItem.quantity || 1)),
+                                0
+                            ) * item.quantity;
+                            itemTotal += categoryTotal;
+                        }
+                    });
 
-                return sum + itemTotal;
+                    return sum + itemTotal;
             }, 0);
 
             // CRITICAL FIX: Get the correct total amount from various possible sources
@@ -1445,7 +1508,7 @@ export const clearAllFavorites = async (): Promise<void> => {
                 // User information
                 userId,
                 userEmail: orderData.userEmail || '',
-                customerName: orderData.customerName || '',
+                customerName: orderData.userName || '',
                 customerPhone: orderData.phoneNumber || '',
 
                 // Order items
@@ -1462,10 +1525,10 @@ export const clearAllFavorites = async (): Promise<void> => {
                 currency: orderData.currency || 'MAD',
 
                 // Location data
-                deliveryAddress: orderData.shippingAddress?.address ||
+                deliveryAddress: orderData.shippingAddress?.region ||
                     orderData.deliveryLocation?.address ||
                     orderData.address?.address || '',
-                deliveryLocation: orderData.shippingAddress ||
+                deliveryLocation: orderData.shippingAddress.address ||
                     orderData.deliveryLocation || {
                         latitude: orderData.address?.latitude || null,
                         longitude: orderData.address?.longitude || null,
